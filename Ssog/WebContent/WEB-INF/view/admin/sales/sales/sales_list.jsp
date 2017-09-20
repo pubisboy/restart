@@ -210,7 +210,7 @@
 					$("#f").submit();
 				}else{
 					$("#alerts").html("기간 설정 오류 (일)");
-				}
+				} 
 			}else{
 				$("#alerts").html("기간 설정 오류 (연/월)");
 			}
