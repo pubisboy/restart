@@ -75,6 +75,7 @@ public class ProductController {
 		mav.addObject("list", list);
 		mav.addObject("paging", mm);
 		mav.addObject("originlist", list1);
+		mav.addObject("origin1", arr); 
 		String ori = "";
 		if (arr != null) {
 			for (String s : arr) {
