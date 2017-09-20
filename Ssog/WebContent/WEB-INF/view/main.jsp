@@ -124,6 +124,6 @@
  </div>
 <c:forEach items="${list }" var="i" varStatus="vs">
 	<script>
-		window.open("/popup.j?num=${i.POPUP_NUM}", "", "width=300, height=500, left=${vs.index * 50}, top=${vs.index * 50}");
+		window.open("/popup.j?num=${i.POPUP_NUM}", "", "width=400, height=500, left=${vs.index * 50}, top=${vs.index * 50}");
 	</script>
 </c:forEach> 

@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public interface AdminDao {
+public interface AdminDao { 
 
 	public boolean login(Map<String, Object> map);
 	public int doc();
@@ -76,4 +76,8 @@ public interface AdminDao {
 	public Date getCupon_date(Map map);
 	public int getUnableCupon();
 	public int delUnableCupon();
+	public int getDhl();
+	public int getPoint();
+	public boolean updateDhl(int charge);
+	public boolean updatePoint(int rate);
 }

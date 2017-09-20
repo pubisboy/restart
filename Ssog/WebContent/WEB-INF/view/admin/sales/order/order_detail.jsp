@@ -134,7 +134,7 @@ td{
 				</tbody>
 			</table>
 <c:if test="${list[0].STATE ne 5}">
-	<div style="float: left; width: 10%; text-align: left">
+	<div style="float: left; width: 10%; text-align: left" id="del">
 	<button type="button" class="btn btn-default" onclick="cancel('/admin/sales/order/order_del.ja?num=${list[0].ORDER_NUM }');">삭제</button>
 	</div>
 </c:if>		
@@ -171,10 +171,10 @@ function submit(){
 	}).done(function(rst){
 		if(rst){
 			$("#st").html(state);
-			if(tmp != 5 || tmp != 8){
-				$("#modify").html("<button id='mbutton' style='height: 25px;' onclick='modify();'>수정</button>");
-			}else{
+			if(tmp == 5 || tmp == 8){
 				$("#modify").html("");
+			}else{
+				$("#modify").html("<button id='mbutton' style='height: 25px;' onclick='modify();'>수정</button>");
 			}
 		}else{
 			window.alert("변경 실패");
