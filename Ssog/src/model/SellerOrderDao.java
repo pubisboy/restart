@@ -59,6 +59,7 @@ public class SellerOrderDao {
 	}
 	
 	//========================================================
+	//매출 현황
 	public List<Map<String,Object>> salesList(Map map){
 		SqlSession session = factory.openSession();
 		try {
@@ -78,12 +79,43 @@ public class SellerOrderDao {
 	public int salesTotal(Map map){
 		SqlSession session = factory.openSession();
 		try{
-			int r = session.selectOne("seller.sales_total", map);
+			int r = session.selectOne("seller.sales_count", map);
 			return r;
 		} catch(Exception e){
 			e.printStackTrace();
 			session.rollback();
 			return 0;
+		} finally{
+			session.close();
+		}
+	}
+	
+	//=====================================================================
+	//판매등급
+	public int sumPrice(String id){
+		SqlSession session = factory.openSession();
+		try{
+			int r = session.selectOne("seller.sum_price", id);
+			return r;
+		} catch(Exception e){
+			e.printStackTrace();
+			session.rollback();
+			return 0;
+		} finally{
+			session.close();
+		}
+	}
+	
+	public Map<String,Object> sellerGrade(int price){
+		SqlSession session = factory.openSession();
+		try {
+			Map<String,Object> m = session.selectOne("seller.grade", price);
+			session.commit();
+			return m;
+		} catch(Exception e){
+			e.printStackTrace();
+			session.rollback();
+			return null;
 		} finally{
 			session.close();
 		}

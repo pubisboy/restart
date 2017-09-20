@@ -2,11 +2,20 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-	<div class="container">
-		<div id="curve_chart" style="width:80%"></div>
-  	</div>
+<div class="container">
+ 	<h1>등급 : ${grade}</h1>
+ 	총 매출금액 : ${sum_price}
+	
+	<div id="curve_chart" style="width:80%"></div>
+ 	
+ 	
+ </div>
+ 
+ 
+ 
+ 
   
-   <script type="text/javascript">
+ <script type="text/javascript">
      google.charts.load('current', {'packages':['corechart']});
      google.charts.setOnLoadCallback(drawChart);
 
