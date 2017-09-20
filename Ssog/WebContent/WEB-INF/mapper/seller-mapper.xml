@@ -33,6 +33,9 @@
  		SELECT * FROM SELLER_MEMBER WHERE account=#{account}
   	</select>
   	<delete id="member_delete" parameterType="java.lang.String">
+  		delete producttbl where seller_id=#{id}
+  		delete review where seller_id=#{id}
+  		delete seller_recode id=#{id}
   		delete from seller_member where id=#{id}
   	</delete>
   	<update id="edit_info" parameterType="java.util.HashMap">
@@ -42,7 +45,6 @@
   	<update id="edit_pass" parameterType="java.util.HashMap">
   		update seller_member set pass=#{newpass} where id=#{id}
   	</update>
-  	
   	
   	<!-- ******************상품 관리***************** -->
   	<!-- column명을 대입해야 할 때는 '$'를 쓴다. '$'가 '#'보다 우선순위가 더 먼저 -->
@@ -134,11 +136,14 @@
   	
   	<!-- ******************상품 Q&A***************** -->
   	<select id="qna_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">
-  		select * from (select tmp1.*, rownum as r from (select * from Q_AND_A join producttbl
+  		select * from (select tmp1.*, rownum as r from 
+  		(select q_and_a.*, q_and_a_category.category as qna_cate from Q_AND_A join producttbl
 		on Q_AND_A.PRO_NUM = producttbl.pro_num
-		where Q_AND_A.pro_num = any(select pro_num from producttbl where seller_id=#{id})) tmp1)
+        join Q_AND_A_CATEGORY
+        on q_and_a.cate = Q_AND_A_CATEGORY.num
+		where Q_AND_A.pro_num = any(select pro_num from producttbl where seller_id=#{id})
+        order by q_and_a.num desc) tmp1)
 		where r between #{start} and #{end}
-		order by num desc
   	</select>
   	
   	<select id="qna_total" parameterType="java.util.HashMap" resultType="java.lang.Integer">
@@ -147,14 +152,22 @@
 		where Q_AND_A.pro_num = any(select pro_num from producttbl where seller_id=#{id})
   	</select>
   	
+  	<select id="qna_info" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+  		select * from q_and_a where num = #{num}
+  	</select>
+  	
+  	<update id="qna_write" parameterType="java.util.HashMap">
+  		update Q_AND_A set title = #{title}, content = #{content} where num = #{num}
+  	</update>
+  	
   	
   	
   	<!-- ******************주문관리***************** -->
   	<select id="order_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">
   		select * from (select tmp1.*, rownum as r from 
-		(select ordertbl.*, dhl.charge as charge, state.STATE as st,cupon_type.rate as rate from ordertbl join producttbl
+		(select ordertbl.*, state.STATE as st,cupon_type.rate as rate, producttbl.pro_name as pro_name 
+		from ordertbl join producttbl 
 		on ordertbl.pro_num = producttbl.pro_num
-		join dhl on ordertbl.dhl = dhl.num
 		join state on ordertbl.state = state.state_num
 		join cupon_type on ordertbl.cupon_type = cupon_type.cupon_num
 		where ordertbl.pro_num = any(select pro_num from producttbl where seller_id = #{id})) tmp1 
@@ -177,9 +190,8 @@
   	
   	<select id="order_total" parameterType="java.util.HashMap" resultType="java.lang.Integer">
   		select count(*) from (select tmp1.*, rownum as r from 
-		(select ordertbl.*, dhl.charge as charge, state.STATE as st,cupon_type.rate as rate from ordertbl join producttbl
+		(select ordertbl.*, state.STATE as st,cupon_type.rate as rate from ordertbl join producttbl
 		on ordertbl.pro_num = producttbl.pro_num
-		join dhl on ordertbl.dhl = dhl.num
 		join state on ordertbl.state = state.state_num
 		join cupon_type on ordertbl.cupon_type = cupon_type.cupon_num
 		where ordertbl.pro_num = any(select pro_num from producttbl where seller_id = #{id})) tmp1 
@@ -204,19 +216,7 @@
   	</update>
   	
   	
-  	<!-- 수정해야함
-  	<select>
-  		select * from (select tmp1.*, rownum as r from 
-		(select ordertbl.*, dhl.charge as charge, state.STATE as st,cupon_type.rate as rate from ordertbl join producttbl
-		on ordertbl.pro_num = producttbl.pro_num
-		join dhl on ordertbl.dhl = dhl.num
-		join state on ordertbl.state = state.state_num
-		join cupon_type on ordertbl.cupon_type = cupon_type.cupon_num
-		where ordertbl.pro_num = any(select pro_num from producttbl where seller_id = 'kimsu')) tmp1 
-		where state<>4 or state<>5 )
-		where r between 1 and 3
-		order by order_num desc;
-  	</select> -->
+  	
   	
   	<!-- ******************매출현황***************** -->
   	<select id="sales_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">

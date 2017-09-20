@@ -139,7 +139,7 @@ public class SellerCounselController {
 	
 	
 	//=========================================================
-	//리뷰
+	//Q&A
 	@RequestMapping("/qna/list.j")
 	public ModelAndView qnaList(@RequestParam Map map, HttpSession session, 
 			@RequestParam(name="p", defaultValue="1") int p) {
@@ -160,11 +160,30 @@ public class SellerCounselController {
 		
 		List list = sdao.qnaList(map);
 		System.out.println(map);
-		mav.addObject("section", "seller/counsel/review/list");
+		mav.addObject("section", "seller/counsel/qna/list");
 		mav.addObject("list", list);
 		mav.addObject("p", p);
 		mav.addObject("page", rst);
 		mav.addObject("total", total);
+		return mav;
+	}
+	
+	@RequestMapping("/qna/write.j")
+	public ModelAndView qnaWrite(HttpSession session, @RequestParam(name="num") int num){
+		ModelAndView mav = new ModelAndView("t_el_seller");
+		String id = (String)session.getAttribute("seller_id");
+		Map map = sdao.qnaDetail(num);
+			mav.addObject("map", map);
+			mav.addObject("section", "seller/counsel/qna/write"); 
+		return mav;
+	}
+	
+	@RequestMapping("/qna/write_ok.j")
+	public ModelAndView updateContent(@RequestParam Map map){
+		ModelAndView mav = new ModelAndView("t_el_seller");
+		boolean rst = sdao.updateContent(map);
+			mav.addObject("section", "seller/alert/write_rst");
+			mav.addObject("rst", rst);
 		return mav;
 	}
 }

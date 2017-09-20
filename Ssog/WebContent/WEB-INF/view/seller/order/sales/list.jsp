@@ -18,24 +18,26 @@
  <script type="text/javascript">
      google.charts.load('current', {'packages':['corechart']});
      google.charts.setOnLoadCallback(drawChart);
-
-     function drawChart() {
-       var data = google.visualization.arrayToDataTable([
-         ['pronum', 'price'],
-         <c:forEach items="${list}" var="i"  varStatus="vs">
-			["${i.PRONUM}" , ${i.PRICE} ]
-			<c:if test="${!vs.last }"> , </c:if>
-	  	</c:forEach>
-       ]);
-
-       var options = {
-         title: '상품별 매출현황',
-         curveType: 'function',
-         legend: { position: 'bottom' }
-       };
-
-       var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
-       chart.draw(data, options);
+		
+     if("${sum_price}">0){
+	     function drawChart() {
+	       var data = google.visualization.arrayToDataTable([
+	         ['pronum', 'price'],
+	         <c:forEach items="${list}" var="i"  varStatus="vs">
+				["${i.PRONUM}" , ${i.PRICE} ]
+				<c:if test="${!vs.last }"> , </c:if>
+		  	</c:forEach>
+	       ]);
+	
+	       var options = {
+	         title: '상품별 매출현황',
+	         curveType: 'function',
+	         legend: { position: 'bottom' }
+	       };
+	
+	       var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+	
+	       chart.draw(data, options);
+	     }
      }
 </script>

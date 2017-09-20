@@ -140,9 +140,9 @@
 			<thead>
 				<tr style="border-top: 3px solid black;">
 					<th width="10%">주문번호</th>
-					<th width="10%">상품번호</th>
-					<th width="15%">주문일자</th>
-					<th width="15%">결제일자</th>
+					<th width="16%">상품명</th>
+					<th width="12%">주문일자</th>
+					<th width="12%">결제일자</th>
 					<th width="11%">가격</th>
 					<th width="8%">할인율</th>
 					<th width="5%">수량</th>
@@ -158,7 +158,7 @@
 				<c:forEach var="i" items="${list}">
 					<tr id="parent">
 						<td class="order_num" id="${i.ORDER_NUM}"><a href="#">[${i.ORDER_NUM}]</a></td>
-						<td><a href="/seller/product/productEdit.j?num=${i.PRO_NUM}">[${i.PRO_NUM }]</a></td>
+						<td><a href="/seller/product/productEdit.j?num=${i.PRO_NUM}">${i.PRO_NAME}</a></td>
 						<td><fmt:formatDate value="${i.ORDER_DATE}" pattern="yyyy/MM/dd"/></td>
 						<td><fmt:formatDate value="${i.PAY_DATE}"  pattern="yyyy/MM/dd"/></td>
 						<td><fmt:formatNumber value="${i.PRICE-(i.PRICE*i.RATE*0.01)}"  type="number" pattern="#,###"/>원</td>
@@ -201,7 +201,6 @@
 										</c:forTokens>
 									</li>
 									<li>받는사람: ${i.RECEIVER}</li> 
-									<li>배송비: ${i.CHARGE}</li>
 								</ul>
 							</div>
 				 		</td>

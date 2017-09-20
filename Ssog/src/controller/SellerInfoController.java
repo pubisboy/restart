@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import model.SellerCounselDao;
 import model.SellerInfoDao;
 import model.SellerOrderDao;
 
@@ -26,7 +28,9 @@ public class SellerInfoController {
 	
 	@Autowired
 	SellerOrderDao sodao;
-	
+
+	@Autowired
+	SellerCounselDao scdao;
 	
 	@RequestMapping("/test.j")
 	public ModelAndView test() {
@@ -36,8 +40,41 @@ public class SellerInfoController {
 	}
 	
 	@RequestMapping("/main.j")
-	public ModelAndView toIndex() {
+	public ModelAndView toIndex(HttpSession session) {
 		ModelAndView mav = new ModelAndView("t_el_seller");
+		String id = (String)session.getAttribute("seller_id");
+		
+		Map map = new HashMap<>();
+		map.put("id", id);
+		map.put("start", 1);
+		map.put("end", 3);
+		
+		//등급
+		int sum_price=0;
+		int order_total = sodao.orderTotal(map);
+		if(order_total > 0) {
+			sum_price = sodao.sumPrice(id);
+		}
+		Map grade_map = sodao.sellerGrade(sum_price);
+		String grade = (String) grade_map.get("GRADE");
+		session.setAttribute("grade", grade);
+		
+		//기본정보
+		Map<String,Object> myinfo_map = sdao.overlapChk(id, "id");
+		mav.addObject("myinfo", myinfo_map);
+		
+		//주문현황
+		List order_list = sodao.orderList(map);
+		mav.addObject("order_list", order_list);
+		
+		//Q&A
+		List qna_list = scdao.qnaList(map);
+		mav.addObject("qna_list", qna_list);
+		
+		//리뷰
+		List review_list = scdao.reviewList(map);
+		mav.addObject("review_list", review_list);
+		
 		mav.addObject("section", "seller/main");
 		return mav;
 	}
@@ -89,19 +126,6 @@ public class SellerInfoController {
 			System.out.println("로그인성공");
 			session.setAttribute("seller_id", (String) param.get("id"));
 			
-			String id = (String)session.getAttribute("seller_id");
-			//등급
-			int sum_price = sodao.sumPrice(id);
-			Map grade_map = sodao.sellerGrade(sum_price);
-			String grade = (String) grade_map.get("GRADE");
-			session.setAttribute("grade", grade);
-			
-			//주문현황
-			
-			Map<String,Object> myinfo_map = sdao.overlapChk(id, "id");
-			System.out.println(">>>" + myinfo_map);
-			mav.addObject("myinfo", myinfo_map);
-			
 			if (keep != null) {
 				Cookie c = new Cookie("keep", (String) param.get("id"));
 				c.setMaxAge(60 * 60 * 24 * 7);
@@ -109,7 +133,7 @@ public class SellerInfoController {
 				resp.addCookie(c);
 			}
 		}
-		mav.addObject("section", "seller/main");
+		mav.addObject("section", "seller/alert/login_rst");
 		mav.addObject("rst", rst);
 		
 		return mav;

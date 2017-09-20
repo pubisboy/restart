@@ -138,4 +138,33 @@ public class SellerCounselDao {
 			session.close();
 		}
 	}
+	
+	public Map qnaDetail(int num){
+		SqlSession session = factory.openSession();
+		try{
+			Map map = session.selectOne("seller.qna_info", num);
+			return map;
+		} catch(Exception e){
+			e.printStackTrace();
+			session.rollback();
+			return null;
+		} finally{
+			session.close();
+		}
+	}
+	
+	//답변
+	public boolean updateContent(Map map){
+		SqlSession session = factory.openSession();
+		try{
+			session.update("seller.qna_write", map);
+			return true;
+		} catch(Exception e){
+			e.printStackTrace();
+			session.rollback();
+			return false;
+		} finally{
+			session.close();
+		}
+	}
 }
