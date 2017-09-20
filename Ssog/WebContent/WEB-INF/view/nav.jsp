@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
 <link href="http://fonts.googleapis.com/css?family=Bitter&subset=latin" rel="stylesheet" type="text/css">
@@ -13,14 +14,15 @@ li{
 /* 하위 메뉴 */
 #sohot > .wonder > .girls {
    display: none;
-   position: absolute;
-   top:0;
+   position: absolute; 
+   top:0; 
    left:100%;
    background: #ffffff; /* Old browsers */
    background: -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 100%); /* FF3.6-15 */
    background: -webkit-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* Chrome10-25,Safari5.1-6 */
    background: linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
+   
 }
   
 /* 하위 메뉴에 마우스 올렸을 때 */
@@ -152,21 +154,23 @@ li{
 <div align="center" > 
 <div id="navbar" style="width: 67%; height: 7%">    
   <div class="navbar navbar-static-top" role="navigation" style="height:100%; margin-bottom: 0px;"> 
-            <div class="navbar-header">
+            <div class="navbar-header" style="height: 100%;">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span> 
                     <span class="icon-bar"></span>
                 </button>  
-                <ul class="nav ssibal navbar-nav">  
-                   <li class="dropdown">
-                    <a class="navbar-brand" class="ropdown-toggle"  href="/product/list.j" id="socool" style="font-size: 16px;"><span class="glyphicon glyphicon-menu-hamburger"></span>카테고리<b class="caret"></b></a>   
+                <ul class="nav ssibal navbar-nav" style="height: 100%;" >  
+                   <li class="dropdown" style="height: 100%;"> 
+                    <a class="navbar-brand" class="ropdown-toggle"  href="#" id="socool" style="font-size: 16px; height: 100%;"><span class="glyphicon glyphicon-menu-hamburger" style="height: 100%;"></span>카테고리<b class="caret"></b></a>   
                     <!-- sohot (메뉴)-->
                     <ul class="nav dropdown-menu sohott" id="sohot" style="border-top: 0px;">
+                    <li><a href="/product/list.j">상품 전체</a></li>
                           <li class="dropdown wonder"><a href="#" class="dropdown-toggle" data-toggle="dropdown">채소</a>
                               <ul class="dropdown-menu girls">
-                                 <!-- <li class="kopie"><a href="#">전체보기</a></li> -->
+                                 <!-- <li class="kopie"><a href="#">전체보기</a></li> --> 
+                                 
                                  <li><a href="/product/list.j?category=101">쌈,샐러드</a></li>
                                  <li><a href="/product/list.j?category=102">뿌리채소,버섯</a></li>
                                  <li><a href="/product/list.j?category=103">양파,마늘,파,고추</a></li>
@@ -219,15 +223,32 @@ li{
               </ul>
             </div>
               
-            <div class="collapse navbar-collapse" id="navbar-collapse-1"   >
-                <ul class="nav navbar-nav">
-                    <li ><a href="#" style="font-size: 16px; letter-spacing: -1px;">원산지별</a></li>                  
-                </ul>
-            </div><!-- /.navbar-collapse -->
+         
         </div>
 </div>
 </div>
 <script>
+if(location.pathname != "/" ){ 
+	$("#sohot").hide();
+	$("#socool").on("click",function(){
+		$("#sohot").show();
+	})
+	$(window).scroll(function(event){
+		   var si = $("#ssibal").attr("class"); 
+		   console.log(si);
+		   var a=si.split(" ");
+		   if(a[2]== "affix" ){ 
+			   $(window).scroll(function(event){
+				   var si = $("#ssibal").attr("class"); 
+				   console.log(si);
+				   var a=si.split(" ");
+				   if(a[2]== "affix" ){ 
+				      $("#sohot").hide();
+				   }
+				});
+		   }
+		});
+}else{
 $(window).scroll(function(event){
    var si = $("#ssibal").attr("class"); 
    console.log(si);
@@ -238,6 +259,7 @@ $(window).scroll(function(event){
       $("#sohot").show();
    }
 });
+}
 
 $('.wonder > .girls').parent().hover(function() {
      var submenu = $(this).children('.girls');
@@ -250,4 +272,5 @@ $('.wonder > .girls').parent().hover(function() {
        $(parent).css("background", "none");
      }
    });
+  
 </script>
