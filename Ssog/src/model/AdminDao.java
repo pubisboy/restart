@@ -11,7 +11,7 @@ public interface AdminDao {
 	public int dpc();
 	public int duc();
 	public int auc();
-	public int luc();
+	public int luc(); 
 	public int getCnt(String mapper);
 	public boolean putValues(String mapper, Map map);
 	public List<Map> getValues(String mapper);
