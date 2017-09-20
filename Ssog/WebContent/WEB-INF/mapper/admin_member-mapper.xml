@@ -110,4 +110,65 @@
 		where seller_id = #{id})
 	</select>
 	
+	<select id="user_leave_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select rst.* from 
+		(select bb.*, ROWNUM rnum from
+		(select b.* from
+		(select l.NUM, l.REASON cate, l.detail, l.LEAVEDATE, l.TARGET, c.REASON from USER_LEAVE l left join USER_LEAVE_CATEGORY c on l.REASON = c.NUM) b
+		where target = 0
+		<choose>
+			<when test="cate != null and cate != '' and value != null and value != ''">
+				and cate = #{cate} and detail like #{value}
+			</when>
+			<when test="cate != null and cate != ''">
+				and cate = #{cate}
+			</when>
+			<when test="value != null and value != ''">
+				and detail like #{value}
+			</when>
+		</choose>
+		order by b.LEAVEDATE
+		<choose>
+			<when test="sort == 'asc'">
+				asc
+			</when>
+			<otherwise>
+				desc
+			</otherwise>
+		</choose>
+		) bb) rst where rnum between #{start} and #{end}
+	</select>
+	
+	<select id="user_leave_list_count" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*) count from 
+		(select bb.*, ROWNUM rnum from
+		(select b.* from
+		(select l.NUM, l.REASON cate, l.detail, l.LEAVEDATE, l.TARGET, c.REASON from USER_LEAVE l left join USER_LEAVE_CATEGORY c on l.REASON = c.NUM) b
+		where target = 0
+		<choose>
+			<when test="cate != null and cate != '' and value != null and value != ''">
+				and cate = #{cate} and detail like #{value}
+			</when>
+			<when test="cate != null and cate != ''">
+				and cate = #{cate}
+			</when>
+			<when test="value != null and value != ''">
+				and detail like #{value}
+			</when>
+		</choose>
+		) bb) rst
+	</select>
+	
+	<select id="user_leave_cate" resultType="java.util.HashMap">
+		select * from USER_LEAVE_CATEGORY order by NUM asc
+	</select>
+	
+	<select id="user_leave_detail" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+		select * from USER_LEAVE where num = #{num}
+	</select>
+	
+	<delete id="user_leave_del" parameterType="java.util.HashMap">
+		delete USER_LEAVE where num = #{num}
+	</delete>
+	
 </mapper>
