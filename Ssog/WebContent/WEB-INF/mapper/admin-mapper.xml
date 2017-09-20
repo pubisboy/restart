@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin">
+	<select id="login" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*) cnt from admin_member where id=#{id} and pass=#{pass}
+	</select>
+	
+	<select id="getCnt_dailyOrder" resultType="java.lang.Integer">
+		select count(*) cnt from ORDERTBL where ORDER_DATE &gt;= to_date(to_char(sysdate)) and ORDER_DATE &lt; to_date(to_char(sysdate))+1
+	</select>
+	
+	<select id="getCnt_dailyPay" resultType="java.lang.Integer">
+		select count(*) cnt from ORDERTBL where PAY_DATE &gt;= to_date(to_char(sysdate)) and PAY_DATE &lt; to_date(to_char(sysdate))+1
+	</select>
+	
+	<select id="getCnt_dailyUser" resultType="java.lang.Integer">
+		select count(*) cnt from USER_MEMBER where JOINDATE &gt;= to_date(to_char(sysdate)) and JOINDATE &lt; to_date(to_char(sysdate))+1
+	</select>
+	
+	<select id="getCnt_allUser" resultType="java.lang.Integer">
+		select count(*) cnt from USER_MEMBER
+	</select>
+	
+	<select id="getCnt_leaveUser" resultType="java.lang.Integer">
+		select count(*) cnt from USER_LEAVE where LEAVEDATE &gt;= to_date(to_char(sysdate)) and LEAVEDATE &lt; to_date(to_char(sysdate))+1
+	</select>
+	
+	<insert id="put_notice" parameterType="java.util.HashMap">
+		insert into notice values(notice_num_seq.nextval, #{title}, #{content}, sysdate, #{target})
+	</insert>
+	
+	<select id="getValues_All" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select * from ${table}
+	</select>
+	
+	<select id="getList_notice" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select rst.* from
+		(select nt.*, rownum rnum from 
+		(select n.NOTICE_NUM, n.TITLE, n.NOTICE_DATE, n.TARGET, t.TARGET targets from
+		(select * from notice
+		<choose>
+			<when test="state != null and state != '' and value != null and value != ''">
+				where TARGET = #{state} and TITLE like #{value}
+			</when>
+			<when test="state != null and state != ''">
+				where TARGET = #{state}
+			</when>
+			<when test="value != null and value != ''">
+				where TITLE like #{value}
+			</when>
+		</choose>
+		) n
+		left join target t on n.TARGET = t.NUM order by n.NOTICE_DATE desc) nt) rst where rnum between #{start} and #{end}
+	</select>
+	
+	<select id="getCount_notice" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*) count from 
+		(select n.NOTICE_NUM, n.TITLE, n.NOTICE_DATE, n.TARGET, t.TARGET targets from
+		(select * from notice
+		<choose>
+			<when test="state != null and state != '' and value != null and value != ''">
+				where TARGET = #{state} and TITLE like #{value}
+			</when>
+			<when test="state != null and state != ''">
+				where TARGET = #{state}
+			</when>
+			<when test="value != null and value != ''">
+				where TITLE like #{value}
+			</when>
+		</choose>
+		) n
+		left join target t on n.TARGET = t.NUM order by n.NOTICE_DATE desc) nt
+	</select>
+	
+	<select id="getTarget_notice" resultType="java.util.HashMap">
+		select * from target
+	</select>
+	
+	<select id="getDetail_notice" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+		select r.* from (select n.*, t.TARGET targets from notice n left join target t on n.TARGET = t.NUM) r where r.notice_num = #{num}
+	</select>
+	
+	<insert id="putImage_notice" parameterType="java.util.HashMap">
+		insert all
+		<foreach collection="list" item="item" separator=" ">
+			 into notice_img (num, img_uuid) values (notice_num_seq.currval, #{item.src})
+		</foreach>
+		select * from dual
+	</insert>
+	
+	<update id="updateNotice" parameterType="java.util.HashMap">
+		update NOTICE set title = #{title}, content = #{content}, notice_date = sysdate, target = #{target} where notice_num = ${num}
+	</update>
+	
+	<delete id="delNotice_img">
+		delete notice_img where NUM = #{num}
+	</delete>
+	
+	<update id="updateImage_notice" parameterType="java.util.HashMap">
+		insert all
+		<foreach collection="list" item="item" separator=" ">
+			 into notice_img (num, img_uuid) values (#{num}, #{item.src})
+		</foreach>
+		select * from dual
+	</update>
+	
+	<select id="getInfo_company" resultType="java.util.HashMap">
+		select * from INFO_COMPANY
+	</select>
+	
+	<update id="updateInfo_company" parameterType="java.util.HashMap">
+		update info_company set	name = #{name}, value = #{val} where num = ${num}
+	</update>
+	
+	<delete id="delInfo_company" parameterType="java.lang.String">
+		delete from info_company where name=#{name}
+	</delete>
+	
+	<insert id="plusInfo_company">
+		insert into info_company values(#{name}, null, info_company_seq.nextval)
+	</insert>
+	
+	<select id="getNum_info_company" resultType="java.lang.Integer">
+		select i.num from info_company i where i.name=#{name}
+	</select>
+	
+	<select id="getUUID_notice_img" resultType="java.lang.String">
+		select ni.IMG_UUID from notice_img ni
+	</select>
+	
+	<select id="getTerms" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select rst.* from
+		(select b.*, rownum rnum from
+		(select * from terms
+		<if test="value != null and value != ''">
+			where title like #{value}
+		</if>
+		order by TERMS_DATE desc) b)rst where rnum between #{start} and #{end}
+	</select>
+	
+	<select id="getCount_Terms" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*) from
+		(select * from terms
+		<if test="value != null and value != ''">
+			where title like #{value}
+		</if>
+		order by TERMS_DATE desc) b
+	</select>
+	
+	<select id="getDetail_terms" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+		select * from terms where num = #{num}
+	</select>
+	
+	<update id="updateTerms" parameterType="java.util.HashMap">
+		update terms set title = #{title}, content = #{content} where num = ${num}, terms_date = sysdate
+	</update>
+	
+	<insert id="plusTerms" parameterType="java.util.HashMap">
+		insert into terms values (terms_seq.nextval, #{title}, #{content}, sysdate)
+	</insert>
+	
+	<delete id="delTerms" parameterType="java.lang.Integer">
+		delete terms where num = #{num}
+	</delete>
+	
+	<delete id="delNotice">
+		delete notice where notice_num = #{num}
+	</delete>
+	
+	<select id="getList_counsel_user" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from 
+		(select c.*, rownum rnum from
+		(select c.*, cc.CATEGORY from counsel c left join COUNSEL_CATEGORY cc on c.cate = cc.NUM
+		<choose>
+			<when test="state != null and state != '' and type != null and type != '' and reply != null and reply != ''">
+				where cate = #{state} and ${type} like #{value} and reply = #{reply}
+			</when>
+			<when test="state != null and state != '' and type != null and type != ''">
+				where cate = #{state} and ${type} like #{value}
+			</when>
+			<when test="state != null and state != '' and reply != null and reply != ''">
+				where cate = #{state} and reply = #{reply}
+			</when>
+			<when test="type != null and type != '' and reply != null and reply != ''">
+				where ${type} like #{value} and reply = #{reply}
+			</when>
+			<when test="state != null and state != ''">
+				where cate = #{state}
+			</when>
+			<when test="type != null and type != ''">
+				where ${type} like #{value}
+			</when>
+			<when test="reply != null and reply != ''">
+				where reply = #{reply}
+			</when>
+		</choose>
+		order by COUNSEL_DATE
+		<choose>
+			<when test="sort == 'asc'">
+				asc
+			</when>
+			<otherwise>
+				desc
+			</otherwise>
+		</choose>
+		)c) where rnum between #{start} and #{end}
+	</select>
+	
+	<select id="getCount_counsel_user" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*) count from
+		(select c.*, cc.CATEGORY from counsel c left join COUNSEL_CATEGORY cc on c.cate = cc.NUM
+		<choose>
+			<when test="state != null and state != '' and type != null and type != '' and reply != null and reply != ''">
+				where cate = #{state} and ${type} like #{value} and reply = #{reply}
+			</when>
+			<when test="state != null and state != '' and type != null and type != ''">
+				where cate = #{state} and ${type} like #{value}
+			</when>
+			<when test="state != null and state != '' and reply != null and reply != ''">
+				where cate = #{state} and reply = #{reply}
+			</when>
+			<when test="type != null and type != '' and reply != null and reply != ''">
+				where ${type} like #{value} and reply = #{reply}
+			</when>
+			<when test="state != null and state != ''">
+				where cate = #{state}
+			</when>
+			<when test="type != null and type != ''">
+				where ${type} like #{value}
+			</when>
+			<when test="reply != null and reply != ''">
+				where reply = #{reply}
+			</when>
+		</choose>
+		order by COUNSEL_DATE
+		<choose>
+			<when test="sort == 'asc'">
+				asc
+			</when>
+			<otherwise>
+				desc
+			</otherwise>
+		</choose>
+		)c
+	</select>
+	
+	<select id="getCounsel_category" resultType="java.util.HashMap">
+		select * from COUNSEL_CATEGORY
+	</select>
+	
+	<select id="getCounsel_user_detail" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+		select c.*, cc.CATEGORY from counsel c left join counsel_category cc on c.CATE = cc.NUM  where c.num = #{num}
+	</select>
+	
+	<update id="updateCounsel_user_detail" parameterType="java.util.HashMap">
+		update counsel set content = #{content}, reply = 1 where num = #{num}
+	</update>
+	
+	
+	
+	<select id="getList_counsel_seller" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from 
+		(select c.*, rownum rnum from
+		(select c.*, cc.CATEGORY from counsel_seller c left join COUNSEL_seller_CATEGORY cc on c.cate = cc.NUM
+		<choose>
+			<when test="state != null and state != '' and type != null and type != '' and reply != null and reply != ''">
+				where cate = #{state} and ${type} like #{value} and reply = #{reply}
+			</when>
+			<when test="state != null and state != '' and type != null and type != ''">
+				where cate = #{state} and ${type} like #{value}
+			</when>
+			<when test="state != null and state != '' and reply != null and reply != ''">
+				where cate = #{state} and reply = #{reply}
+			</when>
+			<when test="type != null and type != '' and reply != null and reply != ''">
+				where ${type} like #{value} and reply = #{reply}
+			</when>
+			<when test="state != null and state != ''">
+				where cate = #{state}
+			</when>
+			<when test="type != null and type != ''">
+				where ${type} like #{value}
+			</when>
+			<when test="reply != null and reply != ''">
+				where reply = #{reply}
+			</when>
+		</choose>
+		order by COUNSEL_DATE
+		<choose>
+			<when test="sort == 'asc'">
+				asc
+			</when>
+			<otherwise>
+				desc
+			</otherwise>
+		</choose>
+		)c) where rnum between #{start} and #{end}
+	</select>
+	
+	<select id="getCount_counsel_seller" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*) count from
+		(select c.*, cc.CATEGORY from counsel_seller c left join COUNSEL_seller_CATEGORY cc on c.cate = cc.NUM
+		<choose>
+			<when test="state != null and state != '' and type != null and type != '' and reply != null and reply != ''">
+				where cate = #{state} and ${type} like #{value} and reply = #{reply}
+			</when>
+			<when test="state != null and state != '' and type != null and type != ''">
+				where cate = #{state} and ${type} like #{value}
+			</when>
+			<when test="state != null and state != '' and reply != null and reply != ''">
+				where cate = #{state} and reply = #{reply}
+			</when>
+			<when test="type != null and type != '' and reply != null and reply != ''">
+				where ${type} like #{value} and reply = #{reply}
+			</when>
+			<when test="state != null and state != ''">
+				where cate = #{state}
+			</when>
+			<when test="type != null and type != ''">
+				where ${type} like #{value}
+			</when>
+			<when test="reply != null and reply != ''">
+				where reply = #{reply}
+			</when>
+		</choose>
+		order by COUNSEL_DATE
+		<choose>
+			<when test="sort == 'asc'">
+				asc
+			</when>
+			<otherwise>
+				desc
+			</otherwise>
+		</choose>
+		)c
+	</select>
+	
+	<select id="getCounsel_seller_category" resultType="java.util.HashMap">
+		select * from COUNSEL_seller_CATEGORY
+	</select>
+	
+	<select id="getCounsel_seller_detail" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+		select c.*, cc.CATEGORY from counsel_seller c left join counsel_seller_category cc on c.CATE = cc.NUM  where c.num = #{num}
+	</select>
+	
+	<update id="updateCounsel_seller_detail" parameterType="java.util.HashMap">
+		update counsel_seller set content = #{content}, reply = 1 where num = #{num}
+	</update>
+	
+	<select id="getPopup_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from (select p.*, rownum rnum from 
+		(select * from popup
+		<choose>
+			<when test="value != null and value != '' and cupon != null and cupon != '' and onoff != null and onoff != ''">
+				<choose>
+					<when test="cupon gt 0">
+						where cupon_base is not null
+					</when>
+					<otherwise>
+						where cupon_base is null
+					</otherwise>
+				</choose>
+				 and title like #{value} and onoff = #{onoff}
+			</when>
+			<when test="value != null and value != '' and cupon != null and cupon != ''">
+				<choose>
+					<when test="cupon gt 0">
+						where cupon_base is not null
+					</when>
+					<otherwise>
+						where cupon_base is null
+					</otherwise>
+				</choose>
+				and title like #{value}
+			</when>
+			<when test="value != null and value != '' and onoff != null and onoff != ''">
+				where title like #{value} and onoff = #{onoff}
+			</when>
+			<when test="cupon != null and cupon != '' and onoff != null and onoff != ''">
+				<choose>
+					<when test="cupon gt 0">
+						where cupon_base is not null
+					</when>
+					<otherwise>
+						where cupon_base is null
+					</otherwise>
+				</choose>
+				and onoff = #{onoff}
+			</when>
+			<when test="value != null and value != ''">
+				where title like #{value}
+			</when>
+			<when test="cupon != null and cupon != ''">
+				<choose>
+					<when test="cupon gt 0">
+						where cupon_base is not null
+					</when>
+					<otherwise>
+						where cupon_base is null
+					</otherwise>
+				</choose>
+			</when>
+			<when test="onoff != null and onoff != ''">
+				where onoff = #{onoff}
+			</when>
+		</choose>
+		order by POPUP_DATE
+		<choose>
+			<when test="sort == 'asc'">
+				asc
+			</when>
+			<otherwise>
+				desc
+			</otherwise>
+		</choose>
+		)p) where rnum between #{start} and #{end}
+	</select>
+	
+	<select id="getPopup_list_Count" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*) count from popup
+		<choose>
+			<when test="value != null and value != '' and cupon != null and cupon != '' and onoff != null and onoff != ''">
+				<choose>
+					<when test="cupon gt 0">
+						where cupon_base is not null
+					</when>
+					<otherwise>
+						where cupon_base is null
+					</otherwise>
+				</choose>
+				 and title like #{value} and onoff = #{onoff}
+			</when>
+			<when test="value != null and value != '' and cupon != null and cupon != ''">
+				<choose>
+					<when test="cupon gt 0">
+						where cupon_base is not null
+					</when>
+					<otherwise>
+						where cupon_base is null
+					</otherwise>
+				</choose>
+				and title like #{value}
+			</when>
+			<when test="value != null and value != '' and onoff != null and onoff != ''">
+				where title like #{value} and onoff = #{onoff}
+			</when>
+			<when test="cupon != null and cupon != '' and onoff != null and onoff != ''">
+				<choose>
+					<when test="cupon gt 0">
+						where cupon_base is not null
+					</when>
+					<otherwise>
+						where cupon_base is null
+					</otherwise>
+				</choose>
+				and onoff = #{onoff}
+			</when>
+			<when test="value != null and value != ''">
+				where title like #{value}
+			</when>
+			<when test="cupon != null and cupon != ''">
+				<choose>
+					<when test="cupon == 1">
+						where cupon_base is not null
+					</when>
+					<otherwise>
+						where cupon_base is null
+					</otherwise>
+				</choose>
+			</when>
+			<when test="onoff != null and onoff != ''">
+				where onoff = #{onoff}
+			</when>
+		</choose>
+	</select>
+	
+	<update id="updatePopup_onoff" parameterType="java.util.HashMap">
+		update popup set onoff = #{of} where popup_num = #{num}
+	</update>
+	
+	<select id="getCupon_list" resultType="java.util.HashMap">
+		select b.*, t.RATE from CUPON_BASE b left join CUPON_TYPE t on b.CUPON_TYPE = t.CUPON_NUM where b.END_DATE > sysdate
+	</select>
+	
+	<insert id="putPopup" parameterType="java.util.HashMap">
+		<choose>
+			<when test="sw == 'on'">
+				insert into popup values (popup_seq.nextval, #{title}, #{content}, sysdate, #{cupon}, 0
+				<choose>
+					<when test="uuid != null and uuid != ''">
+						, #{uuid}
+					</when>
+					<otherwise>
+						, (null)
+					</otherwise>
+				</choose>
+				)
+			</when>
+			<otherwise>
+				insert into popup(popup_num, title, content, popup_date, onoff
+				<if test="uuid != null and uuid != ''">
+					, img_uuid
+				</if>
+				) values (popup_seq.nextval, #{title}, #{content}, sysdate, 0
+				<if test="uuid != null and uuid != ''">
+					, #{uuid}
+				</if>
+				)
+			</otherwise>
+		</choose>
+	</insert>
+	
+	<select id="getPopup_detail" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select cp.*, t.rate from (select p.*,c.* from popup p left join CUPON_BASE c on p.CUPON_BASE = c.num)cp left join CUPON_TYPE t on cp.cupon_type = t.CUPON_NUM
+		where popup_num = #{num}
+	</select>
+	
+	<update id="updatePopup" parameterType="java.util.HashMap">
+		<choose>
+			<when test="sw == 'on'">
+				update popup set title = #{title}, content = #{content}, popup_date = sysdate, cupon_base = #{cupon}, onoff = 0
+				<if test="uuid != null and uuid != ''">
+					, img_uuid = #{uuid}
+				</if>
+				where popup_num = #{num}
+			</when>
+			<otherwise>
+				update popup set title = #{title}, content = #{content}, popup_date = sysdate, cupon_base = (null), onoff = 0
+				<if test="uuid != null and uuid != ''">
+					, img_uuid = #{uuid}
+				</if>
+				where popup_num = #{num}
+			</otherwise>
+		</choose>
+	</update>
+	
+	<select id="getCupon_base_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select rr.* from
+		(select rs.*, rownum rnum from 
+		(select rst.num, rst.cupon_type, rst.end_date, rst.cupon_base, rst.rate, nvl(rst.uu, 0) uu, nvl(rst.u, 0) u from 
+		(select qw.*, c.rate from 
+		(select bc.*, cb.u from 
+		(select * from CUPON_BASE b left join (select CUPON_BASE, count(*) uu from cupon_list group by CUPON_BASE) cu on b.num = cu.CUPON_BASE)bc
+		left join (select CUPON_BASE, count(*) u from popup group by CUPON_BASE)cb on bc.num = cb.CUPON_BASE) qw
+		left join cupon_type c on qw.cupon_type = c.CUPON_NUM)rst where end_date &gt; sysdate
+		<if test="value != null and value != ''">
+			and rate = #{value}
+		</if>
+		order by end_date
+		<choose>
+			<when test="sort == 'asc'">
+				asc
+			</when>
+			<otherwise>
+				desc
+			</otherwise>
+		</choose>
+		)rs)rr where rnum between #{start} and #{end}
+	</select>
+	
+	<select id="getCupon_base_count" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*) count from cupon_base b left join cupon_type c on b.CUPON_TYPE = c.CUPON_NUM where end_date &gt; sysdate
+		<if test="value != null and value != ''">
+			and rate = #{value}
+		</if>
+	</select>
+	
+	<select id="checkCupon" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*) count from cupon_list where CUPON_BASE = #{num}
+	</select>
+	
+	<update id="updateCupon_base" parameterType="java.util.HashMap">
+		update CUPON_BASE set cupon_type = (select cupon_num from CUPON_TYPE where rate = #{rate}), end_date = TO_DATE(#{date}, 'YYYY-MM-DD') where num = #{num}
+	</update>
+	
+	<select id="getCupon_base_one" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select b.num, b.CUPON_TYPE, TO_CHAR(b.END_DATE, 'yyyy-MM-dd') end_date, c.rate from cupon_base b left join cupon_type c on b.CUPON_TYPE = c.CUPON_NUM where num = #{num}
+	</select>
+	
+	<delete id="delCupon_base" parameterType="java.util.HashMap">
+		delete cupon_base where num = #{num}
+	</delete>
+	
+	<select id="checkPopup_img_uuid" parameterType="java.util.HashMap" resultType="java.lang.String">
+		select img_uuid from popup where popup_num = #{num}
+	</select>
+	
+	<select id="getPopup_target" parameterType="java.util.ArrayList" resultType="java.util.HashMap">
+		select popup_num from popup where onoff = 1
+		<if test="list != null">
+			<foreach collection="list" item="num">
+				and POPUP_NUM != #{num}
+			</foreach>
+		</if>
+	</select>
+	
+	<select id="getPopup_target_detail" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select bc.*, t.RATE from 
+		(select b.*,c.CUPON_TYPE from (select * from popup where POPUP_NUM = #{num}) b
+		left join CUPON_BASE c on b.cupon_base = c.NUM) bc
+		left join CUPON_TYPE t on bc.CUPON_TYPE = t.CUPON_NUM
+	</select>
+	
+	<select id="getCupon_date" parameterType="java.util.HashMap" resultType="java.util.Date">
+		select end_date edate from CUPON_BASE where num = (select cupon_base from popup where POPUP_NUM = #{num})
+	</select>
+	
+	<select id="getCupon_type_list" resultType="java.util.HashMap">
+		select * from CUPON_TYPE order by RATE asc
+	</select>
+	
+	<insert id="putCupon_base" parameterType="java.util.HashMap">
+		insert into cupon_base values(cupon_base_seq.nextval, #{type}, TO_DATE(#{date}))
+	</insert>
+	
+	<delete id="delPopup" parameterType="java.util.HashMap">
+		delete from popup where popup_num = #{num}
+	</delete>
+	
+	<delete id="delCounsel_user" parameterType="java.util.HashMap">
+		delete from counsel where num = #{num}
+	</delete>
+	
+	<delete id="delCounsel_seller" parameterType="java.util.HashMap">
+		delete from counsel_seller where num = #{num}
+	</delete>
+	
+	<select id="createCupon" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		insert into cupon_list values(CUPON_LIST_NUM_SEQ.NEXTVAL, #{cupon}, #{id})
+	</select>
+	
+	<delete id="delUnableCupon">
+		delete cupon_base where END_DATE &lt; sysdate
+	</delete>
+	
+	<select id="getUnableCupon" resultType="java.lang.Integer">
+		select count(*) count from cupon_base where END_DATE &lt; sysdate
+	</select>
+</mapper>

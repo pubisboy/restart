@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="t_base" template="/WEB-INF/view/template.jsp">
+		<put-attribute name="title" value="SSOG" />
+		<put-attribute name="header" value="/WEB-INF/view/title.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/view/nav.jsp" />
+		<put-attribute name="section" expression="/WEB-INF/view/${section}.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/view/footer.jsp" />
+	</definition>
+	<definition name="t_el" extends="t_base">
+		<put-attribute name="section" expression="/WEB-INF/view/${section}.jsp" />
+	</definition>
+	<definition name="tw_*" extends="t_base">
+		<put-attribute name="section" value="/WEB-INF/view/{1}.jsp" />
+	</definition>
+	<definition name="tw_*/*" extends="t_base">
+		<put-attribute name="section" value="/WEB-INF/view/{1}/{2}.jsp" />
+	</definition>
+	
+	<definition name="t_el2" extends="t_base">
+		<put-attribute name="section">
+			<definition template="/WEB-INF/view/member/myinfo/template.jsp">
+				<put-attribute name="section" expression="/WEB-INF/view/${section}.jsp"/>
+			</definition>
+		</put-attribute>
+	</definition>
+	
+	<definition name="t_el3" extends="t_base">
+		<put-attribute name="section">
+			<definition template="/WEB-INF/view/member/myinfo/template2.jsp">
+				<put-attribute name="section" expression="/WEB-INF/view/${section}.jsp"/>
+			</definition>
+		</put-attribute>
+	</definition>
+	
+	<definition name="main_popup" template="/WEB-INF/view/popupTemplate.jsp">
+		<put-attribute name="title" expression="${title}" />
+		<put-attribute name="section" expression="/WEB-INF/view/${section}.jsp" />
+	</definition>
+</tiles-definitions>

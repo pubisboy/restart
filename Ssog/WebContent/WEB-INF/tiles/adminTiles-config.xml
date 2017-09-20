@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="ad_base" template="/WEB-INF/view/admin/template.jsp">
+		<put-attribute name="title" value="SSOG"/>
+		<put-attribute name="header" value="/WEB-INF/view/admin/title.jsp" />
+		<put-attribute name="nav" value="/WEB-INF/view/admin/nav.jsp" />
+		<put-attribute name="section"
+			value="/WEB-INF/view/admin/main/template.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/view/footer.jsp" />
+	</definition>
+
+	<definition name="ad_main" extends="ad_base">
+		<put-attribute name="section">
+			<definition template="/WEB-INF/view/admin/main/template.jsp">
+				<put-attribute name="nav"
+					expression="/WEB-INF/view/admin/nav/nav_main.jsp" />
+				<put-attribute name="section"
+					expression="/WEB-INF/view/admin/section/main.jsp" />
+			</definition>
+		</put-attribute>
+	</definition>
+
+	<definition name="ad_management" extends="ad_main">
+		<put-attribute name="section">
+			<definition template="/WEB-INF/view/admin/main/template.jsp">
+				<put-attribute name="nav"
+					expression="/WEB-INF/view/admin/nav/nav_management.jsp" />
+				<put-attribute name="section"
+					expression="/WEB-INF/view/admin/${section}.jsp" />
+			</definition>
+		</put-attribute>
+	</definition>
+	
+	<definition name="ad_member" extends="ad_main">
+		<put-attribute name="section">
+			<definition template="/WEB-INF/view/admin/main/template.jsp">
+				<put-attribute name="nav"
+					expression="/WEB-INF/view/admin/nav/nav_member.jsp" />
+				<put-attribute name="section"
+					expression="/WEB-INF/view/admin/member/${section}.jsp" />
+			</definition>
+		</put-attribute>
+	</definition>
+	
+	<definition name="ad_sales" extends="ad_main">
+		<put-attribute name="section">
+			<definition template="/WEB-INF/view/admin/main/template.jsp">
+				<put-attribute name="nav"
+					expression="/WEB-INF/view/admin/nav/nav_sales.jsp" />
+				<put-attribute name="section"
+					expression="/WEB-INF/view/admin/sales/${section}.jsp" />
+			</definition>
+		</put-attribute>
+	</definition>
+	
+	<definition name="ad_popup" template="/WEB-INF/view/admin/popupTemplate.jsp">
+		<put-attribute name="title" expression="${title}" />
+		<put-attribute name="section" expression="/WEB-INF/view/admin/${section}.jsp" />
+	</definition>
+	
+	<definition name="ad_admin" extends="ad_main">
+		<put-attribute name="section">
+			<definition template="/WEB-INF/view/admin/main/template.jsp">
+				<put-attribute name="nav"
+					expression="/WEB-INF/view/admin/nav/nav_admin.jsp" />
+				<put-attribute name="section"
+					expression="/WEB-INF/view/admin/${section}.jsp" />
+			</definition>
+		</put-attribute>
+	</definition>
+
+</tiles-definitions>

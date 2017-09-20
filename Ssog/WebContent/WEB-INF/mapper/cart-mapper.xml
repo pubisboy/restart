@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cart">
+	<insert id="order" parameterType="java.util.HashMap">
+		INSERT INTO
+		ORDERTBL(order_num,pro_num,user_id,order_qty,state,order_date,pay_date,price,cupon_type,dhl,etc,address,receiver)
+		values(ORDER_SEQ.NEXTVAL,#{pd2},#{id},#{pd1},2,sysdate,sysdate,#{totalcash},#{cupon},1,#{etc},#{address},#{receiver})
+	</insert>
+	<update id="orderupdate" parameterType="java.util.HashMap">
+		update PRODUCTTBL set
+		pro_qty=pro_qty-#{pd1} where pro_num=#{pd2}
+	</update>
+	<select id="pd_ascertain" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		select * from PRODUCTTBL where pro_num=#{pd2} AND PRO_QTY<![CDATA[>=]]>#{pd1}
+	</select>
+	<select id="coupon" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select bb.*,cc.RATE from
+		(select b.*,c.cupon_type from(select * from
+		CUPON_LIST where user_id=#{id}) b
+		left join cupon_base c on
+		b.cupon_base = c.NUM) bb
+		left join CUPON_TYPE cc on
+		bb.cupon_type=cc.CUPON_NUM
+	</select>
+	<select id="point" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select * from user_record where id = #{id}
+	</select>
+	<update id="consume" parameterType="java.util.HashMap">
+		UPDATE USER_RECORD set BUY_TOTAL=BUY_TOTAL+#{totalcash}
+		<choose>
+			<when test="chk_point == 'use'">
+				,POINT = POINT-#{consume}
+			</when>
+			<otherwise>
+				,POINT = POINT+#{hdpoint}-#{consume}
+			</otherwise>
+		</choose>
+		where ID=#{id}
+	</update>
+	<delete id="coupoindel" parameterType="java.util.HashMap">
+		delete CUPON_LIST where
+		user_id=#{id} and CUPON_LIST_ID=#{num}
+	</delete>
+
+</mapper>

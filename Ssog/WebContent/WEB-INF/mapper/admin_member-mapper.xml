@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin_member">
+	<select id="user_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from (select o.*, ROWNUM rnum from (select id, name, email, phone from USER_MEMBER
+		<if test="type != null and type != ''">
+			where ${type} like #{value}
+		</if>
+		order by joindate desc) o) r where r.rnum BETWEEN #{start} and #{end}
+	</select>
+	
+	<select id="user_list_count" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*) count from (select o.*, ROWNUM rnum from (select id, name, email, phone from USER_MEMBER
+		<if test="type != null and type != ''">
+			where ${type} like #{value}
+		</if>
+		order by joindate desc) o) r
+	</select>
+	
+	<select id="user_detail_info" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select * from (select * from USER_MEMBER where id=#{id}) m left join USER_RECORD r on m.id=r.id
+	</select>
+	
+	<select id="user_detail_grade" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+		select * from (select g.*, ROWNUM rnum from (select * from user_grade where #{BUY_TOTAL} >= standard order by standard desc) g) where rnum = 1
+	</select>
+	
+	<select id="user_detail_order_top9" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select * from
+		(select bsc.*, rownum rnum from 
+		(select * from
+		(select b.*, s.state st from (select * from ORDERTBL where user_id = #{id}) b left join STATE s on b.state = s.STATE_NUM) bs
+		left join CUPON_TYPE t on bs.cupon_type = t.CUPON_NUM order by bs.order_date desc)bsc) rst
+		where rnum &lt; 10
+	</select>
+	
+	<select id="user_detail_counsel_top9" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select num, title, reply from (select c.*, rownum rnum from (select * from counsel where user_id=#{id} order by counsel_date desc) c)rst where rnum &lt; 10
+	</select>
+	<!-- <select id="user_detail_counsel_top9" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select n.*, nvl(r.rcount, 0) cnt from (select c.*, t.CATEGORY from (select * from COUNSEL where user_id = #{id}) c left join COUNSEL_CATEGORY t on c.cate = t.NUM where rownum &lt; 10) n left join (select num, count(*) rcount from COUNSEL_REPLY group by num) r on n.num = r.num order by n.counsel_date desc
+	</select> -->
+	
+	<select id="user_detail_log_top9" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select * from USER_LOGIN_LOG where id={id} where rownum &lt; 10 order by CHECKIN_DATE desc
+	</select>
+	
+	<update id="user_detail_memo_update" parameterType="java.util.HashMap">
+		UPDATE USER_MEMBER set memo=#{memo} where id=#{id}
+	</update>
+	
+	<select id="user_detail_buyCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(*) count from ordertbl where user_id = #{id} and state = 5
+	</select>
+	
+	<select id="seller_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from
+		(select o.*, rownum rnum from
+		(select id, name, phone, brand from seller_member
+		<if test="type != null and type != ''">
+			where ${type} like #{value}
+		</if>
+		order by joindate desc) o) rst
+		where rst.rnum between #{start} and #{end}
+	</select>
+	
+	<select id="seller_list_count" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*) from seller_member
+		<if test="type != null and type != ''">
+			where ${type} like #{value}
+		</if>
+		order by joindate desc
+	</select>
+	
+	<select id="seller_detail_info" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select m.id, m.name, m.phone, m.brand, m.joindate, m.account, m.bank, m.memo, r.PRICE_TOTAL from (select * from SELLER_MEMBER where id=#{id}) m left join SELLER_RECORD r on m.id=r.id
+	</select>
+	
+	<select id="seller_detail_grade" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+		select * from (select g.*, ROWNUM rnum from (select * from seller_grade where #{BUY_TOTAL} >= standard order by standard desc) g) where rnum = 1
+	</select>
+	
+	<select id="seller_detail_product_top9" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select rst.* from
+		(select b.*, rownum rnum from
+		(select pro_num, pro_name, pro_date, sell_on, pro_qty from PRODUCTTBL where SELLER_ID = #{id} order by pro_date desc) b) rst
+		where rnum &lt; 10
+	</select>
+	
+	<select id="seller_detail_counsel_top9" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select num, title, reply from (select c.*, rownum rnum from (select * from counsel_seller where user_id=#{id} order by counsel_date desc) c)rst where rnum &lt; 10
+	</select>
+	
+	<select id="seller_detail_buyCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(*) count from
+		(select b.*, p.seller_id from (select pro_num from ORDERTBL where state = 5)b left join producttbl p on b.pro_num = p.pro_num) rst
+		where seller_id = #{id}
+	</select>
+	
+	<update id="seller_detail_memo_update">
+		UPDATE SELLER_MEMBER set memo=#{memo} where id=#{id}
+	</update>
+	
+	<select id="seller_detail_star" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select avg(star) star, count(*) cnt from
+		(select rs.* from 
+		(select rv.pro_num, rv.star, pd.seller_id from REVIEW rv left join PRODUCTTBL pd on rv.PRO_NUM = pd.PRO_NUM) rs
+		where seller_id = #{id})
+	</select>
+	
+</mapper>

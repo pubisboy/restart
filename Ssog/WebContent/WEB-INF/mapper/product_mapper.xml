@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="product"> 
+ 	<select id="pro_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+ 		select * from(
+ 		select tmp2.* from(select tmp.*,event_list.*,rownum as r from 
+ 		((select temp1.*,temp2.total_sell from  producttbl temp1 left join sell_qty temp2 on temp1.pro_num = temp2.pro_num
+ 		 <if test="category != null and category != '' ">
+ 		 where cate=#{category} 
+ 		 </if> 
+ 		 <if test="search != null and search !='' and search != '%%'">
+ 		where pro_name like #{search}
+ 		</if> 
+ 		<if test="origin_group != null and origin_group != 'null'">
+ 			<choose>
+ 			<when test="(category != null and category != '') or (search != null and search !='')">
+ 				and
+ 			</when>
+ 			<otherwise>
+ 				where 
+ 			</otherwise>
+ 			</choose>
+ 			<foreach collection="origin_group" item="arr" separator=" or " open="(" close=")">
+ 				temp1.origin = #{arr}
+ 			</foreach> 			
+ 		</if> 		 		
+ 		<choose>
+ 		 <when test="sort == 'price_d'">order by price desc</when>
+ 		 <when test="sort == 'price_a'">order by price asc</when>
+ 		 <when test="sort == 'bestseller'">order by total_sell desc</when>
+ 		  <otherwise> order by pro_date desc  </otherwise>
+ 		 </choose>
+ 		 )tmp left join event_list on tmp.pro_num=event_list.PRODUCT_ID) where sell_on=1
+ 		 and price between #{min} and #{max}
+ 		 )tmp2 where tmp2.r between #{start} and #{end})tmp100   
+ 		 left join origintbl on tmp100.origin=origintbl.NUM 		
+ 	</select> 
+ 	
+ 	<select id="list_count" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+ 		select count(*) from(select tmp.*,rownum as r from (select * from producttbl
+ 		 <if test="category != null and category != '' ">
+ 		 where cate=#{category} 
+ 		 </if> 	
+ 		  <if test="search != null and search !='' and search != '%%'">
+ 		where pro_name like #{search}
+ 		</if>	
+ 		<if test="origin_group !=null">
+ 			<choose>
+ 			<when test="(category != null and category != '') or (search != null and search !='')">
+ 				and
+ 			</when>
+ 			<otherwise>
+ 				where 
+ 			</otherwise>
+ 			</choose>
+ 			<if test="origin_group != null  and origin_group != 'null'">
+ 			<foreach collection="origin_group" item="arr" separator=" or " open="(" close=")">
+ 				origin = #{arr}
+ 			</foreach>
+ 			</if>
+ 		</if> 	 
+ 		 )tmp where sell_on=1
+ 		 and price between #{min} and #{max}
+ 		 )tmp2 
+ 	</select>
+ 	
+ 	<select id="pro_list_bestseller" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+ 	select p.*,s.* from ((select * from producttbl 
+ 	<if test="cate != null">
+ 	where cate=#{cate}
+ 	</if>
+ 	) p join sell_qty s on p.pro_num=s.pro_num) order by s.TOTAL_SELL desc;
+ 	</select>
+ 	
+ 	<select id="totalsearch" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+ 	select * from producttbl 
+ 	<if test="search != null and search !=''">
+ 	where pro_name like #{search}
+ 	</if>
+ 	</select>
+ 	<select id="totalsearch_count" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+ 	select count(*) from(select tmp.*,rownum as r from (select * from producttbl
+ 		 <if test="search != null and search != '' ">
+ 		 where pro_name like #{search} 
+ 		 </if> 		 
+ 		 )tmp)tmp2  
+ 	</select>
+ 	<select id="originlist" resultType="java.util.HashMap">
+ 		select * from origintbl order by num asc
+ 	</select>
+ 	
+ 	<select id="productdetail" parameterType="java.lang.String" resultType="java.util.HashMap">
+ 		select * from (select * from (select tmp3.*,tmp4.name as catename,tmp4.parent from 
+ 		(select tmp1.*,tmp2.name as origin_name from producttbl tmp1 left join origintbl tmp2 on tmp1.origin=tmp2.num)tmp3
+ 		 left join small_category tmp4 on tmp3.cate=tmp4.s_cate)tmp5 left join Large_category tmp6 on tmp5.parent=tmp6.b_cate)tmp 
+ 		 left join event_list on tmp.pro_num=event_list.PRODUCT_ID where pro_num=#{num}
+ 	</select>
+ 	
+ 	<select id="large_cate" resultType="java.util.HashMap">
+ 		select * from Large_category
+ 	</select>
+ 	<select id="small_cate" parameterType="java.lang.String" resultType="java.util.HashMap">
+ 	 select * from small_Category where parent = #{num}
+ 	</select>
+ 	
+ 	
+
+ 	<select id="cart" parameterType="java.lang.String" resultType="java.util.HashMap">
+ 		select * from PRODUCTTBL where pro_num= #{num}
+ 	</select>
+ 	
+ 	<insert id="productReg" parameterType="java.util.HashMap">
+ 	insert into producttbl values (pro_seq.nextval,#{pro_name},#{category},#{seller},#{pro_qty},#{price},#{pro_detail},sysdate,${origin},#{uuid},1)
+ 	</insert>
+ 	
+ 	<update id="productUpdate" parameterType="java.util.HashMap">
+ 	update producttbl set pro_name=#{pro_name},cate=#{category},pro_qty=#{pro_qty},price=#{price},pro_detail=#{pro_detail},origin=#{origin}
+ 	<if test="uuid != null and uuid != '' ">
+ 	,img_uuid=#{uuid} 
+ 	</if>
+ 	where pro_num=#{num}
+ 	</update>
+ 	
+ 	<insert id="sell_qty">
+ 	insert into sell_qty values (pro_seq.currval,0)
+ 	</insert>
+ 	<select id="couponList" resultType="java.util.HashMap">
+ 	select * from cupon_type
+ 	</select> 	
+ 	<insert id="useEvent" parameterType="java.util.HashMap">
+ 	insert into event_list values(event_list_num_seq.nextval,pro_seq.currval,#{event})
+ 	</insert>
+ 	<delete id="EndEvent" parameterType="java.util.HashMap">
+ 	delete from event_list where product_id=#{num}
+ 	</delete>
+ 	<select id="EventETC" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+ 	select * from event_list where product_id=#{num}
+ 	</select>
+ 	<insert id="EventReg" parameterType="java.util.HashMap">
+ 	insert into event_list values(event_list_num_seq.nextval,#{num},#{event}) 
+ 	</insert>
+ 	<update id="EventUpdate" parameterType="java.util.HashMap">
+ 	Update event_list set cupon_type=#{event} where product_id=#{num}
+ 	</update>
+ 	<update id="update0" parameterType="java.util.HashMap">
+ 	update producttbl set sell_on=0 where pro_num=#{num}
+ 	</update>
+ 	<update id="update1" parameterType="java.util.HashMap">
+ 	update producttbl set sell_on=1 where pro_num=#{num}
+ 	</update>
+ 	<insert id="reviewReg" parameterType="java.util.HashMap">
+ 	insert into review values(review_seq.nextval,#{num },#{contents },${star },#{userid },#{seller_id })
+ 	</insert>
+ 	
+ 	<select id="reviewList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+ 	select tmp2.* from (select tmp.*,rownum as r from (select * from review where pro_num=#{num } order by pro_num desc)tmp)tmp2 where tmp2.r between #{start } and #{end }
+ 	</select>
+ 	<select id="reviewCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+ 	select count(*) as count from review where pro_num=#{num }
+ 	</select>
+ 	<select id="event_list" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		select b.*,c.rate from(select
+		* from EVENT_LIST)b left join cupon_type c on
+		b.cupon_type=c.cupon_num
+		where b.product_id=#{num}
+	</select>
+	<insert id="QnAReg" parameterType="java.util.HashMap">
+	insert into q_and_a values(q_and_a_seq.nextval,3,'상품문의',#{comment },#{userid },sysdate,#{num })
+	</insert>
+ 	
+ 
+ </mapper>

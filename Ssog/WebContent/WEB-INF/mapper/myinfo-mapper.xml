@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="myinfo">
+	<select id="usergrade" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		select rr.* from
+		(select r.*, rownum rnum from
+		(select b.*,
+		f.grade from
+		(select * from USER_RECORD where id=#{id}) b
+		LEFT join
+		USER_GRADE f on
+		b.buy_total>=f.STANDARD order by ROWNUM desc) r) rr
+		where rr.rnum = 1
+	</select>
+	<select id="orderlist" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		select f.*, p.pro_name from
+		(select b.*, s.state s from
+		(SELECT * FROM ORDERTBL WHERE user_id=#{id}) b
+		left join STATE s on
+		b.state=s.state_NUM) f
+		left join PRODUCTTBL p on
+		f.pro_num=p.pro_num
+	</select>
+	<select id="qanda" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select rr.* from
+		(select r.*, rownum rnum from
+		(select * from q_and_a
+		where user_id=#{id} order by rownum desc)r)rr where
+		rr.rnum <![CDATA[<=]]>5
+	</select>
+	<select id="qnaAll" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select * from Q_AND_A
+		where user_id=#{id} order by rownum
+		desc
+	</select>
+	<select id="qna_count" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(*) from Q_AND_a where user_id=#{id}
+	</select>
+	<select id="qna_page" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		select b.* from (select c.*, rownum rnum from (SELECT
+		* FROM
+		q_and_a where user_id=#{id} order by QANDADATE desc )c )b where b.rnum between #{start}
+		and #{end}
+	</select>
+	<select id="counsel" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		select rr.* from
+		(select r.*, rownum rnum from
+		(select * from counsel
+		where user_id=#{id} order by rownum desc)r)rr where
+		rr.rnum <![CDATA[<=]]>5
+	</select>
+	<select id="counsel_count" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(*) from COUNSEL where user_id=#{id}
+	</select>
+	<select id="counsel_page" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		select b.* from (select c.*, rownum rnum from (SELECT *
+		FROM counsel where user_id=#{id} order by COUNSEL_DATE desc )c )b where
+		b.rnum between #{start} and #{end}
+	</select>
+	<select id="counselAll" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		select * from counsel
+		where user_id=#{id} order by rownum
+		desc
+	</select>
+	<select id="counselcate" resultType="java.util.HashMap">
+		SELECT * FROM
+		COUNSEL_CATEGORY
+	</select>
+	<insert id="counselup" parameterType="java.util.HashMap">
+		insert into counsel(num,
+		cate, user_id, title, content, counsel_date,
+		image_uuid, reply)
+		values
+		(counsel_seq.nextval, #{cate}, #{id},
+		#{title}, #{content}, sysdate
+		<if test="fileuuid != null and fileuuid != '' ">
+			, #{fileuuid}
+		</if>
+		,0)
+	</insert>
+	<select id="pass_confirm" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		select * from user_member where PASS=#{pass}
+	</select>
+	<update id="pass_revise" parameterType="java.util.HashMap">
+		UPDATE USER_MEMBER SET
+		pass = #{newpass} where id=#{id}
+	</update>
+	<select id="couponlist" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		select * from CUPON_LIST where USER_ID=#{id}
+	</select>
+	<update id="setorder" parameterType="java.util.HashMap">
+		update ORDERTBL set
+		STATE=5
+		where ORDER_NUM=#{num} and USER_ID=#{id}
+	</update>
+	<select id="state_count" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(*) from
+		ORDERTBL where USER_ID=#{id}
+	</select>
+	<select id="state_page" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		select bbb.*,p.pro_name from(select bb.*,cc.state s
+		from(select b.* from
+		(select c.*, rownum rnum from (SELECT *
+		FROM
+		ORDERTBL where
+		ORDERTBL.USER_ID=#{id} order by order_DATE desc )c
+		)b
+		where b.rnum
+		between #{start} and #{end}) bb left join state cc on
+		bb.state=cc.state_num)bbb left join
+		producttbl p on
+		bbb.pro_num=p.pro_num
+	</select>
+	<select id="state" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select st.*, nvl(ta.count, 0) count from state st left join (select
+		b.state, count(*) count from
+		(select * from ORDERTBL where
+		user_id=#{id} and sysdate-order_date <![CDATA[<]]>60)b
+		group
+		by state) ta on st.STATE_NUM = ta.state order by st.STATE_NUM
+	</select>
+	<select id="One_order" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		select * from ORDERTBL where order_num=#{num} and
+		user_id=#{id}
+	</select>
+	<update id="order_revise" parameterType="java.util.HashMap">
+		UPDATE PRODUCTTBL set
+		PRO_QTY=PRO_QTY+#{order_qty} where PRO_NUM=#{pro_num}
+	</update>
+	<update id="order_update" parameterType="java.util.HashMap">
+		UPDATE ORDERTBL set
+		state=8 where ORDER_NUM=#{num} and user_id=#{id}
+	</update>
+</mapper>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin_product">
+
+	<select id="product_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select rst.* from 
+		(select rr.*, rownum rnum from 
+		(select b.pro_num, b.pro_name, b.cate, b.seller_id,
+		b.pro_date, b.sell_on, b.sc, lc.NAME bc, lc.B_CATE from
+		(select p.*, c.name sc, c.PARENT from PRODUCTTBL p left join SMALL_CATEGORY 
+		c on p.CATE = c.S_CATE)b
+		left join LARGE_CATEGORY lc on b.PARENT = lc.B_CATE
+		<choose>
+			<when test="type != null and type != ''and first != null and first != '' and on != null and on != ''">
+				where ${type} like #{value} and ${first} = #{second} and sell_on = #{on}
+			</when>
+			<when test="type != null and type != '' and first != null and first != ''">
+				where ${type} like #{value} and ${first} = #{second}
+			</when>
+			<when test="type != null and type != '' and on != null and on != ''">
+				where ${type} like #{value} and sell_on = #{on}
+			</when>
+			<when test="first != null and first != '' and on != null and on != ''">
+				where ${first} = #{second} and sell_on = #{on}
+			</when>
+			
+			<when test="type != null and type != ''">
+				where ${type} like #{value}
+			</when>
+			<when test="on != null and on != ''">
+				where sell_on = #{on}
+			</when>
+			<when test="first != null and first != ''">
+				where ${first} = #{second}
+			</when>
+		</choose>
+		order by pro_date
+		<choose>
+			<when test="sort == 'asc'">
+				asc
+			</when>
+			<otherwise>
+				desc
+			</otherwise>
+		</choose>
+		) rr) rst where rnum between #{start} and #{end}
+	</select>
+	
+	<select id="product_list_count" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*) from
+		(select p.*, c.name sc, c.PARENT from PRODUCTTBL p left join SMALL_CATEGORY 
+		c on p.CATE = c.S_CATE)b
+		left join LARGE_CATEGORY lc on b.PARENT = lc.B_CATE
+		<choose>
+			<when test="type != null and type != ''and first != null and first != '' and on != null and on != ''">
+				where ${type} like #{value} and ${first} = #{second} and sell_on = #{on}
+			</when>
+			<when test="type != null and type != '' and first != null and first != ''">
+				where ${type} like #{value} and ${first} = #{second}
+			</when>
+			<when test="type != null and type != '' and on != null and on != ''">
+				where ${type} like #{value} and sell_on = #{on}
+			</when>
+			<when test="first != null and first != '' and on != null and on != ''">
+				where ${first} = #{second} and sell_on = #{on}
+			</when>
+			
+			<when test="type != null and type != ''">
+				where ${type} like #{value}
+			</when>
+			<when test="on != null and on != ''">
+				where sell_on = #{on}
+			</when>
+			<when test="first != null and first != ''">
+				where ${first} = #{second}
+			</when>
+		</choose>
+	</select>
+	
+	<select id="get_catefory_s" resultType="java.util.HashMap">
+		select * from SMALL_CATEGORY
+	</select>
+	<select id="get_catefory_l" resultType="java.util.HashMap">
+		select * from LARGE_CATEGORY
+	</select>
+	
+	<select id="product_detail" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select bb.pro_num, bb.pro_name, bb.cate, bb.seller_id, bb.pro_qty, bb.price, 
+		bb.pro_detail, bb.pro_date, bb.origin, bb.img_uuid, bb.sell_on, bb.bc, 
+		bb.sc, bb.parent, o.name ori from
+		(select b.*, lc.NAME bc from
+		(select p.*, c.name sc, c.PARENT from PRODUCTTBL p left join SMALL_CATEGORY 
+		c on p.CATE = c.S_CATE)b
+		left join LARGE_CATEGORY lc on b.PARENT = lc.B_CATE)bb
+		left join origintbl o on bb.origin = o.NUM where pro_num = #{num}
+	</select>
+	
+	<select id="get_saleQty" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select sum(b.qty) qty from (select pro_num pnum, order_qty qty from ordertbl where pro_num = #{num} and state = 5)b group by pnum
+	</select>
+	
+	<select id="get_saleSum" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select sum(b.price) price from (select pro_num pnum, price from ordertbl where pro_num = #{num} and state = 5)b group by pnum
+	</select>
+	
+	<select id="get_star" parameterType="java.util.HashMap" resultType="java.lang.Double">
+		select avg(b.star) avgs from (select pro_num pnum, star from REVIEW where pro_num = #{num})b group by pnum
+	</select>
+	
+	<select id="get_star_cnt" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*) cnt from REVIEW where pro_num = #{num}
+	</select>
+	
+	<select id="get_rate" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select * from (select * from event_list where product_id = #{num}) e left join cupon_type c on e.CUPON_TYPE = c.CUPON_NUM
+	</select>
+	
+	<select id="get_grade" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from (select g.*, ROWNUM rnum from (select * from seller_grade where #{total} >= standard order by standard desc) g) where rnum = 1       
+	</select>
+	
+	<delete id="del_product" parameterType="java.lang.Integer">
+		delete PRODUCTTBL where pro_num = #{num}
+	</delete>
+	
+	<update id="update_product" parameterType="java.util.HashMap">
+		update PRODUCTTBL set cate = #{cate} where pro_num = #{num}
+	</update>
+	
+	<select id="top10_yesterday_qty" resultType="java.util.HashMap">
+		select * from 
+		(select rst.* from 
+		(select pro_num, sum(order_qty) sum from (select * from ORDERTBL where ORDER_DATE > to_date(to_char(sysdate))-1) group by pro_num) rst
+		where rownum &lt; 11 order by sum desc) rs left join PRODUCTTBL p on rs.pro_num = p.pro_num
+	</select>
+	
+	<select id="top10_review" resultType="java.util.HashMap">
+		select * from
+		(select rst.* from
+		(select pro_num, ROUND(avg(star),2) stara from REVIEW group by pro_num order by stara desc) rst
+		where rownum &lt; 11) rs left join PRODUCTTBL p on rs.pro_num = p.pro_num
+	</select>
+	
+	<select id="getMainAd" resultType="java.util.HashMap">
+		select * from mainad
+	</select>
+	
+	<select id="getMainAd_uuid" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+		select pro_num, img_uuid from PRODUCTTBL where pro_num = #{num}
+	</select>
+
+</mapper>

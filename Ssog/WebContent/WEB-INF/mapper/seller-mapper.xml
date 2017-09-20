@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="seller">
+ 	<!-- ******************판매자 회원 등급***************** -->
+ 	<select id="grade" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+ 		select * from seller_grade, (select sum(ordertbl.price) as sum_price from ordertbl join producttbl 
+		on ordertbl.pro_num = producttbl.pro_num
+		where ordertbl.pro_num = any(select pro_num from producttbl where seller_id='kimsu')
+		and ordertbl.state=5) tmp1
+        where sum_price > seller_grade.STANDARD
+ 	</select>
+ 	
+ 	
+ 	<!-- ******************기본정보 관리***************** -->
+ 	<insert id="join" parameterType="java.util.HashMap">
+ 		INSERT INTO SELLER_MEMBER(id, pass, name, phone, brand, joindate, account, bank, memo)
+ 		VALUES(#{id}, #{pass}, #{name}, #{phone}, #{brand}, sysdate, #{account}, #{bank}, (null))
+ 	</insert>
+  	<select id="login" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+  		SELECT * FROM SELLER_MEMBER WHERE id=#{id} AND pass=#{pass}
+  	</select>
+  	<!-- 정보보기 할때도 사용 -->
+  	<select id="id_check" parameterType="java.lang.String" resultType="java.util.HashMap">
+  		SELECT * FROM SELLER_MEMBER WHERE id=#{id}
+  	</select>
+ 	<select id="account_check" parameterType="java.lang.String" resultType="java.util.HashMap">
+ 		SELECT * FROM SELLER_MEMBER WHERE account=#{account}
+  	</select>
+  	<delete id="member_delete" parameterType="java.lang.String">
+  		delete from seller_member where id=#{id}
+  	</delete>
+  	<update id="edit_info" parameterType="java.util.HashMap">
+  		update seller_member set name=#{name}, phone=#{phone}, brand=#{brand}, account=#{account}
+  		where id=#{id}
+  	</update>
+  	<update id="edit_pass" parameterType="java.util.HashMap">
+  		update seller_member set pass=#{newpass} where id=#{id}
+  	</update>
+  	
+  	
+  	<!-- ******************상품 관리***************** -->
+  	<!-- column명을 대입해야 할 때는 '$'를 쓴다. '$'가 '#'보다 우선순위가 더 먼저 -->
+  	<select id="pro_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+  		select tmp5.* from(select tmp3.*,tmp4.name as origin_name from 
+  		 (select * from (select rownum as r, tmp.* from(select tmp1.*, tmp2.name as cate_name from 
+  		 (producttbl tmp1 left join SMALL_CATEGORY tmp2 on tmp1.cate=tmp2.S_CATE) where
+  		 <if test="state != '' and state != null"> 
+				sell_on = #{state} and 
+		 </if>
+  		 seller_id=#{id} 
+  		 <if test="search_type != '' and search_type != null and search_word !='' and search_word != null">
+	  		  and ${search_type} like #{search_word} 
+  		 </if>
+  		 <if test="b_cate != '' and b_cate != null and sub_cate != '' and sub_cate != null">
+	  		  and ${b_cate} = #{sub_cate}
+  		 </if>
+  		 order by pro_date desc)  tmp) 
+  		  order by r asc)tmp3 left join origintbl tmp4 on tmp3.origin=tmp4.num)tmp5 
+  		  where r between #{start} and #{end}
+	</select>
+	
+	<select id="countAll" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*) from(select tmp3.*,tmp4.name as origin_name from 
+  		 (select * from (select rownum as r,tmp.* from(select tmp1.*,tmp2.name from 
+  		 (producttbl tmp1 left join SMALL_CATEGORY tmp2 on tmp1.cate=tmp2.S_CATE) where 
+  		 <if test="state != '' and state != null">
+				sell_on = #{state} and 
+		 </if>
+  		  seller_id=#{id} 
+  		  <if test="search_type != '' and search_type != null and search_word !='' and search_word != null">
+	  		  and ${search_type} like #{search_word} 
+  		  </if>
+  		  order by pro_date desc)  tmp) 
+  		  order by r asc)tmp3 left join origintbl tmp4 on tmp3.origin=tmp4.num)tmp5 
+	</select>
+	
+  	
+  	<select id="show_cate" resultType="java.util.HashMap">
+  		select * from small_category
+  	</select>
+  	
+  	
+  	
+  	
+  	<!-- ******************리뷰***************** -->
+  	<select id="review_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+  		select * from review where seller_id=#{id}
+  		order by num desc
+  	</select>
+  	<select id="review_total" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+  		select count(*) from review where seller_id=#{id}
+  	</select>
+  	
+  	
+  	
+  	
+  	<!-- 1:1문의 -->
+  	<insert id="counsel_insert" parameterType="java.util.HashMap">
+  		<choose>
+  			<when test="file_uuid != null">
+  				insert into counsel_seller values(counsel_seller_seq.nextval, #{cate}, #{id}, #{title}, 
+  				#{content}, sysdate, #{file_uuid}, 0)
+  			</when>
+  			<otherwise>
+  				insert into counsel_seller values(counsel_seller_seq.nextval, #{cate}, #{id}, #{title}, 
+  				#{content}, sysdate, (null), 0)
+  			</otherwise>
+  		</choose>
+  		
+  	</insert>
+  	
+  	<select id="counsel_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+  		select * from (select tmp.*, rownum as r from (select * from counsel_seller 
+  		where user_id=#{id} order by num desc) tmp)
+		where r between #{start} and #{end}
+  	</select>
+  	
+  	<select id="counsel_total" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+  		select count(*) from (select tmp.*, rownum as r from (select * from counsel_seller 
+  		where user_id=#{id} order by num desc) tmp)
+  	</select>
+  	
+  	<select id="counsel_cate" resultType="java.util.HashMap">
+  		select * from counsel_seller_category
+  	</select>
+  	
+  	
+  	
+  	<!-- ******************상품 Q&A***************** -->
+  	<select id="qna_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+  		select * from (select tmp1.*, rownum as r from (select * from Q_AND_A join producttbl
+		on Q_AND_A.PRO_NUM = producttbl.pro_num
+		where Q_AND_A.pro_num = any(select pro_num from producttbl where seller_id=#{id})) tmp1)
+		where r between #{start} and #{end}
+		order by num desc
+  	</select>
+  	
+  	<select id="qna_total" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+  		select count(*) from Q_AND_A join producttbl
+		on Q_AND_A.PRO_NUM = producttbl.pro_num
+		where Q_AND_A.pro_num = any(select pro_num from producttbl where seller_id=#{id})
+  	</select>
+  	
+  	
+  	
+  	<!-- ******************주문관리***************** -->
+  	<select id="order_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+  		select * from (select tmp1.*, rownum as r from 
+		(select ordertbl.*, dhl.charge as charge, state.STATE as st,cupon_type.rate as rate from ordertbl join producttbl
+		on ordertbl.pro_num = producttbl.pro_num
+		join dhl on ordertbl.dhl = dhl.num
+		join state on ordertbl.state = state.state_num
+		join cupon_type on ordertbl.cupon_type = cupon_type.cupon_num
+		where ordertbl.pro_num = any(select pro_num from producttbl where seller_id = #{id})) tmp1 
+		<if test="state != '' and state != null or search_type != '' and search_type != null and search_word !='' and search_word != null">
+			where 
+		</if>
+		<if test="state != '' and state != null"> 
+			state = #{state} 
+		</if>
+		<if test="state != '' and state != null and search_type != '' and search_type != null and search_word !='' and search_word != null">
+		  	and
+		</if>
+		<if test="search_type != '' and search_type != null and search_word !='' and search_word != null">
+			${search_type}=#{search_word}
+		</if>
+		)
+		where r between #{start} and #{end}
+		order by order_num desc
+  	</select>
+  	
+  	<select id="order_total" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+  		select count(*) from (select tmp1.*, rownum as r from 
+		(select ordertbl.*, dhl.charge as charge, state.STATE as st,cupon_type.rate as rate from ordertbl join producttbl
+		on ordertbl.pro_num = producttbl.pro_num
+		join dhl on ordertbl.dhl = dhl.num
+		join state on ordertbl.state = state.state_num
+		join cupon_type on ordertbl.cupon_type = cupon_type.cupon_num
+		where ordertbl.pro_num = any(select pro_num from producttbl where seller_id = #{id})) tmp1 
+		<if test="state != '' and state != null or search_type != '' and search_type != null and search_word !='' and search_word != null">
+			where 
+		</if>
+		<if test="state != '' and state != null"> 
+			state = #{state} 
+		</if>
+		<if test="state != '' and state != null and search_type != '' and search_type != null and search_word !='' and search_word != null">
+		  	and
+		</if>
+		<if test="search_type != '' and search_type != null and search_word !='' and search_word != null">
+			${search_type}=#{search_word}
+		</if>
+		)
+  	</select>
+  	
+  	
+  	<update id="order_updateState" parameterType="java.util.HashMap">
+  		update ordertbl set state = #{state} where order_num = #{order_num}
+  	</update>
+  	
+  	<!-- ******************매출현황***************** -->
+  	<select id="sales_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+  		select * from (select tmp1.*, rownum as r from (select ordertbl.price, ordertbl.pro_num as pronum from ordertbl
+  		join producttbl on ordertbl.pro_num = producttbl.pro_num
+		where ordertbl.pro_num = any(select pro_num from producttbl where seller_id=#{id})
+		and ordertbl.state=5 order by producttbl.pro_num desc) tmp1 )
+        where r between #{start} and #{end}
+  	</select>
+  	
+  	<select id="sales_total" parameterType="java.util.HashMap"  resultType="java.lang.Integer">
+  		select count(*) from (select tmp1.*, rownum as r from (select ordertbl.price, ordertbl.pro_num as pronum from ordertbl
+  		join producttbl on ordertbl.pro_num = producttbl.pro_num
+		where ordertbl.pro_num = any(select pro_num from producttbl where seller_id=#{id})
+		and ordertbl.state=5 order by producttbl.pro_num desc) tmp1 )
+  	</select>
+ </mapper>

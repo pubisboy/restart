@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin_order">
+
+	<select id="order_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select * from
+		(select rr.*, ROWNUM rnum from
+		(select ospt.* from
+		(select osp.*, t.CUPON_NUM from
+		(select os.*, p.SELLER_ID, p.PRO_NAME from (select o.*, s.state st from ORDERTBL o left join state s on o.state = s.STATE_NUM) os left join PRODUCTTBL p on os.pro_num = p.PRO_NUM) osp
+		left join CUPON_TYPE t on osp.cupon_type = t.CUPON_NUM) ospt
+		<choose>
+			<when test="type != null and type != '' and state != null and state != ''">
+				where ${type} like #{value} and state = #{state}
+			</when>
+			<when test="type != null and type != ''">
+				where ${type} like #{value}
+			</when>
+			<when test="state != null and state != ''">
+				where state = #{state}
+			</when>
+		</choose>
+		order by order_date
+		<choose>
+			<when test="sort == 'asc'">
+				asc
+			</when>
+			<otherwise>
+				desc
+			</otherwise>
+		</choose>
+		) rr) rst where rnum between #{start} and #{end}
+	</select>
+	
+	<select id="order_list_count" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*) from
+		(select ospt.* from
+		(select osp.*, t.CUPON_NUM from
+		(select os.*, p.SELLER_ID, p.PRO_NAME from (select o.*, s.state st from ORDERTBL o left join state s on o.state = s.STATE_NUM) os left join PRODUCTTBL p on os.pro_num = p.PRO_NUM) osp
+		left join CUPON_TYPE t on osp.cupon_type = t.CUPON_NUM) ospt
+		<choose>
+			<when test="type != null and type != '' and state != null and state != ''">
+				where ${type} like #{value} and state = #{state}
+			</when>
+			<when test="type != null and type != ''">
+				where ${type} like #{value}
+			</when>
+			<when test="state != null and state != ''">
+				where state = #{state}
+			</when>
+		</choose>
+		) rst
+	</select>
+	
+	<select id="order_detail" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+		select rst.*, l.NAME namep from 
+        (select ospc.*, ori.NAME ori from
+		(select osp.*, c.* from
+		(select os.*, p.PRO_NAME pname, p.PRO_QTY, p.cate, p.seller_id, p.price price_origin, p.pro_date, p.origin, p.sell_on from 
+		(select s.*, t.RATE from
+		(select o.*, s.state st from
+		(select * from ORDERTBL where order_num = #{num}) o
+		left join STATE s on o.state = s.STATE_NUM) s
+		left join CUPON_TYPE t on s.cupon_type = t.CUPON_NUM) os
+		left join PRODUCTTBL p on os.pro_num = p.PRO_NUM) osp
+		left join SMALL_CATEGORY c on osp.cate = c.S_CATE) ospc
+		left join ORIGINTBL ori on ospc.origin = ori.NUM)rst
+        left join LARGE_CATEGORY l on rst.parent = l.B_CATE
+	</select>
+	
+	<select id="counsel_detail" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select * from (select * from COUNSEL where user_id = #{id}) c left join COUNSEL_CATEGORY t on c.cate = t.NUM order by c.counsel_date desc
+	</select>
+	
+	<select id="log_list" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select * from USER_LOGIN_LOG where id={id} order by CHECKIN_DATE desc
+	</select>
+	
+	<delete id="del_order" parameterType="java.lang.Integer">
+		delete ordertbl where order_num = #{num}
+	</delete>
+	
+	<update id="update_order" parameterType="java.util.HashMap">
+		update ordertbl set state = #{state} where order_num = #{num}
+	</update>
+	
+	<update id="update_order_user_record" parameterType="java.util.HashMap">
+		update user_record set buy_total = buy_total + (select price from ORDERTBL where ORDER_NUM = #{num}),
+		point = point + (select price * (select rate from point) / 100 from ORDERTBL where ORDER_NUM = #{num})
+		where id = (select user_id from ORDERTBL where ORDER_NUM = #{num})
+	</update>
+	
+	<update id="update_order_seller_record" parameterType="java.util.HashMap">
+		update seller_record set price_total = price_total+(select price from ORDERTBL where ORDER_NUM = #{num})
+		where id = (select seller_id from PRODUCTTBL where PRO_NUM = (select pro_num from ORDERTBL where ORDER_NUM = #{num}))
+	</update>
+	
+	<update id="update_order_sell_qty" parameterType="java.util.HashMap">
+		update sell_qty set TOTAL_SELL = TOTAL_SELL+(select order_qty from ORDERTBL where order_num = #{num})
+		where pro_num = (select pro_num from ORDERTBL where order_num = #{num})
+	</update>
+	
+	<update id="update_product_qty" parameterType="java.util.HashMap">
+		update PRODUCTTBL set PRO_QTY = pro_qty + (select order_qty from ORDERTBL where order_num = #{num})
+		where PRO_NUM = (select pro_num from ORDERTBL where order_num = #{num})
+	</update>
+	
+	<update id="updateDelivery" parameterType="java.util.HashMap">
+		update ORDERTBL set state = 5 where state = 4
+	</update>
+	
+	<select id="getDelivery" resultType="java.lang.Integer">
+		select count(*) count from ORDERTBL where state = 4
+	</select>
+</mapper>

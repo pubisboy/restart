@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<mvc:annotation-driven />
+	<mvc:default-servlet-handler />
+	<context:annotation-config />
+	<context:component-scan base-package="paging" />
+	<context:component-scan base-package="controller" />
+	<context:component-scan base-package="handler" />
+	<context:component-scan base-package="model" />
+	<context:component-scan base-package="fileDownLoad" />
+
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="1" />
+	</bean>
+
+	<bean class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
+		<property name="order" value="2" />
+	</bean>
+
+	<bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<array>
+				<value>/WEB-INF/tiles/mainTiles-config.xml</value>
+				<value>/WEB-INF/tiles/adminTiles-config.xml</value>
+				<value>/WEB-INF/tiles/sellerTiles-config.xml</value>
+			</array>
+		</property>
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/view/" />
+		<property name="suffix" value=".jsp" />
+		<property name="order" value="9" />
+	</bean>
+
+	<bean class="com.fasterxml.jackson.databind.ObjectMapper" id="objMapper" />
+
+	<bean class="com.mchange.v2.c3p0.ComboPooledDataSource" id="ds">
+		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@121.165.216.149:1521:xe" />
+		<property name="user" value="ukiki" />
+		<property name="password" value="aaabbb" />
+	</bean>
+
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="ds" />
+		<property name="mapperLocations">
+			<list>
+				<value>/WEB-INF/mapper/selectTest-mapper.xml</value>
+				<value>/WEB-INF/mapper/member-mapper.xml</value>
+				<value>/WEB-INF/mapper/product_mapper.xml</value>
+				<value>/WEB-INF/mapper/admin-mapper.xml</value>
+				<value>/WEB-INF/mapper/myinfo-mapper.xml</value>
+				<value>/WEB-INF/mapper/cart-mapper.xml</value>
+				<value>/WEB-INF/mapper/cccenter-mapper.xml</value>
+				<value>/WEB-INF/mapper/seller-mapper.xml</value> 
+				<value>/WEB-INF/mapper/admin_member-mapper.xml</value>
+				<value>/WEB-INF/mapper/admin_order-mapper.xml</value>
+				<value>/WEB-INF/mapper/admin_product-mapper.xml</value>
+				<value>/WEB-INF/mapper/admin_admin-mapper.xml</value>
+				<value>/WEB-INF/mapper/admin_sales-mapper.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+		id="multipartResolver">
+		<property name="uploadTempDir" value="/temp" />
+		<property name="defaultEncoding" value="urf-8" />
+	</bean>
+	<!-- 
+	<websocket:handlers>
+		<websocket:mapping handler="ws" path="/ws/test.ws" />
+		<websocket:handshake-interceptors>
+			<bean
+				class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+		</websocket:handshake-interceptors>
+	</websocket:handlers>
+ -->
+	<bean class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="ukiki0506" />
+		<property name="password" value="rlatldnr11!" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
+	
+</beans>

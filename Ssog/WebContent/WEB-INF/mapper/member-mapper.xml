@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+	<select id="terms" resultType="java.util.HashMap">
+		select * from TERMS
+	</select>
+	<insert id="join" parameterType="java.util.HashMap">
+		INSERT INTO USER_MEMBER(id,
+		pass, name, gender, birth, address, email,
+		phone, joindate)
+		VALUES(#{id}, #{pass}, #{name}, #{gender}, #{birth}, #{address},
+		#{email},
+		#{phone}, sysdate)
+	</insert>
+	<insert id="alarmck" parameterType="java.util.HashMap">
+		INSERT into SERVICE
+		values(#{id},#{sms,jdbcType=VARCHAR},#{emailck,jdbcType=VARCHAR},#{refresh,jdbcType=VARCHAR}
+		)
+	</insert>
+	<select id="login" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT * FROM USER_MEMBER WHERE id=#{id} AND pass=#{pass}
+	</select>
+	<select id="id_check" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		SELECT * FROM USER_MEMBER WHERE id=#{id}
+	</select>
+	<select id="email_check" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		SELECT * FROM USER_MEMBER WHERE email=#{email}
+	</select>
+	<select id="pass_check" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		SELECT * FROM USER_MEMBER WHERE pass=#{pass}
+	</select>
+	<update id="info_revise" parameterType="java.util.HashMap">
+		update USER_MEMBER set
+		phone=#{phone},email=#{email},address=#{address} where id=#{id}
+	</update>
+	<update id="info_service" parameterType="java.util.HashMap">
+		UPDATE SERVICE set
+		sms=#{sms},email=#{emailck} where id =#{id}
+	</update>
+	<insert id="join_service" parameterType="java.util.HashMap">
+		UPDATE SERVICE set
+		sms=#{sms},email=#{emailck}, refresh=#{refresh} where id =#{id}
+	</insert>
+	<select id="service_ck" parameterType="java.lang.String"
+		resultType="java.util.HashMap">
+		SELECT * FROM SERVICE WHERE ID=#{id}
+	</select>
+	<select id="reave_reason" resultType="java.util.HashMap">
+		SELECT * FROM
+		USER_LEAVE_CATEGORY
+	</select>
+	<insert id="reave_write" parameterType="java.util.HashMap">
+		insert into
+		USER_LEAVE(num, reason, detail, leavedate, target)
+		values(USER_LEAVE_SEQ.NEXTVAL, #{reason}, #{detail}, sysdate, 0)
+	</insert>
+	<delete id="deletmember" parameterType="java.util.HashMap">
+		DELETE USER_MEMBER WHERE
+		ID=#{id}
+	</delete>
+</mapper>
