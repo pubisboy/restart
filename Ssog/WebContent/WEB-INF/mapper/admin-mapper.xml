@@ -154,7 +154,7 @@
 	</select>
 	
 	<update id="updateTerms" parameterType="java.util.HashMap">
-		update terms set title = #{title}, content = #{content} where num = ${num}, terms_date = sysdate
+		update terms set title = #{title}, content = #{content}, terms_date = sysdate where num = ${num}
 	</update>
 	
 	<insert id="plusTerms" parameterType="java.util.HashMap">

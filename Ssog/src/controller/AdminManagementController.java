@@ -346,7 +346,9 @@ public class AdminManagementController {
 		params.put("end", se.get("end"));
 		
 		List list = ad.getTerms(params);
-		tt.subTitle(list, "TITLE", 20);
+		if(list != null){
+			tt.subTitle(list, "TITLE", 20);
+		}
 		
 		DecimalFormat df = new DecimalFormat("#,###");
 		String total = df.format(rows);
@@ -385,8 +387,8 @@ public class AdminManagementController {
 		boolean b = ad.updateValues_terms(params);
 		map.put("rst", b);
 		map.put("num", params.get("num"));
-		map.put("t", "/information/terms_detail.ja?num="+params.get("num"));
-		map.put("f", "/information/terms_modify.ja?num="+params.get("num"));
+		map.put("t", "/management/information/terms_detail.ja?num="+params.get("num"));
+		map.put("f", "/management//information/terms_modify.ja?num="+params.get("num"));
 		return "/admin/result";
 	}
 	
@@ -401,8 +403,8 @@ public class AdminManagementController {
 		System.out.println("params : "+params);
 		boolean b = ad.plusTerms(params);
 		map.put("rst", b);
-		map.put("t", "/information/terms.ja");
-		map.put("f", "/information/terms_plus.ja");
+		map.put("t", "/management/information/terms.ja");
+		map.put("f", "/management/information/terms_plus.ja");
 		return "/admin/result";
 	}
 	
@@ -410,8 +412,8 @@ public class AdminManagementController {
 	public String terms_del(@RequestParam(name="num") Integer num, Map map){
 		boolean b = ad.delTerms(num);
 		map.put("rst", b);
-		map.put("t", "/information/terms.ja");
-		map.put("f", "/information/terms_detail.ja?num"+num);
+		map.put("t", "/management/information/terms.ja");
+		map.put("f", "/management/information/terms_detail.ja?num"+num);
 		return "/admin/result";
 	}
 	
@@ -425,8 +427,8 @@ public class AdminManagementController {
 			}
 		// }
 		map.put("rst", b);
-		map.put("t", "/notice/notice_list.ja");
-		map.put("f", "/notice/notice_detail.ja?num"+num);
+		map.put("t", "/management/notice/notice_list.ja");
+		map.put("f", "/management/notice/notice_detail.ja?num"+num);
 		return "/admin/result";
 	}
 	
@@ -485,7 +487,9 @@ public class AdminManagementController {
 		
 		// System.out.println("params의 값은 "+params);
 		List<Map> rst = ad.getList_counsel_user(params);
-		tt.subTitle(rst, "TITLE", 20);
+		if(rst != null){
+			tt.subTitle(rst, "TITLE", 20);
+		}
 		// System.out.println("검색 결과는 : "+rst);
 		List state = ad.getCounsel_category();
 		
@@ -621,7 +625,9 @@ public class AdminManagementController {
 		
 		System.out.println("params의 값은 "+params);
 		List<Map> rst = ad.getList_counsel_seller(params);
-		tt.subTitle(rst, "TITLE", 20);
+		if(rst != null){
+			tt.subTitle(rst, "TITLE", 20);
+		}
 		System.out.println("검색 결과는 : "+rst);
 		List state = ad.getCounsel_seller_category();
 		
@@ -732,7 +738,9 @@ public class AdminManagementController {
 		params.put("end", bt.get("end"));
 		
 		List<Map> rst = ad.getPopup_list(params);
-		tt.subTitle(rst, "TITLE", 20);
+		if(rst != null){
+			tt.subTitle(rst, "TITLE", 20);
+		}
 		
 		DecimalFormat df = new DecimalFormat("#,###");
 		String total = df.format(rows);

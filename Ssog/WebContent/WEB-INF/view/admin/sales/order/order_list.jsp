@@ -7,7 +7,7 @@
 <div style="float: left;">
 	<form action="/admin/sales/order/order_list.ja" method="get" id="stateForm">
 		<input type="hidden" id="stateType" name="type" value="${empty params.type ? '' : params.type}"/>
-		<input type="hidden" id="stateValue" name="Value" value="${empty params.value ? '' : params.value}"/>
+		<input type="hidden" id="stateValue" name="value" value="${empty params.value ? '' : params.value}"/>
 		<input type="hidden" id="stateSort" name="sort" value="${empty params.sort ? '' : params.sort}"/>
 		<select id="state" name="state">
 			<optgroup label="상태분류">

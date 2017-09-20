@@ -156,7 +156,7 @@ li {
 			</c:if>            
          </div>
       </div>
-   </c:forEach>
+   </c:forEach> 
    </div>
 </div>
 

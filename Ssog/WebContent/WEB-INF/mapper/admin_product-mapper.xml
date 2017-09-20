@@ -114,7 +114,7 @@
 	</select>
 	
 	<select id="get_rate" parameterType="java.util.HashMap" resultType="java.lang.Integer">
-		select * from (select * from event_list where product_id = #{num}) e left join cupon_type c on e.CUPON_TYPE = c.CUPON_NUM
+		select rate from (select * from event_list where product_id = #{num}) e left join cupon_type c on e.CUPON_TYPE = c.CUPON_NUM
 	</select>
 	
 	<select id="get_grade" parameterType="java.util.HashMap" resultType="java.util.HashMap">

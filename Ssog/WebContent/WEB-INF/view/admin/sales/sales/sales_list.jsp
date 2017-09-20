@@ -8,10 +8,10 @@
 <div>검색 : ${total }건</div>
 
 <div>
-	<div id="selDetail" style="float: left; width: 60%;">
+	<div id="selDetail" style="float: left; width: 80%;">
 		<form action="/admin/sales/sales/sales_list.ja" method="get" id="f">
 			<input type="hidden" name="term" id="term"/>
-			<div style="float: left; width: 40%;" id="begin">
+			<div style="float: left; width: 30%;" id="begin">
 				시작<select name='by' id='by'><optgroup label='년'></optgroup>
 					<option value="none" ${empty params.by ? 'selected' : ''}>--</option>
 					<c:forEach items="${years }" var="i"  varStatus="vs">
@@ -28,7 +28,7 @@
 					<option value="none" ${empty params.bd ? 'selected' : ''}>--</option>
 				</select>
 			</div>
-			<div style="float: left; width: 40%;" id="end">
+			<div style="float: left; width: 30%;" id="end">
 				종료<select name='ey' id='ey'><optgroup label='년'></optgroup>
 					<option value="none" ${empty params.ey ? 'selected' : ''}>--</option>
 					<c:forEach items="${years }" var="i"  varStatus="vs">
@@ -48,7 +48,7 @@
 			<div style="float: left; width: 10%;" id="search">
 				<button type="button" id="sbt" class="btn btn-default" style="height: 20px; padding-top: 1px;">검색</button>
 			</div>
-			<div id="alerts" style="float: left; width: 5%; color: red;"></div>
+			<div id="alerts" style="float: left; width: 15%; color: red;"></div>
 		</form>
 	</div>
 	<div style="float: right; width: 5%;">
@@ -183,7 +183,7 @@
 				$("#term").val("yy");
 				$("#f").submit();
 			}else{
-				$("#alerts").html("기간 설정 오류1");
+				$("#alerts").html("기간 설정 오류 (연)");
 			}
 		}else if($("#by").val() != 'none' && $("#ey").val() != 'none' && $("#bm").val() != 'none' && $("#em").val() != 'none' && $("#bd").val() == 'none' && $("#ed").val() == 'none'){
 			window.alert("년도/월 선택");
@@ -194,7 +194,7 @@
 				$("#term").val("yy/MM");
 				$("#f").submit();
 			}else{
-				$("#alerts").html("기간 설정 오류2");
+				$("#alerts").html("기간 설정 오류 (연/월)");
 			}
 		}else if($("#by").val() != 'none' && $("#ey").val() != 'none' && $("#bm").val() != 'none' && $("#em").val() != 'none' && $("#bd").val() != 'none' && $("#ed").val() != 'none'){
 			window.alert("년도/월/일 선택");
@@ -209,13 +209,13 @@
 					$("#term").val("yy/MM/dd");
 					$("#f").submit();
 				}else{
-					$("#alerts").html("기간 설정 오류3");
-				}
+					$("#alerts").html("기간 설정 오류 (일)");
+				} 
 			}else{
-				$("#alerts").html("기간 설정 오류4");
+				$("#alerts").html("기간 설정 오류 (연/월)");
 			}
 		}else{
-			$("#alerts").html("기간 설정 오류");
+			$("#alerts").html("기간 설정 오류 (뭐함?)");
 		}
 	})
 	

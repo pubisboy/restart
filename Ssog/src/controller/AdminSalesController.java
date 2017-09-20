@@ -86,11 +86,12 @@ public class AdminSalesController {
 			Date tes = sdf.parse(tmp);
 			Date begind = new Date();
 			if(tes.getTime() > begind.getTime()){
-				tes = begind;
 				by = Integer.toString(c.get(Calendar.YEAR));
 				bm = Integer.toString(c.get(Calendar.MONTH)+1);
 				bd = Integer.toString(c.get(Calendar.DATE) - 6);
-				System.out.println("변경 된 ed : "+ed);
+				System.out.println("변경 된 bd : "+bd);
+				String tt = String.format("%s/%s/%s", by,bm,bd);
+				tes = sdf.parse(tt);
 				params.put("by", by);
 				params.put("bm", bm);
 				params.put("bd", bd);
