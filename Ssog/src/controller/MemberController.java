@@ -69,10 +69,14 @@ public class MemberController {
 		return mav;
 	}
 	
-	@RequestMapping("/member/check.j")
-	public ModelAndView joinchk() {
+	@RequestMapping("member/check.j")
+	public ModelAndView check() {
 		ModelAndView mav = new ModelAndView();
-		return mav;
+		/*List<Map> list = mdao.terms();
+		mav.addObject("list", list);
+		System.out.println(list);*/
+		
+		return mav; 
 	}
 	
 	@RequestMapping("/getInfoCompany.j")
