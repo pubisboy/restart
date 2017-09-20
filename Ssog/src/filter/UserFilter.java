@@ -19,8 +19,8 @@ public class UserFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest)request;
 		HttpServletResponse resp = (HttpServletResponse)response;
 		HttpSession session = req.getSession();
-		String auth = (String)session.getAttribute("auth");
-		if(auth != null){
+		
+		if(session.getAttribute("auth") != null){
 			chain.doFilter(req, resp);
 		}else{
 			String uri = req.getRequestURI();
