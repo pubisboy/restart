@@ -56,21 +56,16 @@
 					<input style="width: 60%;" class="form-control" type="email"
 						placeholder="이메일" name="email" id="email" required
 						style="width: 90%;" required="required"/>
-					<button class="btn btn-info" type="button" name="emailaccredit"
-						id="emailaccredit" style="width: 32%;">인증하기</button>
+					<button class="btn btn-info" type="button" name="emailaccredit"	id="emailaccredit" style="width: 32%;">인증하기</button>
 					<p id="email_chk"></p>
 				</div>
-				<div class="navbar-form navbar" style="padding-left: 0px;">
-					<input class="form-control" style="display: none; width: 60%;"
-						type="text" name="contxt" id="contxt" />
-					<button class="btn btn-info" style="display: none; width: 32%;"
-						type="button" name="confirm" id="confirm">확인</button>
-					<div align="left" style="padding-left: 41px;">
-						<input type="checkbox" name="emailck" /><small
-							style="font-size: 11px;">수신동의하고 특별한 쇼핑정보, 엄청난 혜택 알림을 이메일로
-							받아보세요.</small>
-					</div>
-				</div>
+					<input class="form-control" style=" width: 60%;" type="text" name="contxt" id="contxt" /> 
+					<button class="btn btn-info" style="width: 32%;" type="button" name="confirm" id="confirm">확인</button>
+					<div align="left" style="padding-left: 41px;"> 
+						
+						<input type="checkbox" name="emailck" />
+						<small style="font-size: 11px;">수신동의하고 특별한 쇼핑정보, 엄청난 혜택 알림을 이메일로 받아보세요.</small>
+					</div> 
 				<div align="left" style="padding-left: 40px;">
 					<input type="checkbox" style="width: 15px; height: 15px;"
 						name="refresh" /><small style="font-size: 11px;">재입고 알림
@@ -128,8 +123,8 @@
 			var req = new XMLHttpRequest();
 			req.open("get", "/member/emailaccredit.j?email=" + email, true);
 			req.send();
-			document.getElementById("contxt").style.display = "";
-			document.getElementById("confirm").style.display = "";
+			//document.getElementById("contxt").style.display = "";
+			//document.getElementById("confirm").style.display = ""; 
 			req.onreadystatechange = function() {
 				if (this.readyState == 4) {
 					if (this.responseText == "true") {

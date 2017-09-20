@@ -69,6 +69,12 @@ public class MemberController {
 		return mav;
 	}
 	
+	@RequestMapping("/member/check.j")
+	public ModelAndView joinchk() {
+		ModelAndView mav = new ModelAndView();
+		return mav;
+	}
+	
 	@RequestMapping("/getInfoCompany.j")
 	@ResponseBody
 	public List getInfoCompany(){
@@ -135,6 +141,8 @@ public class MemberController {
 			boolean bl = mdao.alarm(param);
 			if (r == true) {
 				session.setAttribute("auth", param.get("id"));
+				String id = (String)session.getAttribute("auth"); 
+				mdao.user_info(id);
 			}
 		} else {
 			r = false;
@@ -150,7 +158,7 @@ public class MemberController {
 		MimeMessage msg = sender.createMimeMessage();
 		String fu = UUID.randomUUID().toString();
 		String sfu = fu.substring(0, 8);
-		System.out.println(sfu);
+		System.out.println("sfu : "+sfu);  
 		session.setAttribute("uuid", sfu);
 		try {
 			InternetAddress from = new InternetAddress("admin");
@@ -158,7 +166,7 @@ public class MemberController {
 			InternetAddress to = new InternetAddress((String) param.get("email"));
 			msg.setRecipient(RecipientType.TO, to);
 			msg.setSubject("�솚�쁺�빀�땲�떎");
-			String text = "<h1>�븞�뀞�븯�꽭�슂</h1>";
+			String text = "<h1>환영합니다</h1>";
 			text += "媛��엯�쓣 �솚�쁺�빀�땲�떎.";
 			text += "�씤利앸쾲�샇�뒗 : " + sfu + " �엯�땲�떎.";
 			msg.setText(text, "UTF-8", "html");

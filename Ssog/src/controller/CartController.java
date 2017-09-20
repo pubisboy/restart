@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DaoSupport;
+import org.springframework.http.HttpRequest;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -218,7 +219,7 @@ public class CartController {
 
 	@RequestMapping("/payment.j")
 	public ModelAndView payment(@RequestParam Map param, HttpSession session, Map map,
-			@RequestParam(name = "pd1") String[] ar1, @RequestParam(name = "pd2") String[] ar2) {
+			@RequestParam(name = "pd1") String[] ar1, @RequestParam(name = "pd2") String[] ar2,HttpServletRequest resp) {
 		Map init = init(session);
 		Map info = mmdao.id_check_repetition((String) init.get("id"));
 		ModelAndView mav = new ModelAndView("tw_cart/payment");
@@ -270,7 +271,18 @@ public class CartController {
 		}
 		boolean blll = cdao.coupondel(param);
 		System.out.println(blll);
+		Cookie[] cookies = resp.getCookies();
+		for (int i = 0; i < cookies.length; i++) {
+			if (cookies[i].getValue().startsWith("addcart")) {
+				String cookiename = cookies[i].getName();
+				String number = cookies[i].getValue().substring(7);
+			System.out.println("cookiename : "+cookiename);
+			System.out.println("number : "+number); 
+			}
+		}
+		
 		return mav;
+		
 	}
 
 	@RequestMapping("/ascertain.j")
