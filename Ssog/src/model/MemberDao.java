@@ -34,6 +34,7 @@ public class MemberDao {
 			session.close();
 		}
 	}
+	
 	public boolean alarm(Map map) {
 		SqlSession session = factory.openSession();
 		try {
@@ -151,5 +152,17 @@ public class MemberDao {
 		}finally {
 			session.close();
 		}
+	}
+	public List<Map> terms(){
+		List<Map> list = new ArrayList<>();
+		SqlSession session = factory.openSession();
+		try {
+			list = session.selectList("member.terms");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			session.close();
+		}
+		return list;
 	}
 }

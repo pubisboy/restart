@@ -72,10 +72,9 @@ public class MemberController {
 	@RequestMapping("member/check.j")
 	public ModelAndView check() {
 		ModelAndView mav = new ModelAndView();
-		/*List<Map> list = mdao.terms();
+		List<Map> list = mdao.terms();
 		mav.addObject("list", list);
-		System.out.println(list);*/
-		
+		System.out.println(list);
 		return mav; 
 	}
 	
