@@ -53,8 +53,14 @@ body {
          <div class="row">
             <div class="col-sm-7" style="padding-left: 20px; padding-top: 25px;">
                    <div class="thumbnail">
+                   <c:if test="${empty map.IMG_UUID }">
+                   <img src="/image/이미지기본.jpg"
+                     style="height: 37%; width: 100%;">  
+                   </c:if>
+                   <c:if test="${!empty map.IMG_UUID }">
                   <img src="/img/pro_img/${map.IMG_UUID }"
                      style="height: 37%; width: 100%;">  
+                     </c:if>
                      </div>   
                <div align="right">
                   <b>상품만족도</b>
@@ -181,6 +187,7 @@ body {
 
             <div id="section1" class="container-fluid">
                <h1>상품상제정보</h1>
+               ${map.PRO_DETAIL }
             </div>
             <div id="section2" class="container-fluid">
                <img src="/image/배송정보.jpg" width="100%;" height="100%;">
@@ -215,9 +222,11 @@ body {
                      </tbody>
                   </table>
                   <div align="right">
+                  <c:if test="${exist }">
                      <button class="btn btn" style="width: 182px;; height: 42px;" id="reviewbtn">
                         <span class="glyphicon glyphicon-comment" />구매후기쓰기
                      </button>
+                  </c:if>   
                   </div>
                </div>
                <div style="margin-top: 20px;" align="center">
@@ -301,21 +310,20 @@ body {
          $("#total").html($("#quantity").val() * hid2);
       }
    });
-   $("#order").on("click", function() {
-      
-   });
    $("#cartadd").on("click", function() {
-
       var cName = "${map.PRO_NUM}";
-      window.alert(cName);
       var cValue = "addcart" + $("#quantity").val();
-      window.alert(cValue);
       var d = new Date(); 
       d.setTime(d.getTime() + (3 * 24 * 60 * 60 * 1000));
       var expires = "expires=" + d.toUTCString();
       cookies = cName + '=' + escape(cValue) + '; path=/ ';
       cookies += ';' + expires + ';';
       document.cookie = cookies;
+      if (confirm("상품이 장바구니에 담겼습니다.\n바로 확인 하시겠습니까?") == true){
+    	    location.href="/cart/form.j";  
+    	}else{   //취소
+    	    return;
+    	}  
    }); 
     
    $("#reviewbtn").on("click",function(){

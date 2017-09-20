@@ -142,6 +142,9 @@ public class AdminSalesController {
 		// 수정 필요 시작 부분
 		SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd");
 		List lis = asd.getSales_excel(params);
+		System.out.println("lis : "+lis);
+		System.out.println("lis ? null : "+lis == null);
+		System.out.println("lis size() : "+lis.size());
 		List days = new ArrayList<>();
 		String tmp = bTime;
 		
@@ -154,6 +157,8 @@ public class AdminSalesController {
 			for(Object o : lis){
 				Map m = (Map)o;
 				String t = (String)m.get("PAY_DATE");
+				System.out.println("t : "+t);
+				System.out.println("tmp : "+tmp);
 				if(t.equals(tmp)){
 					BigDecimal bd = (BigDecimal)m.get("PRICE");
 					mtmp.put("day", tmp);
@@ -164,7 +169,7 @@ public class AdminSalesController {
 					break;
 				}
 			}
-			if(!bb){
+			if(bb == false){
 				mtmp.put("day", tmp);
 				mtmp.put("price", 0);
 				mtmp.put("order", 0);

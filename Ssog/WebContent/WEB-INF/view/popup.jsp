@@ -45,6 +45,7 @@
 		}).done(function(rst){
 			if(rst.auth == false){
 				window.alert("로그인이 필요합니다.");
+				window.opener.location.href = "/?goLogin=goLogin";
 				window.close();
 			}else{
 				if(rst.b){

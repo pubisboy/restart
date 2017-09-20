@@ -13,6 +13,7 @@ img:hover {
 <div class="row" style="width: 100%; height: 125%; margin-left: 50px;">
 	<p style="text-align: left; margin-top: 20px;">
 		<b>이 곳은 상품 수정 페이지 입니다.</b><br /> 쇼핑몰에 상품을 진열하는데 필요한 기본정보를 수정합니다.
+		${map.CUPON_TYPE }
 	</p>
 	<form action="/seller/product/productEditExec.j" method="post"
 		enctype="multipart/form-data">
@@ -37,7 +38,7 @@ img:hover {
 								value="${map.PRICE }" /> 원
 						</div></td>
 					<td style="width: 20%; background-color: #eaeaea;" rowspan="2">행사 등록</td>
-					<td><input type="radio" class="group" value="false" name="radiogroup" ${!empty map.CUPON?'checked':'' } id="nouseEve" style="margin-left: 10px;"> &nbsp;사용안함 &nbsp;&nbsp;&nbsp;  <input type="radio" ${empty map.CUPON?'checked':'' } class="group" value="true" name="radiogroup" id="useEve">&nbsp;사용&nbsp;</td>	
+					<td><input type="radio" class="group" value="false" name="radiogroup" ${empty map.CUPON_TYPE?'checked':'' } id="nouseEve" style="margin-left: 10px;"> &nbsp;사용안함 &nbsp;&nbsp;&nbsp;  <input type="radio" ${!empty map.CUPON_TYPE?'checked':'' } class="group" value="true" name="radiogroup" id="useEve">&nbsp;사용&nbsp;</td>	
 	</tr>
 				</tr>
 				<tr style="height: 5%;">
@@ -45,7 +46,7 @@ img:hover {
 					<td colspan="1"><div class="navbar-form" 
 							style="padding: 0px; margin: 0px;">
 							<input class="form-control" type="text" style="width: 82%"
-								name="pro_qty" onkeydown="onlyNumber(this)" required="false"
+								name="pro_qty" onkeydown="onlyNumber(this)" required="false" 
 								value="${map.PRO_QTY }"> Kg
 						</div></td><td colspan="2" style="border-top: 0px;">
 	<span id="zoro">
@@ -179,7 +180,7 @@ $("#large_cate").change("click",function(){
        $("#small_cate").html(setTag);  
     });
  });
-if(${map.CUPON_TYPE ne null }){
+if(${!empty map.CUPON_TYPE  }){
 	 $.ajax({
 			url : "/seller/product/useEve.j",
 			method: "get",
@@ -189,7 +190,8 @@ if(${map.CUPON_TYPE ne null }){
 		 }).done(function(result){
 			var select="<select name=\"event\" class=\"form-control\" style=\"width:70%;\">";
 			for (var i = 0; i < result.list.length; i++) {
-				if( ${map.CUPON_TYPE } == result.list[i].CUPON_NUM){
+				var test = result.list[i].CUPON_NUM; 
+				if("${map.CUPON_TYPE}" == test ){
 				select+="<option value=\"" + result.list[i].CUPON_NUM + "\" selected >" + result.list[i].RATE + "</option>";
 				}else{
 					select+="<option value=\"" + result.list[i].CUPON_NUM + "\"  >" + result.list[i].RATE + "</option>";

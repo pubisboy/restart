@@ -169,9 +169,8 @@ li{
                     <li><a href="/product/list.j">상품 전체</a></li>
                           <li class="dropdown wonder"><a href="#" class="dropdown-toggle" data-toggle="dropdown">채소</a>
                               <ul class="dropdown-menu girls">
-                                 <!-- <li class="kopie"><a href="#">전체보기</a></li> --> 
-                                 
-                                 <li><a href="/product/list.j?category=101">쌈,샐러드</a></li>
+                                 <!-- <li class="kopie"><a href="#">전체보기</a></li> -->  
+                                 <li style=""><a href="/product/list.j?category=101">쌈,샐러드</a></li>
                                  <li><a href="/product/list.j?category=102">뿌리채소,버섯</a></li>
                                  <li><a href="/product/list.j?category=103">양파,마늘,파,고추</a></li>
                                  <li><a href="/product/list.j?category=104">콩나물,나물류</a></li>

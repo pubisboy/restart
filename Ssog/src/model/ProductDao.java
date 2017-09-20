@@ -349,4 +349,21 @@ public class ProductDao {
 		}
 		return br;
 	}
+	
+	public boolean findOrder(String m) {
+		SqlSession session=factory.openSession();
+		boolean br=true;
+		List<Map> list=new ArrayList<>();
+		try {
+			list=session.selectList("findOrder", m);
+			if(list.size()==0) {
+				br=false;
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			session.close();
+		}
+		return br;
+	}
 }
