@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AdminMemberDao {
+public class AdminMemberDao {  
 
 	@Autowired
 	SqlSessionFactory factory;
@@ -247,4 +247,74 @@ public class AdminMemberDao {
 		return rst;
 	}
 	
+	public List user_leave_list(Map map){
+		SqlSession session = factory.openSession();
+		List rst = null;
+		try{
+			rst = session.selectList("admin_member.user_leave_list", map);
+		}catch(Exception e){
+			System.out.println("error.user_leave_list"+e.toString());
+		}finally{
+			session.close();
+		}
+		return rst;
+	}
+	
+	public int user_leave_list_count(Map map){
+		SqlSession session = factory.openSession();
+		int rst = 0;
+		try{
+			rst = session.selectOne("admin_member.user_leave_list_count", map);
+		}catch(Exception e){
+			System.out.println("error.user_leave_list_count"+e.toString());
+		}finally{
+			session.close();
+		}
+		return rst;
+	}
+	
+	public List user_leave_cate(){
+		SqlSession session = factory.openSession();
+		List rst = null;
+		try{
+			rst = session.selectList("admin_member.user_leave_cate");
+		}catch(Exception e){
+			System.out.println("error.user_leave_cate"+e.toString());
+		}finally{
+			session.close();
+		}
+		return rst;
+	}
+	
+	public List user_leave_detail(int num){
+		SqlSession session = factory.openSession();
+		List rst = null;
+		try{
+			rst = session.selectList("admin_member.user_leave_detail", num);
+		}catch(Exception e){
+			System.out.println("error.user_leave_detail"+e.toString());
+		}finally{
+			session.close();
+		}
+		return rst;
+	}
+	
+	public boolean user_leave_del(Map map){
+		SqlSession session = factory.openSession();
+		boolean b = false;
+		try{
+			int r = session.delete("admin_member.user_leave_del", map);
+			if(r > 0){
+				b = true;
+			}
+			session.commit();
+		}catch(Exception e){
+			System.out.println("error.user_leave_del"+e.toString());
+			b = false;
+			session.rollback();
+		}finally{
+			session.close();
+		}
+		return b;
+	}
 }

@@ -98,12 +98,17 @@ table, th, td {
 				<div class="col-xs-10">
 					<div class="row">
 						<div class="col-xs-3">
-							<b style="font-size: 17px;">주문완료</b><br /> <b style="color: #ff1a75; text-decoration: underline; font-size: 25px;">${smap.s }</b>건     
+							<b style="font-size: 17px;">주문완료</b><br /> <b style="color: #ff1a75; text-decoration: underline; font-size: 25px;">${smap.s }</b>건
+							<span class="glyphicon glyphicon-menu-right" style="font-size: 20px;"></span>       
 						</div>
 						<div class="col-xs-3">
-							<b style="font-size: 17px;">상품준비중</b><br /><b style="color: #ff1a75; text-decoration: underline; font-size: 25px;">${smap.ss }</b>건</div>
+							<b style="font-size: 17px;">상품준비중</b><br /><b style="color: #ff1a75; text-decoration: underline; font-size: 25px;">${smap.ss }</b>건
+							<span class="glyphicon glyphicon-menu-right" style="font-size: 20px;"></span>
+							</div> 
 						<div class="col-xs-3">
-							<b style="font-size: 17px;">배송중</b><br /><b style="color: #ff1a75; text-decoration: underline; font-size: 25px;">${smap.sss }</b>건</div>
+							<b style="font-size: 17px;">배송중</b><br /><b style="color: #ff1a75; text-decoration: underline; font-size: 25px;">${smap.sss }</b>건
+							<span class="glyphicon glyphicon-menu-right" style="font-size: 20px;"></span>	
+						</div>
 						<div class="col-xs-3">
 							<b style="font-size: 17px;">배송완료</b><br /><b style="color: #ff1a75; text-decoration: underline; font-size: 25px;">${smap.ssss }</b>건
 						</div>  
@@ -155,13 +160,21 @@ table, th, td {
 							<td align="center">
 							<c:choose>
 								<c:when test="${obj.S eq '구매확정'}">
-									-
+									
 								</c:when>
 								<c:otherwise>
 									<button class="set">구매확정</button>
-									<button class="cancel">주문취소</button> 
 								</c:otherwise>
 							</c:choose>
+							<c:choose>
+								<c:when test="${obj.S eq '주문취소'}"> 
+									
+								</c:when>
+								<c:otherwise>
+									<button class="cancel">주문취소</button>
+								</c:otherwise>
+							</c:choose>
+									 
 							</td>
 						</tr>
 					</c:forEach>
@@ -210,6 +223,7 @@ table, th, td {
 		}).done(function(rere){
 			if(rere==true){
 				window.alert("주문취소가 되었습니다.");
+				location.reload();
 			}
 		})
 	})

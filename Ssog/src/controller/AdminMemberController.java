@@ -259,4 +259,98 @@ public class AdminMemberController {
 		map.put("rst", b);
 		return map;
 	}
+	
+	@RequestMapping("/member_user/user_leave_list.ja")
+	public String order_list(@RequestParam Map params, @RequestParam(name="p", defaultValue="1") String pp, Map map){
+		int p = 0;
+		try{
+			p = Integer.parseInt(pp);
+		}catch(Exception e){
+			System.out.println("변환 불가능");
+			p = 1;
+		}
+		params.put("p", p);
+		System.out.println("params : "+params);
+		System.out.println("state : "+params.get("state"));
+		String val = null;
+		if(params.get("value") != null){
+			val = (String)params.get("value");
+			if(val.length() > 0){
+				String tmp = "%"+val+"%";
+				params.put("value", tmp);
+			}else{
+				params.put("value", "%");
+			}
+		}
+		System.out.println("params의 value : "+params.get("value"));
+		pg.setDefaultSetting(10, 10);
+		int rows = amd.user_leave_list_count(params);
+		pg.setNumberOfRecords(rows);
+		Map paging = pg.calcPaging(p, rows);
+		Map se = pg.calcBetween(p);
+		params.put("start", se.get("start"));
+		params.put("end", se.get("end"));
+		
+		List list = amd.user_leave_list(params);
+		System.out.println("탈퇴 "+list);
+		for(int i = 0; i < list.size(); i++){
+			Map m = (Map)list.get(i);
+			String s = (String)m.get("DETAIL");
+			if(s.length() > 10){
+				s = s.substring(0, 7);
+				StringBuilder sb = new StringBuilder(s);
+				sb.append("...");
+				s = sb.toString();
+				System.out.println("잘린 제목 : "+s);
+			}
+			((Map)list.get(i)).put("DETAIL", s);
+		}
+		
+		List cate = amd.user_leave_cate();
+		System.out.println("카테고리"+cate);
+		String[] stateNum = new String[cate.size()];
+		String[] stateKo = new String[cate.size()];
+		for(int i = 0; i < cate.size(); i++){
+			Map t = (Map)cate.get(i);
+			String s = (String)t.get("REASON");
+			stateNum[i] = Integer.toString(i+1);
+			stateKo[i] = s;
+		}
+		
+		map.put("stateNum", stateNum);
+		map.put("stateKo", stateKo);
+		
+		DecimalFormat df = new DecimalFormat("#,###");
+		String total = df.format(rows);
+		map.put("total", total);
+		
+		map.put("list", list);
+		map.put("paging", paging);
+		map.put("section", "/member_user/user_leave_list");
+		params.put("value", val);
+		map.put("params", params);
+		return "ad_member";
+	}
+	
+	@RequestMapping("/member_user/user_leave_detail.ja")
+	public String order_detail(@RequestParam Map params, @RequestParam(name="num") Integer num, Map map){
+		
+		System.out.println("num : "+num);
+		List liInfo = amd.user_leave_detail(num);
+		if(liInfo.size() > 0){
+			System.out.println("liInfo : "+liInfo);
+		}
+		map.put("list", liInfo);
+		map.put("params", params);
+		map.put("section", "/member_user/user_leave_detail");
+		return "ad_member";
+	}
+	
+	@RequestMapping("/member_user/user_leave_del.ja")
+	public String user_leave_del(@RequestParam Map params, Map map){
+		amd.user_leave_del(params);
+		map.put("section", "/member_user/user_leave_list");
+		map.put("params", params);
+		return "ad_member";
+	}
 }

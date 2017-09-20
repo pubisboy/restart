@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.support.DaoSupport;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,6 +62,8 @@ public class CartController {
 		Map point = cdao.point((String) init.get("id"));
 		mav.addObject("point", point);
 		mav.addObject("clist", clist);
+		Map dmap = cdao.dhl();
+		mav.addObject("dhl", dmap);
 		Cookie[] cookies = resp.getCookies();
 		List<Map> list = new ArrayList<>();
 		if (cookies != null) {
@@ -89,6 +92,8 @@ public class CartController {
 		Map init = init(session);
 		Map info = mmdao.id_check_repetition((String) init.get("id"));
 		ModelAndView mav = new ModelAndView("tw_cart/order");
+		Map dmap = cdao.dhl();
+		mav.addObject("dhl", dmap);
 		String address = (String) info.get("ADDRESS");
 		String phone = (String) info.get("PHONE");
 		String[] spaddress = address.split("!");
@@ -124,6 +129,8 @@ public class CartController {
 	public ModelAndView orderr(HttpSession session,@RequestParam Map param) {
 		ModelAndView mav = new ModelAndView("tw_cart/orderr");
 		Map init = init(session);
+		Map dmap = cdao.dhl();
+		mav.addObject("dhl", dmap);
 		Map info = mmdao.id_check_repetition((String) init.get("id"));
 		String address = (String) info.get("ADDRESS");
 		String phone = (String) info.get("PHONE");
@@ -227,37 +234,42 @@ public class CartController {
 		String ph3 = (String) param.get("phone3");
 		String phone = ph1 + "!" + ph2 + "!" + ph3;
 		param.put("phone", phone);
+		if(param.get("onecoupon")!="") {
 		String coupon = (String) param.get("onecoupon");
 		int index = coupon.indexOf("%");
 		String cupon = coupon.substring(0, index);
 		param.put("cupon", cupon);
+		}
 		param.put("id", (String) init.get("id"));
 		System.out.println(param);
-		boolean bl = cdao.order(param);
-		String onecoupon = (String) param.get("onecoupon");
-		int idx = onecoupon.indexOf("%");
-		String num = onecoupon.substring(0, idx);
-		param.put("num", num);
-		String totalcash = (String) param.get("totalcash");
-		map.put("address", address2);
 		map.put("ar1", ar1);
 		map.put("ar2", ar2);
-		mav.addObject("map", map);
+		String[] pd1 = (String[]) map.get("ar1");
+		String[] pd2 = (String[]) map.get("ar2");
+		boolean bl = false;
+		for (int i = 0; i < pd1.length; i++) {
+			param.put("pd1", pd1[i]);
+			param.put("pd2", pd2[i]); 
+			cdao.order(param); 
+		}
+		String totalcash = (String) param.get("totalcash");
+		map.put("address", address2);
+		
+		mav.addObject("map", map); 
 		mav.addObject("param", param);
 		System.out.println(map);
 		if (bl == true) {
 			System.out.println("결제완료");
 			cdao.userpoint(param);
 		}
-
-		String[] pd1 = (String[]) map.get("ar1");
-		String[] pd2 = (String[]) map.get("ar2");
 		for (int i = 0; i < pd1.length; i++) {
 			Map data = new HashMap<>();
 			data.put("pd1", pd1[i]);
 			data.put("pd2", pd2[i]);
 			cdao.orderupdate(data);
 		}
+		boolean blll = cdao.coupondel(param);
+		System.out.println(blll);
 		return mav;
 	}
 
