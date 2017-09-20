@@ -187,6 +187,7 @@ body {
 
             <div id="section1" class="container-fluid">
                <h1>상품상제정보</h1>
+               ${map.PRO_DETAIL }
             </div>
             <div id="section2" class="container-fluid">
                <img src="/image/배송정보.jpg" width="100%;" height="100%;">
@@ -221,9 +222,11 @@ body {
                      </tbody>
                   </table>
                   <div align="right">
+                  <c:if test="${exist }">
                      <button class="btn btn" style="width: 182px;; height: 42px;" id="reviewbtn">
                         <span class="glyphicon glyphicon-comment" />구매후기쓰기
                      </button>
+                  </c:if>   
                   </div>
                </div>
                <div style="margin-top: 20px;" align="center">
