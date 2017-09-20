@@ -282,7 +282,7 @@ public class AdminMemberDao {
 			System.out.println("error.user_leave_cate"+e.toString());
 		}finally{
 			session.close();
-		}
+		} 
 		return rst;
 	}
 	
