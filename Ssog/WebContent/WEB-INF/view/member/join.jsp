@@ -111,33 +111,28 @@
 	}
 	document.getElementById("id").onblur = joinChk;
 	document.getElementById("email").onblur = joinChk;
-
-	document.getElementById("emailaccredit").onclick = function() {
-
-		var email = document.getElementById("email").value;
-		//window.alert(email);
-
+	
+	$("#emailaccredit").on("click",function(){
 		var regExp = /[0-9a-zA-Z][_0-9a-zA-Z-]*@[_0-9a-zA-Z-]+(\.[_0-9a-zA-Z-]+){1,2}$/;
-
-		if (email.match(regExp)) {
-			var req = new XMLHttpRequest();
-			req.open("get", "/member/emailaccredit.j?email=" + email, true);
-			req.send();
-			//document.getElementById("contxt").style.display = "";
-			//document.getElementById("confirm").style.display = ""; 
-			req.onreadystatechange = function() {
-				if (this.readyState == 4) {
-					if (this.responseText == "true") {
-
-					} else {
-						document.getElementById("contxt").style.display = "none";
-					}
+		if($("#email").val().match(regExp)){
+			$.ajax({
+				url:"/member/emailaccredit.j",
+				method :"post",  
+				data:{
+					"email": $("#email").val()
 				}
-			}
-		} else {
-			window.alert("이메일 형식이 아닙니다.");
+			}).done(function(re){
+				if(re==true){
+					window.alert("인증되었습니다.");
+				}else{
+					window.alert("실패"); 
+				}
+			})
+		}else{
+			window.alert("이메일 형식이 아닙니다."); 
 		}
-	}
+	});
+	
 	document.getElementById("confirm").onclick = function() {
 		var contxt = document.getElementById("contxt").value;
 		var req = new XMLHttpRequest();

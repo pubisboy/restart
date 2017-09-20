@@ -5,7 +5,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <style>
 #dkssud {
-	background-color: #e6e6e6;
+	background-color: #f2f2f2;
 }
 </style>
 <body id="dkssud">

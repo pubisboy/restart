@@ -75,6 +75,7 @@ public class MemberController {
 		List<Map> list = mdao.terms();
 		mav.addObject("list", list);
 		System.out.println(list);
+		
 		return mav; 
 	}
 	
@@ -157,7 +158,10 @@ public class MemberController {
 	@RequestMapping("/member/emailaccredit.j")
 	@ResponseBody
 	public ModelAndView emailaccredit(HttpSession session, @RequestParam Map param) {
-		ModelAndView mav = new ModelAndView("member/result");
+		System.out.println("param : "+param); 
+		String email = (String)param.get("email"); 
+		System.out.println(email);
+		ModelAndView mav = new ModelAndView("member/result"); 
 		MimeMessage msg = sender.createMimeMessage();
 		String fu = UUID.randomUUID().toString();
 		String sfu = fu.substring(0, 8);
