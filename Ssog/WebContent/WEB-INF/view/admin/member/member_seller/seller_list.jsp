@@ -25,6 +25,11 @@
 	</tbody>
 </table>
 <div align="center">
+
+	<c:if test="${paging.startPageNo ne paging.firstPageNo }">
+		<a href="/admin/member/member_seller/seller_list.ja?p=${paging.firstPageNo}&type=${params.type }&value=${params.value}">&lt;&lt;</a>
+	</c:if>
+	
 	<c:if test="${paging.startPageNo ne paging.firstPageNo }">
 		<a href="/admin/member/member_seller/seller_list.ja?p=${paging.startPageNo - 1}&type=${params.type }&value=${params.value}">&lt;</a>
 	</c:if>
@@ -35,6 +40,10 @@
 	
 	<c:if test="${paging.endPageNo ne paging.finalPageNo }">
 		<a href="/admin/member/member_seller/seller_list.ja?p=${paging.endPageNo + 1}&type=${params.type }&value=${params.value}">&gt;</a>
+	</c:if>
+	
+	<c:if test="${paging.endPageNo ne paging.finalPageNo }">
+		<a href="/admin/member/member_seller/seller_list.ja?p=${paging.finalPageNo}&type=${params.type }&value=${params.value}">&gt;&gt;</a>
 	</c:if>
 </div>
 

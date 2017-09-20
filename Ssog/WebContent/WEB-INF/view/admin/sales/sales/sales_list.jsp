@@ -80,6 +80,12 @@
 	</tbody>
 </table>
 <div align="center">
+
+	<c:if test="${paging.startPageNo ne paging.firstPageNo }">
+		<a
+			href="/admin/sales/sales/sales_list.ja?p=${paging.firstPageNo}&term=${params.term}&by=${params.by}&bm=${params.bm}&bd=${params.bd}&ey=${params.ey}&em=${params.em}&ed=${params.ed}&sort=${params.sort}">&lt;&lt;</a>
+	</c:if>
+	
 	<c:if test="${paging.startPageNo ne paging.firstPageNo }">
 		<a
 			href="/admin/sales/sales/sales_list.ja?p=${paging.startPageNo - 1}&term=${params.term}&by=${params.by}&bm=${params.bm}&bd=${params.bd}&ey=${params.ey}&em=${params.em}&ed=${params.ed}&sort=${params.sort}">&lt;</a>
@@ -94,6 +100,11 @@
 	<c:if test="${paging.endPageNo ne paging.finalPageNo }">
 		<a
 			href="/admin/sales/sales/sales_list.ja?p=${paging.endPageNo + 1}&term=${params.term}&by=${params.by}&bm=${params.bm}&bd=${params.bd}&ey=${params.ey}&em=${params.em}&ed=${params.ed}&sort=${params.sort}">&gt;</a>
+	</c:if>
+	
+	<c:if test="${paging.endPageNo ne paging.finalPageNo }">
+		<a
+			href="/admin/sales/sales/sales_list.ja?p=${paging.finalPageNo}&term=${params.term}&by=${params.by}&bm=${params.bm}&bd=${params.bd}&ey=${params.ey}&em=${params.em}&ed=${params.ed}&sort=${params.sort}">&gt;&gt;</a>
 	</c:if>
 </div>
 <div align="right"><button id="excel">Excel 다운로드</button></div>

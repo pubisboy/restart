@@ -38,7 +38,7 @@ public class SalesExcel extends AbstractXlsView{
 		
 		Row cate = sheet.createRow(3);
 		cate.createCell(0).setCellValue("날짜");
-		cate.createCell(1).setCellValue("매출");
+		cate.createCell(1).setCellValue("총매출");
 		cate.createCell(2).setCellValue("배송비");
 		cate.createCell(3).setCellValue("실매출");
 		cate.createCell(4).setCellValue("주문건수");
@@ -50,7 +50,7 @@ public class SalesExcel extends AbstractXlsView{
 			BigDecimal price = (BigDecimal)m.get("PRICE");
 			input.createCell(1).setCellValue(price.toString());
 			BigDecimal charge = (BigDecimal)m.get("CHARGE");
-			input.createCell(2).setCellValue(price.toString());
+			input.createCell(2).setCellValue(charge.toString());
 			int tmp = price.intValue() - charge.intValue();
 			input.createCell(3).setCellValue(tmp);
 			BigDecimal count = (BigDecimal)m.get("COUNT");

@@ -1085,4 +1085,68 @@ public class AdminOracleDao implements AdminDao{
 		}
 		return rst;
 	}
+
+	@Override
+	public int getDhl() {
+		SqlSession session = factory.openSession();
+		int rst = 0;
+		try{
+			rst = session.selectOne("admin.getDhl");
+		}catch(Exception e){
+			System.out.println("error.getDhl"+e.toString());
+		}finally{
+			session.close();
+		}
+		return rst;
+	}
+
+	@Override
+	public int getPoint() {
+		SqlSession session = factory.openSession();
+		int rst = 0;
+		try{
+			rst = session.selectOne("admin.getPoint");
+		}catch(Exception e){
+			System.out.println("error.getPoint"+e.toString());
+		}finally{
+			session.close();
+		}
+		return rst;
+	}
+
+	@Override
+	public boolean updateDhl(int charge) {
+		SqlSession session = factory.openSession();
+		boolean b = false;
+		try{
+			int r = session.update("admin.updateDhl", charge);
+			if(r > 0){
+				b = true;
+			}
+		}catch(Exception e){
+			System.out.println("error.updateDhl"+e.toString());
+			b = false;
+		}finally{
+			session.close();
+		}
+		return b;
+	}
+
+	@Override
+	public boolean updatePoint(int rate) {
+		SqlSession session = factory.openSession();
+		boolean b = false;
+		try{
+			int r = session.update("admin.updatePoint", rate);
+			if(r > 0){
+				b = true;
+			}
+		}catch(Exception e){
+			System.out.println("error.updatePoint"+e.toString());
+			b = false;
+		}finally{
+			session.close();
+		}
+		return b;
+	}
 }
