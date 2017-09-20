@@ -227,31 +227,34 @@ public class CartController {
 		String ph3 = (String) param.get("phone3");
 		String phone = ph1 + "!" + ph2 + "!" + ph3;
 		param.put("phone", phone);
+		if(param.get("onecoupon")!="") {
 		String coupon = (String) param.get("onecoupon");
 		int index = coupon.indexOf("%");
 		String cupon = coupon.substring(0, index);
 		param.put("cupon", cupon);
+		}
 		param.put("id", (String) init.get("id"));
 		System.out.println(param);
-		boolean bl = cdao.order(param);
-		String onecoupon = (String) param.get("onecoupon");
-		int idx = onecoupon.indexOf("%");
-		String num = onecoupon.substring(0, idx);
-		param.put("num", num);
-		String totalcash = (String) param.get("totalcash");
-		map.put("address", address2);
 		map.put("ar1", ar1);
 		map.put("ar2", ar2);
-		mav.addObject("map", map);
+		String[] pd1 = (String[]) map.get("ar1");
+		String[] pd2 = (String[]) map.get("ar2");
+		boolean bl = false;
+		for (int i = 0; i < pd1.length; i++) {
+			param.put("pd1", pd1[i]);
+			param.put("pd2", pd2[i]); 
+			cdao.order(param); 
+		}
+		String totalcash = (String) param.get("totalcash");
+		map.put("address", address2);
+		
+		mav.addObject("map", map); 
 		mav.addObject("param", param);
 		System.out.println(map);
 		if (bl == true) {
 			System.out.println("결제완료");
 			cdao.userpoint(param);
 		}
-
-		String[] pd1 = (String[]) map.get("ar1");
-		String[] pd2 = (String[]) map.get("ar2");
 		for (int i = 0; i < pd1.length; i++) {
 			Map data = new HashMap<>();
 			data.put("pd1", pd1[i]);
