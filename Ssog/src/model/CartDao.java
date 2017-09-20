@@ -70,6 +70,8 @@ public class CartDao {
 		}
 		return list;
 	}
+	
+	
 	public Map point(String id) {
 		Map map = new HashMap<>();
 		SqlSession session = factory.openSession();

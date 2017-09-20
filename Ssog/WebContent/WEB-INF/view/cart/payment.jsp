@@ -92,7 +92,7 @@
 				</table>
 			</div>
 			<div>
-			<a href="/"><button>계속쇼핑</button></a>
+			<a href="/product/list.j"><button>계속쇼핑</button></a>
 			<a href="/"><button>확인</button></a>
 			</div>
 		</div>

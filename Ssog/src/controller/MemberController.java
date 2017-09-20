@@ -100,6 +100,15 @@ public class MemberController {
 		map.put("params", list);
 		return "main_popup";
 	}
+	@RequestMapping("member/check.j")
+	public ModelAndView check() {
+		ModelAndView mav = new ModelAndView();
+		List<Map> list = mdao.terms();
+		mav.addObject("list", list);
+		System.out.println(list);
+		
+		return mav; 
+	}
 	
 	@RequestMapping("/member/join.j")
 	public ModelAndView join() {

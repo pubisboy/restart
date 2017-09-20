@@ -19,6 +19,19 @@ public class MemberDao {
 	
 	@Autowired
 	SqlSessionFactory factory;
+
+	public List<Map> terms(){
+		List<Map> list = new ArrayList<>();
+		SqlSession session = factory.openSession();
+		try {
+			list = session.selectList("member.terms");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			session.close();
+		}
+		return list;
+	}
 	
 	public boolean join(Map map) {
 		SqlSession session = factory.openSession();

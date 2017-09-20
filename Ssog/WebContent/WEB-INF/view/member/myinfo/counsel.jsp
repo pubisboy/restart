@@ -42,24 +42,24 @@ table, th, td {
 	<div class="col-sm-12">
 		<table class="table table-hover">
 			<thead>
-				<tr style="border-top: 3px solid black;">
-					<th>문의유형</th>
-					<th>제목</th>
-					<th>작성일자</th>
-					<th>답변</th>
+				<tr style="border-top: 3px solid black;">    
+					<th style="text-align: center;">문의유형</th> 
+					<th style="text-align: center;">제목</th>
+					<th style="text-align: center;">작성일자</th>
+					<th style="text-align: center;">답변</th> 
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach var="obj" items="${page }">
 					<tr class="test" id="${obj.NUM }">
-						<td>${obj.CATE }</td>
-						<td>${obj.TITLE }
+						<td style="width: 10%; text-align: center;">${obj.CATE }</td>
+						<td style="text-align: center;">${obj.TITLE } 
 						<div style="width: 100%; display: none;" id="tg_${obj.NUM }">
 							내용 : ${obj.CONTENT }
 						</div>
 						</td>
-						<td>${obj.COUNSEL_DATE }</td>
-						<th>${obj.REPLY eq 1 ? '답변완료':'답변대기'}</th>
+						<td style="width: 20%; text-align: center;">${obj.COUNSEL_DATE }</td>
+						<th style="width: 15%; text-align: center;">${obj.REPLY eq 1 ? '답변완료':'답변대기'}</th>
 					</tr>
 				</c:forEach>
 			</tbody>
