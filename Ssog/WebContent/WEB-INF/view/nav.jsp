@@ -170,8 +170,8 @@ li{
                           <li class="dropdown wonder"><a href="#" class="dropdown-toggle" data-toggle="dropdown">채소</a>
                               <ul class="dropdown-menu girls">
                                  <!-- <li class="kopie"><a href="#">전체보기</a></li> --> 
-                                 
-                                 <li><a href="/product/list.j?category=101">쌈,샐러드</a></li>
+                                 <li style="padding-bottom: 10px; border-bottom: 1px solid black;">채소</li>
+                                 <li style=""><a href="/product/list.j?category=101">쌈,샐러드</a></li>
                                  <li><a href="/product/list.j?category=102">뿌리채소,버섯</a></li>
                                  <li><a href="/product/list.j?category=103">양파,마늘,파,고추</a></li>
                                  <li><a href="/product/list.j?category=104">콩나물,나물류</a></li>
@@ -181,6 +181,7 @@ li{
                            <li class="dropdown wonder"><a href="#" class="dropdown-toggle" data-toggle="dropdown">과일</a>
                               <ul class="dropdown-menu girls">
                                  <!-- <li class="kopie"><a href="#">전체보기</a></li> -->
+                                 <li style="padding-bottom: 10px; border-bottom: 1px solid black;">과일</li>
                                  <li><a href="/product/list.j?category=201">과일</a></li>
                                  <li><a href="/product/list.j?category=202">건과일</a></li>
                                  <li><a href="/product/list.j?category=203">바나나,파인애플,키위</a></li>
@@ -190,6 +191,7 @@ li{
                            <li class="dropdown wonder"><a href="#" class="dropdown-toggle" data-toggle="dropdown">양곡</a>
                               <ul class="dropdown-menu girls">
                                  <!-- <li class="kopie"><a href="#">전체보기</a></li> -->
+                                 <li style="padding-bottom: 10px; border-bottom: 1px solid black;">양곡</li>
                                  <li><a href="/product/list.j?category=301">쌀</a></li>
                                  <li><a href="/product/list.j?category=302">잡곡</a></li>
                                  <li><a href="/product/list.j?category=303">가루</a></li>
@@ -199,6 +201,7 @@ li{
                            <li class="dropdown wonder"><a href="#" class="dropdown-toggle" data-toggle="dropdown">정육</a>
                               <ul class="dropdown-menu girls">
                                  <!-- <li class="kopie"><a href="#">전체보기</a></li> -->
+                                 <li style="padding-bottom: 10px; border-bottom: 1px solid black;">정육</li>
                                  <li><a href="/product/list.j?category=401">소고기</a></li>
                                  <li><a href="/product/list.j?category=402">돼지고기</a></li>
                                  <li><a href="/product/list.j?category=403">닭,오리</a></li>
@@ -210,6 +213,7 @@ li{
                            <li class="dropdown wonder"><a href="#" class="dropdown-toggle" data-toggle="dropdown">수산물</a>
                               <ul class="dropdown-menu girls">
                                  <!-- <li class="kopie"><a href="#">전체보기</a></li> -->
+                                 <li style="padding-bottom: 10px; border-bottom: 1px solid black;">수산물</li>
                                  <li><a href="/product/list.j?category=501">생선류</a></li>
                                  <li><a href="/product/list.j?category=502">오징어,낙지</a></li>
                                  <li><a href="/product/list.j?category=503">새우,게</a></li>

@@ -53,8 +53,14 @@ body {
          <div class="row">
             <div class="col-sm-7" style="padding-left: 20px; padding-top: 25px;">
                    <div class="thumbnail">
+                   <c:if test="${empty map.IMG_UUID }">
+                   <img src="/image/이미지기본.jpg"
+                     style="height: 37%; width: 100%;">  
+                   </c:if>
+                   <c:if test="${!empty map.IMG_UUID }">
                   <img src="/img/pro_img/${map.IMG_UUID }"
                      style="height: 37%; width: 100%;">  
+                     </c:if>
                      </div>   
                <div align="right">
                   <b>상품만족도</b>
