@@ -8,10 +8,10 @@
 <div>검색 : ${total }건</div>
 
 <div>
-	<div id="selDetail" style="float: left; width: 60%;">
+	<div id="selDetail" style="float: left; width: 80%;">
 		<form action="/admin/sales/sales/sales_list.ja" method="get" id="f">
 			<input type="hidden" name="term" id="term"/>
-			<div style="float: left; width: 40%;" id="begin">
+			<div style="float: left; width: 25%;" id="begin">
 				시작<select name='by' id='by'><optgroup label='년'></optgroup>
 					<option value="none" ${empty params.by ? 'selected' : ''}>--</option>
 					<c:forEach items="${years }" var="i"  varStatus="vs">
@@ -28,7 +28,7 @@
 					<option value="none" ${empty params.bd ? 'selected' : ''}>--</option>
 				</select>
 			</div>
-			<div style="float: left; width: 40%;" id="end">
+			<div style="float: left; width: 25%;" id="end">
 				종료<select name='ey' id='ey'><optgroup label='년'></optgroup>
 					<option value="none" ${empty params.ey ? 'selected' : ''}>--</option>
 					<c:forEach items="${years }" var="i"  varStatus="vs">
@@ -48,7 +48,7 @@
 			<div style="float: left; width: 10%;" id="search">
 				<button type="button" id="sbt" class="btn btn-default" style="height: 20px; padding-top: 1px;">검색</button>
 			</div>
-			<div id="alerts" style="float: left; width: 5%; color: red;"></div>
+			<div id="alerts" style="float: left; width: 30%; color: red;"></div>
 		</form>
 	</div>
 	<div style="float: right; width: 5%;">
@@ -56,13 +56,15 @@
 		href="/admin/sales/sales/sales_list.ja?p=${params.p}&term=${params.term}&by=${params.by}&bm=${params.bm}&bd=${params.bd}&ey=${params.ey}&em=${params.em}&ed=${params.ed}&sort=${!empty params.sort and params.sort == 'asc' ? 'desc' : 'asc'}">${!empty params.sort and params.sort == 'asc' ? '오름' : '내림'}</a>
 </div>
 </div>
-
+<div>구매확정만을 집계합니다.</div>
 <table class="table table-bordered" style="text-align: center;">
 	<thead>
 		<tr>
 			<th width="30%;" style="text-align: center;">날짜</th>
-			<th style="text-align: center;">매출(구매확정기준)</th>
-			<th style="text-align: center;">주문건수(구매확정기준)</th>
+			<th style="text-align: center;">총매출</th>
+			<th style="text-align: center;">배송비</th>
+			<th style="text-align: center;">실매출</th>
+			<th style="text-align: center;">주문건수</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -70,6 +72,8 @@
 			<tr>
 				<td>${i.PAY_DATE }</td>
 				<td><fmt:formatNumber value="${i.PRICE }" pattern="#,###" />원</td>
+				<td><fmt:formatNumber value="${i.CHARGE }" pattern="#,###" />원</td>
+				<td><fmt:formatNumber value="${i.PRICE - i.CHARGE }" pattern="#,###" />원</td>
 				<td><fmt:formatNumber value="${i.COUNT }" pattern="#,###" />개</td>
 			</tr>
 		</c:forEach>
@@ -179,43 +183,43 @@
 	$("#sbt").on("click", function(){
 		if($("#by").val() != 'none' && $("#ey").val() != 'none' && $("#bm").val() == 'none' && $("#em").val() == 'none' && $("#bd").val() == 'none' && $("#ed").val() == 'none'){
 			window.alert("년도만 선택");
-			if($("#by").val() <= $("#ey").val()){
+			if(parseInt($("#by").val()) <= parseInt($("#ey").val())){
 				$("#term").val("yy");
 				$("#f").submit();
 			}else{
-				$("#alerts").html("기간 설정 오류1");
+				$("#alerts").html("기간 설정 오류 (연)");
 			}
 		}else if($("#by").val() != 'none' && $("#ey").val() != 'none' && $("#bm").val() != 'none' && $("#em").val() != 'none' && $("#bd").val() == 'none' && $("#ed").val() == 'none'){
 			window.alert("년도/월 선택");
-			if($("#by").val() < $("#ey").val()){
+			if(parseInt($("#by").val()) < parseInt($("#ey").val())){
 				$("#term").val("yy/MM");
 				$("#f").submit();
-			}else if($("#by").val() == $("#ey").val() && $("#bm").val() <= $("#em").val()){
+			}else if($("#by").val() == $("#ey").val() && parseInt($("#bm").val()) <= parseInt($("#em").val())){
 				$("#term").val("yy/MM");
 				$("#f").submit();
 			}else{
-				$("#alerts").html("기간 설정 오류2");
+				$("#alerts").html("기간 설정 오류 (연/월)");
 			}
 		}else if($("#by").val() != 'none' && $("#ey").val() != 'none' && $("#bm").val() != 'none' && $("#em").val() != 'none' && $("#bd").val() != 'none' && $("#ed").val() != 'none'){
 			window.alert("년도/월/일 선택");
-			if($("#by").val() < $("#ey").val()){
+			if(parseInt($("#by").val()) < parseInt($("#ey").val())){
 				$("#term").val("yy/MM/dd");
 				$("#f").submit();
-			}else if($("#by").val() == $("#ey").val() && $("#bm").val() < $("#em").val()){
+			}else if($("#by").val() == $("#ey").val() && parseInt($("#bm").val()) < parseInt($("#em").val())){
 				$("#term").val("yy/MM/dd");
 				$("#f").submit();
 			}else if($("#by").val() == $("#ey").val() && $("#bm").val() == $("#em").val()){
-				if($("#bd").val() < $("#ed").val()){
+				if(parseInt($("#bd").val()) < parseInt($("#ed").val())){
 					$("#term").val("yy/MM/dd");
 					$("#f").submit();
 				}else{
-					$("#alerts").html("기간 설정 오류3");
-				}
+					$("#alerts").html("기간 설정 오류 (일)");
+				} 
 			}else{
-				$("#alerts").html("기간 설정 오류4");
+				$("#alerts").html("기간 설정 오류 (연/월)");
 			}
 		}else{
-			$("#alerts").html("기간 설정 오류");
+			$("#alerts").html("기간 설정 오류 (뭐함?)");
 		}
 	})
 	

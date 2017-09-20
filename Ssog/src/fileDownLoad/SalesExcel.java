@@ -39,7 +39,9 @@ public class SalesExcel extends AbstractXlsView{
 		Row cate = sheet.createRow(3);
 		cate.createCell(0).setCellValue("날짜");
 		cate.createCell(1).setCellValue("매출");
-		cate.createCell(2).setCellValue("주문건수");
+		cate.createCell(2).setCellValue("배송비");
+		cate.createCell(3).setCellValue("실매출");
+		cate.createCell(4).setCellValue("주문건수");
 		
 		int row = 4;
 		for(Map m : list){
@@ -47,8 +49,12 @@ public class SalesExcel extends AbstractXlsView{
 			input.createCell(0).setCellValue((String)m.get("PAY_DATE"));
 			BigDecimal price = (BigDecimal)m.get("PRICE");
 			input.createCell(1).setCellValue(price.toString());
+			BigDecimal charge = (BigDecimal)m.get("CHARGE");
+			input.createCell(2).setCellValue(price.toString());
+			int tmp = price.intValue() - charge.intValue();
+			input.createCell(3).setCellValue(tmp);
 			BigDecimal count = (BigDecimal)m.get("COUNT");
-			input.createCell(2).setCellValue(count.toString());
+			input.createCell(4).setCellValue(count.toString());
 		}
 		String fileName = String.format("(sales)%s~%s.xls", begin, end);
 		resp.setContentType("application/unknown");
