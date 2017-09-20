@@ -39,6 +39,7 @@
                      style="padding: 0px; padding-right: 18px; padding-top: 10px; font-size: 13px;">회원가입</a></li>
                </c:when>
                <c:otherwise>
+          		  <li><a href="/member/myinfo/info.j"style="padding: 0px; padding-right: 18px; padding-top: 10px; font-size: 13px;">XXX</a></li>
                   <li><a href="/member/logout.j"
                      style="padding: 0px; padding-right: 18px; padding-top: 10px; font-size: 13px;">로그아웃</a></li>
                </c:otherwise>
