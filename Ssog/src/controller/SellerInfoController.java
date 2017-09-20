@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import model.SellerInfoDao;
+import model.SellerOrderDao;
 
 
 @Controller
@@ -22,6 +23,10 @@ import model.SellerInfoDao;
 public class SellerInfoController {
 	@Autowired
 	SellerInfoDao sdao;
+	
+	@Autowired
+	SellerOrderDao sodao;
+	
 	
 	@RequestMapping("/test.j")
 	public ModelAndView test() {
@@ -75,6 +80,7 @@ public class SellerInfoController {
 	@RequestMapping("/alert/login_rst.j")
 	public ModelAndView login_rst(@RequestParam Map param, @RequestParam(name = "keep", required = false) String keep,
 			HttpSession session, HttpServletResponse resp) {
+		ModelAndView mav = new ModelAndView("t_el_seller");
 		System.out.println(param);
 		boolean rst = sdao.login(param);
 		System.out.println(rst);
@@ -83,6 +89,19 @@ public class SellerInfoController {
 			System.out.println("로그인성공");
 			session.setAttribute("seller_id", (String) param.get("id"));
 			
+			String id = (String)session.getAttribute("seller_id");
+			//등급
+			int sum_price = sodao.sumPrice(id);
+			Map grade_map = sodao.sellerGrade(sum_price);
+			String grade = (String) grade_map.get("GRADE");
+			session.setAttribute("grade", grade);
+			
+			//주문현황
+			
+			Map<String,Object> myinfo_map = sdao.overlapChk(id, "id");
+			System.out.println(">>>" + myinfo_map);
+			mav.addObject("myinfo", myinfo_map);
+			
 			if (keep != null) {
 				Cookie c = new Cookie("keep", (String) param.get("id"));
 				c.setMaxAge(60 * 60 * 24 * 7);
@@ -90,9 +109,9 @@ public class SellerInfoController {
 				resp.addCookie(c);
 			}
 		}
-		ModelAndView mav = new ModelAndView("t_el_seller");
-		mav.addObject("section", "seller/alert/login_rst");
+		mav.addObject("section", "seller/main");
 		mav.addObject("rst", rst);
+		
 		return mav;
 	}
 	
