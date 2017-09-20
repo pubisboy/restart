@@ -33,6 +33,18 @@ public class CartDao {
 			session.close();
 		}
 	}
+	public Map dhl() {
+		Map map = new HashMap<>();
+		SqlSession session = factory.openSession();
+		try {
+			map = session.selectOne("cart.dhlprice");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			session.close();
+		}
+		return map;
+	}
 	public Map pd_ascertain(Map map) {
 		Map nmap = new HashMap<>();
 		SqlSession session = factory.openSession();
@@ -92,4 +104,16 @@ public class CartDao {
 			session.close();
 		}
 	}	
+	public boolean coupondel(Map map) {
+		SqlSession session = factory.openSession();
+		try {
+			session.delete("cart.coupoindel", map);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}finally {
+			session.close();
+		}
+	}
 }

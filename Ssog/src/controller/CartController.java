@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.support.DaoSupport;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,6 +62,8 @@ public class CartController {
 		Map point = cdao.point((String) init.get("id"));
 		mav.addObject("point", point);
 		mav.addObject("clist", clist);
+		Map dmap = cdao.dhl();
+		mav.addObject("dhl", dmap);
 		Cookie[] cookies = resp.getCookies();
 		List<Map> list = new ArrayList<>();
 		if (cookies != null) {
@@ -89,6 +92,8 @@ public class CartController {
 		Map init = init(session);
 		Map info = mmdao.id_check_repetition((String) init.get("id"));
 		ModelAndView mav = new ModelAndView("tw_cart/order");
+		Map dmap = cdao.dhl();
+		mav.addObject("dhl", dmap);
 		String address = (String) info.get("ADDRESS");
 		String phone = (String) info.get("PHONE");
 		String[] spaddress = address.split("!");
@@ -124,6 +129,8 @@ public class CartController {
 	public ModelAndView orderr(HttpSession session,@RequestParam Map param) {
 		ModelAndView mav = new ModelAndView("tw_cart/orderr");
 		Map init = init(session);
+		Map dmap = cdao.dhl();
+		mav.addObject("dhl", dmap);
 		Map info = mmdao.id_check_repetition((String) init.get("id"));
 		String address = (String) info.get("ADDRESS");
 		String phone = (String) info.get("PHONE");
@@ -261,6 +268,8 @@ public class CartController {
 			data.put("pd2", pd2[i]);
 			cdao.orderupdate(data);
 		}
+		boolean blll = cdao.coupondel(param);
+		System.out.println(blll);
 		return mav;
 	}
 

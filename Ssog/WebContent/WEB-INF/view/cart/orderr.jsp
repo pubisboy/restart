@@ -290,7 +290,7 @@
 	</div>
 </div>
 <script>
-	var tot1 = parseInt($("#price").html());
+	var tot1 = parseInt(parseInt($("#price").html())+parseInt(2500));   
 	$("#amount ").html(tot1.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + '원'); 
 	$("#finishcash").html(tot1); 
 	var conpoint = "${point.POINT}";

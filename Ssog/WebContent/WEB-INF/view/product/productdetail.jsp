@@ -301,21 +301,20 @@ body {
          $("#total").html($("#quantity").val() * hid2);
       }
    });
-   $("#order").on("click", function() {
-      
-   });
    $("#cartadd").on("click", function() {
-
       var cName = "${map.PRO_NUM}";
-      window.alert(cName);
       var cValue = "addcart" + $("#quantity").val();
-      window.alert(cValue);
       var d = new Date(); 
       d.setTime(d.getTime() + (3 * 24 * 60 * 60 * 1000));
       var expires = "expires=" + d.toUTCString();
       cookies = cName + '=' + escape(cValue) + '; path=/ ';
       cookies += ';' + expires + ';';
       document.cookie = cookies;
+      if (confirm("상품이 장바구니에 담겼습니다.\n바로 확인 하시겠습니까?") == true){
+    	    location.href="/cart/form.j";  
+    	}else{   //취소
+    	    return;
+    	}  
    }); 
     
    $("#reviewbtn").on("click",function(){
