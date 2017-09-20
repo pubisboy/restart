@@ -45,8 +45,8 @@
 					<option value="none" ${empty params.ed ? 'selected' : ''}>--</option>
 				</select>
 			</div>
-			<div style="float: left; width: 10%;" id="search">
-				<button type="button" id="sbt" class="btn btn-default" style="height: 20px; padding-top: 1px;">검색</button>
+			<div style="float: left; width: 35%;" id="search">
+				<button type="button" id="sbt" class="btn btn-default" style="height: 20px; padding-top: 1px;">검색</button><b>구매확정만을 집계합니다.</b>
 			</div>
 			<div id="alerts" style="float: left; width: 30%; color: red;"></div>
 		</form>
@@ -56,7 +56,7 @@
 		href="/admin/sales/sales/sales_list.ja?p=${params.p}&term=${params.term}&by=${params.by}&bm=${params.bm}&bd=${params.bd}&ey=${params.ey}&em=${params.em}&ed=${params.ed}&sort=${!empty params.sort and params.sort == 'asc' ? 'desc' : 'asc'}">${!empty params.sort and params.sort == 'asc' ? '오름' : '내림'}</a>
 </div>
 </div>
-<div>구매확정만을 집계합니다.</div>
+
 <table class="table table-bordered" style="text-align: center;">
 	<thead>
 		<tr>
