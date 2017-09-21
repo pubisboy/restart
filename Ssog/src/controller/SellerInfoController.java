@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import model.SellerCounselDao;
 import model.SellerInfoDao;
+import model.SellerOrderDao;
 
 
 @Controller
@@ -22,6 +25,12 @@ import model.SellerInfoDao;
 public class SellerInfoController {
 	@Autowired
 	SellerInfoDao sdao;
+	
+	@Autowired
+	SellerOrderDao sodao;
+
+	@Autowired
+	SellerCounselDao scdao;
 	
 	@RequestMapping("/test.j")
 	public ModelAndView test() {
@@ -31,8 +40,41 @@ public class SellerInfoController {
 	}
 	
 	@RequestMapping("/main.j")
-	public ModelAndView toIndex() {
+	public ModelAndView toIndex(HttpSession session) {
 		ModelAndView mav = new ModelAndView("t_el_seller");
+		String id = (String)session.getAttribute("seller_id");
+		
+		Map map = new HashMap<>();
+		map.put("id", id);
+		map.put("start", 1);
+		map.put("end", 3);
+		
+		//등급
+		int sum_price=0;
+		int order_total = sodao.orderTotal(map);
+		if(order_total > 0) {
+			sum_price = sodao.sumPrice(id);
+		}
+		Map grade_map = sodao.sellerGrade(sum_price);
+		String grade = (String) grade_map.get("GRADE");
+		session.setAttribute("grade", grade);
+		
+		//기본정보
+		Map<String,Object> myinfo_map = sdao.overlapChk(id, "id");
+		mav.addObject("myinfo", myinfo_map);
+		
+		//주문현황
+		List order_list = sodao.orderList(map);
+		mav.addObject("order_list", order_list);
+		
+		//Q&A
+		List qna_list = scdao.qnaList(map);
+		mav.addObject("qna_list", qna_list);
+		
+		//리뷰
+		List review_list = scdao.reviewList(map);
+		mav.addObject("review_list", review_list);
+		
 		mav.addObject("section", "seller/main");
 		return mav;
 	}
@@ -75,6 +117,7 @@ public class SellerInfoController {
 	@RequestMapping("/alert/login_rst.j")
 	public ModelAndView login_rst(@RequestParam Map param, @RequestParam(name = "keep", required = false) String keep,
 			HttpSession session, HttpServletResponse resp) {
+		ModelAndView mav = new ModelAndView("t_el_seller");
 		System.out.println(param);
 		boolean rst = sdao.login(param);
 		System.out.println(rst);
@@ -90,9 +133,9 @@ public class SellerInfoController {
 				resp.addCookie(c);
 			}
 		}
-		ModelAndView mav = new ModelAndView("t_el_seller");
 		mav.addObject("section", "seller/alert/login_rst");
 		mav.addObject("rst", rst);
+		
 		return mav;
 	}
 	
@@ -203,24 +246,34 @@ public class SellerInfoController {
 	}
 	
 	//비밀번호 변경 폼에서 이전 비번 가져오기
-		@RequestMapping("/info/passAjax.j")
-		@ResponseBody
-		public Map passajax(@RequestParam Map param, HttpSession session){
-			String id = (String)session.getAttribute("seller_id");
-			String pass = (String) param.get("pass");
-			
-			boolean flag = false;
-			Map m = sdao.overlapChk(id, "id");
-			String db_pass = (String) m.get("PASS");
-			if (pass.equals(db_pass)) {
-				param.put("id", id);
-				boolean rst = sdao.editPass(param);
-				if(rst)	flag = true;
-			} else {
-				flag = false;
-			}
-			Map map = new HashMap<>();
-			map.put("pre_check", flag);
-			return map;
+	@RequestMapping("/info/passAjax.j")
+	@ResponseBody
+	public Map passajax(@RequestParam Map param, HttpSession session){
+		String id = (String)session.getAttribute("seller_id");
+		String pass = (String) param.get("pass");
+		
+		boolean flag = false;
+		Map m = sdao.overlapChk(id, "id");
+		String db_pass = (String) m.get("PASS");
+		if (pass.equals(db_pass)) {
+			param.put("id", id);
+			boolean rst = sdao.editPass(param);
+			if(rst)	flag = true;
+		} else {
+			flag = false;
 		}
+		Map map = new HashMap<>();
+		map.put("pre_check", flag);
+		return map;
+	}
+	
+	@RequestMapping("/popup_grade.j")
+	public ModelAndView gradeList(){
+		ModelAndView mav = new ModelAndView();
+		List<Map<String,Object>> list = sdao.gradeList();
+		mav.addObject("list", list);
+		mav.setViewName("/seller/popup_grade");
+		System.out.println(list);
+		return mav;
+	}
 }

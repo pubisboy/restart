@@ -53,7 +53,6 @@
 		}).done(function(rst){
 			if(rst.text){
 				if(!rst.img){
-					window.alert("이미지 등록 실패");
 				}
 				location.href="/admin/management/notice/notice_list.ja";
 			}else{

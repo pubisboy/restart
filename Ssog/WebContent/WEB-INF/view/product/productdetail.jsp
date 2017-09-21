@@ -51,15 +51,15 @@ body {
    <div style="width: 62%;">
       <div class="col-sm-12" style="border: 1px solid #8c8c8c;"> 
          <div class="row">
-            <div class="col-sm-7" style="padding-left: 20px; padding-top: 25px;">
-                   <div class="thumbnail">
+            <div class="col-sm-7" style="padding-left: 20px; padding-top: 25px; height: 300px;">
+              <div class="thumbnail" style="height: 150%;"> 
                    <c:if test="${empty map.IMG_UUID }">
                    <img src="/image/이미지기본.jpg"
-                     style="height: 37%; width: 100%;">  
+                     style="height: 37%; width: 100%; height: 100%;">  
                    </c:if>
                    <c:if test="${!empty map.IMG_UUID }">
-                  <img src="/img/pro_img/${map.IMG_UUID }"
-                     style="height: 37%; width: 100%;">  
+                  <img src="/img/pro_img/${map.IMG_UUID }" 
+                     style="height: 37%; width: 100%; height: 100%;">  
                      </c:if>
                      </div>   
                <div align="right">
@@ -190,13 +190,13 @@ body {
                ${map.PRO_DETAIL }
             </div>
             <div id="section2" class="container-fluid">
-               <img src="/image/배송정보.jpg" width="100%;" height="100%;">
-            </div>
+               <img src="/image/배송정보.jpg" width="100%;" height="100%;">   
+            </div> 
             <div id="section3" class="container-fluid">
                <div align="left">
-                  <b style="font-size: 19px;">구매후기<b>
+                  <b style="font-size: 19px;">구매후기<b> 
                </div>
-               <div>
+               <div style="height: 320px;">
                   <table class="table table-hover" style="font-size: 14px;">
                      <thead>
                         <tr>

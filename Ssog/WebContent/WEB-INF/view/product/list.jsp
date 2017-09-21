@@ -76,15 +76,15 @@ li {
                      <th style="width: 33%"></th>
                   </tr>
                   <c:forEach var="i" items="${originlist }" varStatus="vs">
-                  	<c:set var="tf" value=" " scope="page"/>
+                     <c:set var="tf" value=" " scope="page"/>
                      <c:if test="${vs.index eq 0 or vs.index eq 3 or vs.index eq 6}">
                         <tr>
                      </c:if>
                      
                      <c:forEach items="${origin1 }" var="j"> 
-		                     <c:if test="${i.NUM eq j }">
-		                     	<c:set var="tf" value="checked" scope="page"/>
-		                     </c:if>
+                           <c:if test="${i.NUM eq j }">
+                              <c:set var="tf" value="checked" scope="page"/>
+                           </c:if>
                      </c:forEach>
                      <td style="width: 33%;"><input type="checkbox" value="${i.NUM }" name="origin_group" ${tf } > ${i.NAME }</input></td>
                      
@@ -158,9 +158,9 @@ li {
             <div style="margin-top: 2px;">원산지 :${i.NAME }</div><div><b style="font-size: 20px;">  
               <fmt:formatNumber value="${i.PRICE }" type="number"/>원
               </b></div>  
-			<c:if test="${!empty i.CUPON_TYPE }">
-				<div align="right"  ><label style="color: red; width: 80px;">${i.CUPON_TYPE }% 행사중</label></div> 
-			</c:if>            
+         <c:if test="${!empty i.CUPON_TYPE }">
+            <div align="right"  ><label style="color: red; width: 80px;">${i.CUPON_TYPE }% 행사중</label></div> 
+         </c:if>            
          </div>
       </div>
    </c:forEach> 
@@ -196,7 +196,7 @@ li {
   var j=0
   var arr = $(".origin_group");
 $("#origin_btn").on("click",function(){
-   
+    
   for(var i=0;i<arr.length;i++){
      if(arr.get(i).checked){ 
       

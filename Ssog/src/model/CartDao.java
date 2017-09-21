@@ -82,6 +82,8 @@ public class CartDao {
 		}
 		return list;
 	}
+	
+	
 	public Map point(String id) {
 		Map map = new HashMap<>();
 		SqlSession session = factory.openSession();
@@ -108,6 +110,30 @@ public class CartDao {
 		SqlSession session = factory.openSession();
 		try {
 			session.delete("cart.coupoindel", map);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}finally {
+			session.close();
+		}
+	}
+	public boolean user_recordupdate1(Map map) {
+		SqlSession session = factory.openSession();
+		try {
+			session.update("cart.point_plus", map);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}finally {
+			session.close();
+		}
+	}
+	public boolean user_recordupdate2(Map map) {
+		SqlSession session = factory.openSession();
+		try {
+			session.update("cart.point_minuse", map);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

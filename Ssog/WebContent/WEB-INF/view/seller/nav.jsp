@@ -148,7 +148,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2e3d44', end
 				<c:choose>
 					<c:when test="${sessionScope.seller_id ne null }">
 						<b style="font-size: 20px;">${sessionScope.seller_id}님</b><br>
-							<small style="color: #999999;">판매등급 : <br /> 
+							<small style="color: #999999;">판매등급 : ${sessionScope.grade}<br /> 
 							<b style="font-size: 9px; color: #8c8c8c;">
 							고객과 함께하는 쏙쇼핑몰</b>
 							</small>

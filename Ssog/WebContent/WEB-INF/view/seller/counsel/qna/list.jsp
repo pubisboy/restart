@@ -66,15 +66,15 @@
 			</thead>
 			<tbody>
 				<c:if test="${empty list}">
-					<tr><td colspan="4" align="center">등록한 글이 없습니다.</td></tr>
+					<tr><td colspan="5" align="center">등록한 글이 없습니다.</td></tr>
 				</c:if>
 				<c:forEach var="i" items="${list}">
 					<tr>
 						<td><a href="/seller/product/productEdit.j?num=${i.PRO_NUM}" style="color:gray">[${i.PRO_NUM}]</a></td>
-						<td>${i.CATE}</td>
-						<td>${i.TITLE}</td>
+						<td>${i.QNA_CATE}</td>
+						<td><a href="/seller/counsel/qna/write.j?num=${i.NUM}">${i.TITLE}</a></td>
 						<td>${i.USER_ID}님</td>
-						<td>${i.QNA_DADATE }</td>
+						<td><fmt:formatDate value="${i.QANDADATE}" pattern="yyyy/MM/dd"/></td>
 					</tr>
 				</c:forEach>
 			</tbody>

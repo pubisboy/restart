@@ -155,7 +155,7 @@
 					<!-- 글 없을 때 -->
 					<c:if test="${empty list}"><!-- ${list.size()==0} -->
 						<tr>
-							<td colspan="8" align="center">판매한 상품이 없습니다.</td>
+							<td colspan="9" align="center">판매한 상품이 없습니다.</td>
 						</tr>
 					</c:if>
 					
@@ -236,7 +236,6 @@
 						</select> 
 						<select id="sub_cate" name="sub_cate" class="search" style="width:150px">
 							<option disabled='disabled' selected>중분류</option>
-							<option value="*">전체선택</option>
 						</select>
 					</td>
 			</table>
