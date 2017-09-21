@@ -10,8 +10,15 @@
 		,#{cupon,jdbcType=INTEGER}
 		,1
 		,#{etc,jdbcType=VARCHAR} 
+<<<<<<< HEAD
 		,#{address},#{receiver})
+=======
+		,#{address},#{receiver}) 
+>>>>>>> branch 'ukiki2' of https://github.com/pubisboy/restart.git
 	</insert>
+	<select id="dhlprice" resultType="java.util.HashMap">
+		select * from dhl
+	</select>
 	<update id="orderupdate" parameterType="java.util.HashMap">
 		update PRODUCTTBL set
 		pro_qty=pro_qty-#{pd1} where pro_num=#{pd2}
@@ -46,7 +53,7 @@
 	</update>
 	<delete id="coupoindel" parameterType="java.util.HashMap">
 		delete CUPON_LIST where
-		user_id=#{id} and CUPON_LIST_ID=#{num}
+		user_id=#{id} and CUPON_LIST_ID=#{cupon}
 	</delete>
 
 </mapper>

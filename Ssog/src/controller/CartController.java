@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.support.DaoSupport;
+import org.springframework.http.HttpRequest;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,6 +63,8 @@ public class CartController {
 		Map point = cdao.point((String) init.get("id"));
 		mav.addObject("point", point);
 		mav.addObject("clist", clist);
+		Map dmap = cdao.dhl();
+		mav.addObject("dhl", dmap);
 		Cookie[] cookies = resp.getCookies();
 		List<Map> list = new ArrayList<>();
 		if (cookies != null) {
@@ -89,6 +93,8 @@ public class CartController {
 		Map init = init(session);
 		Map info = mmdao.id_check_repetition((String) init.get("id"));
 		ModelAndView mav = new ModelAndView("tw_cart/order");
+		Map dmap = cdao.dhl();
+		mav.addObject("dhl", dmap);
 		String address = (String) info.get("ADDRESS");
 		String phone = (String) info.get("PHONE");
 		String[] spaddress = address.split("!");
@@ -124,6 +130,8 @@ public class CartController {
 	public ModelAndView orderr(HttpSession session,@RequestParam Map param) {
 		ModelAndView mav = new ModelAndView("tw_cart/orderr");
 		Map init = init(session);
+		Map dmap = cdao.dhl();
+		mav.addObject("dhl", dmap);
 		Map info = mmdao.id_check_repetition((String) init.get("id"));
 		String address = (String) info.get("ADDRESS");
 		String phone = (String) info.get("PHONE");
@@ -211,7 +219,7 @@ public class CartController {
 
 	@RequestMapping("/payment.j")
 	public ModelAndView payment(@RequestParam Map param, HttpSession session, Map map,
-			@RequestParam(name = "pd1") String[] ar1, @RequestParam(name = "pd2") String[] ar2) {
+			@RequestParam(name = "pd1") String[] ar1, @RequestParam(name = "pd2") String[] ar2,HttpServletRequest resp) {
 		Map init = init(session);
 		Map info = mmdao.id_check_repetition((String) init.get("id"));
 		ModelAndView mav = new ModelAndView("tw_cart/payment");
@@ -245,7 +253,10 @@ public class CartController {
 			param.put("pd2", pd2[i]); 
 			cdao.order(param); 
 		}
+<<<<<<< HEAD
 		 
+=======
+>>>>>>> branch 'ukiki2' of https://github.com/pubisboy/restart.git
 		String totalcash = (String) param.get("totalcash");
 		map.put("address", address2);
 		
@@ -256,15 +267,31 @@ public class CartController {
 			System.out.println("결제완료");
 			cdao.userpoint(param);
 		}
+<<<<<<< HEAD
 
 		
+=======
+>>>>>>> branch 'ukiki2' of https://github.com/pubisboy/restart.git
 		for (int i = 0; i < pd1.length; i++) {
 			Map data = new HashMap<>();
 			data.put("pd1", pd1[i]);
 			data.put("pd2", pd2[i]);
 			cdao.orderupdate(data);
 		}
+		boolean blll = cdao.coupondel(param);
+		System.out.println(blll);
+		Cookie[] cookies = resp.getCookies();
+		for (int i = 0; i < cookies.length; i++) {
+			if (cookies[i].getValue().startsWith("addcart")) {
+				String cookiename = cookies[i].getName();
+				String number = cookies[i].getValue().substring(7);
+			System.out.println("cookiename : "+cookiename);
+			System.out.println("number : "+number); 
+			}
+		}
+		
 		return mav;
+		
 	}
 
 	@RequestMapping("/ascertain.j")

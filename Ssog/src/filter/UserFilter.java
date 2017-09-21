@@ -25,8 +25,13 @@ public class UserFilter implements Filter {
 		}else{
 			String uri = req.getRequestURI();
 			System.out.println("uri : "+uri);
+<<<<<<< HEAD
 			if(uri.startsWith("/member/join") || uri.startsWith("/member/check") || uri.startsWith("/member/login_rst")){ 
 				chain.doFilter(req, resp); 
+=======
+			if(uri.startsWith("/member/join") || uri.startsWith("/member/joinajax.j") || uri.startsWith("/member/check") || uri.startsWith("/member/emailaccredit") ||  uri.startsWith("/member/result") || uri.startsWith("/member/login_rst")){ 
+				chain.doFilter(req, resp);
+>>>>>>> branch 'ukiki2' of https://github.com/pubisboy/restart.git
 			}else{
 				session.setAttribute("goLogin", "goLogin");
 				req.setAttribute("goLogin", "goLogin");

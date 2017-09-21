@@ -98,6 +98,7 @@
 							<th>가격</th>
 							<th>수량</th>
 							<th>혜택</th>
+							<th>배송비</th>
 							<th>주문금액</th>
 						</tr>
 					</thead>
@@ -106,14 +107,13 @@
 							<tr style="border-bottom: 1px solid #b3b3b3;">
 								<td><input type="checkbox" class="one"
 									value="${c.PRO_NUM }" /></td>
-								<td class="pd_num"><a href="/product/detail.j?productNumber=${c.PRO_NUM }">${c.PRO_NUM }</a>
-								</td>
+								<td class="pd_num">${c.PRO_NUM}</td>
 								 <td>${c.PRO_NAME }</td>
 								<td>${c.PRICE }</td>
 								<td>
 									<button class="mi">-</button> <input type="text"
 									style="width: 40px;" value="${c.number }" class="qu" />
-									<button class="pl">+</button>
+									<button class="pl">+</button> 
 									<button class="revise">수정</button>
 								</td>
 								<td>
@@ -125,7 +125,8 @@
 								${elist.RATE } 
 								</c:otherwise>
 								</c:choose> 
-								</td>
+								</td> 
+								<td>${dhl.CHARGE }원</td>  
 								<td class="price">${c.PRICE * c.number }원</td>
 							</tr>
 						</c:forEach>
@@ -199,10 +200,12 @@
 </div>
 
 <script>
-	var tot = 0;
+	var tot = ${dhl.CHARGE*list.size()};
 	$('.price').each(function() {
 		tot += parseInt($(this).html());
 	});
+	  
+	 
 	$("#totalprice").html(tot).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	var point = tot * 0.01;
 	var temp = point.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -224,19 +227,20 @@
 			$(this).next().val(parseInt($(this).next().val()) - 1)
 		}
 		var c = $(this).next().val() * $(this).parent().prev().html();
-		$(this).parent().next().next().html(c);
+		$(this).parent().next().next().next().html(c); 
 
 	});
 
 	$(".pl").on("click", function() {
 		$(this).prev().val(parseInt($(this).prev().val()) + 1);
 		var c = $(this).prev().val() * $(this).parent().prev().html();
-		$(this).parent().next().next().html(c);
+		$(this).parent().next().next().next().html(c); 
 	});
 	$(".revise").on("click", function() {
-		var cName = $(this).parent().prev().prev().html();
+		var cName = $(this).parent().prev().prev().prev().html(); 
 		window.alert(cName);
 		var cValue = "addcart" + $(this).prev().prev().val();
+		window.alert(cValue);
 		var d = new Date();
 		d.setTime(d.getTime() + (3 * 24 * 60 * 60 * 1000));
 		var expires = "expires=" + d.toUTCString();
@@ -246,7 +250,7 @@
 			cookies += ';' + expires + ';';
 		document.cookie = cookies;
 		location.reload();
-	});
+	}); 
 
 	$("#all").on("click", function() {
 		if ($("#all").prop("checked")) {
@@ -288,8 +292,6 @@
 			$(".qu").each(function() { 
 				pd1 += $(this).val()+"!";
 			});
-			window.alert(pd1);  
-			window.alert(pd2);
 			$.ajax({
 				url:"/cart/ascertain.j", 
 				method:"post",

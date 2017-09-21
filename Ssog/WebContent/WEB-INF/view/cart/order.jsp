@@ -272,7 +272,7 @@
 	</div>
 </div>
 <script>
-	var tot = 0;
+	var tot = ${dhl.CHARGE*list.size()}; 
 	$('.price').each(function() {
 		tot += parseInt($(this).html());
 	});

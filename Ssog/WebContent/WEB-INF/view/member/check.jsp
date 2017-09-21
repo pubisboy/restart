@@ -5,7 +5,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <style>
 #dkssud {
+<<<<<<< HEAD
 	background-color: #e6e6e6;
+=======
+	background-color: #f2f2f2;
+>>>>>>> branch 'ukiki2' of https://github.com/pubisboy/restart.git
 }
 </style>
 <body id="dkssud">

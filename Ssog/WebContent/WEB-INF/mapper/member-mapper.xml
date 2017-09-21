@@ -19,6 +19,9 @@
 		values(#{id},#{sms,jdbcType=VARCHAR},#{emailck,jdbcType=VARCHAR},#{refresh,jdbcType=VARCHAR}
 		)
 	</insert>
+	<insert id="user_info" parameterType="java.lang.String">
+		insert into USER_RECORD values(#{id},0,0)
+	</insert>
 	<select id="login" parameterType="java.util.HashMap" resultType="java.util.HashMap">
 		SELECT * FROM USER_MEMBER WHERE id=#{id} AND pass=#{pass}
 	</select>
