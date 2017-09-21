@@ -234,12 +234,12 @@ public class CartController {
 		String ph2 = (String) param.get("phone2");
 		String ph3 = (String) param.get("phone3");
 		String phone = ph1 + "!" + ph2 + "!" + ph3;
-		param.put("phone", phone);
+		param.put("phone", phone); 
 		if(param.get("onecoupon")!="") {
 		String coupon = (String) param.get("onecoupon");
 		int index = coupon.indexOf("%");
 		String cupon = coupon.substring(0, index);
-		param.put("cupon", cupon);
+		param.put("cupon", cupon); 
 		boolean blll = cdao.coupondel(param);
 		System.out.println(blll); 
 		}
@@ -272,7 +272,6 @@ public class CartController {
 			cdao.orderupdate(data);
 		}
 		
-		
 		Cookie[] cookies = resp.getCookies();
 		for (int i = 0; i < cookies.length; i++) {
 			if (cookies[i].getValue().startsWith("addcart")) {
@@ -282,7 +281,14 @@ public class CartController {
 			System.out.println("number : "+number); 
 			}
 		}
-		
+		String pt_chk = (String)param.get("chk_point");
+		if(pt_chk.equals("save")) {
+			boolean bool1 = cdao.user_recordupdate1(param);
+			System.out.println(bool1);
+		}else {
+			boolean bool2 = cdao.user_recordupdate2(param);
+			System.out.println(bool2); 
+		}  
 		return mav;
 		
 	}

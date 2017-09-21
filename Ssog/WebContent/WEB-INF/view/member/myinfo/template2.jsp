@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 <div align="center">
-<div style="width: 63%;padding-top: 30px;">    
+<div style="width: 70%;padding-top: 30px;">       
 	<div class="row tot">
 		<div class="col-sm-3"> 
 			<div style="border-top: 2px solid black; height: 100px; width: 200px;">

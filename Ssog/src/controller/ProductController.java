@@ -122,11 +122,14 @@ public class ProductController {
 		mav.addObject("paging", page1);
 		mav.addObject("list",list);
 		String userid=(String) session.getAttribute("auth");
+		if(session.getAttribute("auth")==null) {
+			mav.addObject("exist", false);
+		}else {
 		System.out.println("유저 아이디="+userid);
 		boolean exist=pdao.findOrder(userid);
 		System.out.println("존재여부 + "+exist);
 		mav.addObject("exist", exist);
-		
+		}
 		return mav; 
 	}
 	

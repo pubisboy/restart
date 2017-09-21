@@ -49,7 +49,7 @@
 				<form action="/member/myinfo/counsel_rst.j" enctype="multipart/form-data" method="post"	>
 					<div class="row" style="padding-left:15px; padding-right: 15px;">
 						<div class="col-xs-4" style="border-right: 1px solid #595959; border-bottom: 1px solid #595959; padding-top: 17.5px; padding-bottom: 17.5px; padding-left: 20px; width: 130px; background-color: #f2f2f2;"><p style="font-size: 13px; margin: 0px;">문의유형</p></div>
-						<div class="col-xs-8" style="border-bottom: 1px solid #595959; padding-top: 8px; padding-bottom: 8px; width: 620px;">    
+						<div class="col-xs-8" style="border-bottom: 1px solid #595959; padding-top: 8px; padding-bottom: 8px; width: 620px;">     
 							<select class="form-control" name="cate" id="cate" style="width: 200px;height: 33px;"> 
 								<option>---선택---</option>
 								<c:forEach var="i" items="${cate }">
