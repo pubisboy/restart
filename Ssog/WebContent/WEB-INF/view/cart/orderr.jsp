@@ -37,14 +37,14 @@
 						<div
 							style="padding-left: 40px; padding-top: 15px; padding-bottom: 15px; text-align: left;">
 							<span class="glyphicon glyphicon-shopping-cart"
-								style="font-size: 30px; color: #b3b3b3;"></span> <b
+								style="font-size: 30px; color: #b3b3b3; "></span> <b
 								style="font-size: 15px; color: #b3b3b3;">장바구니</b> <span
 								class="glyphicon glyphicon-chevron-right"
-								style="font-size: 30px; padding-left: 35px; padding-right: 35px; color: #b3b3b3;"></span>
+								style="font-size: 30px; padding-left: 13px; padding-right: 13px; color: #b3b3b3;"></span>
 							<span class="glyphicon glyphicon-credit-card"
 								style="font-size: 45px;"></span> <b style="font-size: 26px;">주문/결제</b>
 							<span class="glyphicon glyphicon-chevron-right"
-								style="font-size: 30px; padding-left: 35px; padding-right: 35px; color: #b3b3b3;"></span>
+								style="font-size: 30px; padding-left: 13px; padding-right: 13px; color: #b3b3b3;"></span>
 							<span class="glyphicon glyphicon-gift"
 								style="font-size: 30px; color: #b3b3b3;"></span> <b
 								style="font-size: 15px; color: #b3b3b3;">주문완료</b>

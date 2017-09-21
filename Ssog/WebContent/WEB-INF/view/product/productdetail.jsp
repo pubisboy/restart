@@ -30,7 +30,7 @@ body {
    padding-top: 50px;
    height: 500px;
    color: #fff;
-   background-color: #80b3ff;
+   background-color: #eaeaea;
 }
 
 #section41 {
@@ -43,7 +43,7 @@ body {
 #section42 {
    padding-top: 50px; 
    height: 500px;
-   color: #fff;
+   color: #fff; 
    background-color: #009688;
 }
 </style>
@@ -62,8 +62,11 @@ body {
                      style="height: 37%; width: 100%; height: 100%;">  
                      </c:if>
                      </div>   
-               <div align="right">
-                  <b>상품만족도</b>
+               <div align="left">
+                  <b>상품만족도 :</b> 
+                  <c:forEach begin="1" end="${star }">
+                  <span class="fa fa-star" style="color: #e6e600;"></span> 
+                  </c:forEach>                   
                </div>
             </div>
             <div class="col-sm-5" style="border-left: 1px solid #8c8c8c;">
@@ -161,7 +164,7 @@ body {
          </div>
 
       </div>
-      <div class="col-sm-12" style="padding: 0px;">
+      <div class="col-sm-12" style="padding: 0px; border: 1px solid black;">
          <div data-spy="scroll" data-target=".navbar" data-offset="50">
             <nav class="navbar navbar-inverse navbar-fixed" style="margin: 0px;">
                <div class="container-fluid">
@@ -173,7 +176,7 @@ body {
                      </button>
                   </div>
                   <div>
-                     <div class="collapse navbar-collapse" id="myNavbar">
+                     <div class="collapse navbar-collapse" id="myNavbar" > 
                         <ul class="nav navbar-nav">
                            <li><a href="#section1">상품상세정보</a></li>
                            <li><a href="#section2">배송정보</a></li>

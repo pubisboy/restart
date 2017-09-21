@@ -366,4 +366,24 @@ public class ProductDao {
       }
       return br;
    }
+   
+   public int avgStar(String num) {
+	   SqlSession session =factory.openSession();
+	   int r=0;
+	   try {
+		   if(session.selectOne("avgStar", num)!=null) {
+		   r=session.selectOne("avgStar", num);
+		   }		   
+		   if(r==0) {
+			   r=10;
+		   }
+	       
+	      }catch (Exception e) { 
+	         e.printStackTrace();
+	      }finally {
+	         session.close();
+	      }
+	  
+	   return r/2;
+   }
 }

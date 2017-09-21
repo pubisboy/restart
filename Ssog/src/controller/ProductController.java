@@ -95,7 +95,7 @@ public class ProductController {
       if(paging==null) {
          paging="1";
       }
-      
+      int r=pdao.avgStar(num); 
       int page=Integer.parseInt(paging);
       Map m = pg.calcBetween(page);
       ModelAndView mav = new ModelAndView("t_base");
@@ -106,7 +106,7 @@ public class ProductController {
       }
       System.out.println("elist : "+elist);
       map=pdao.pro_detail(num);
-      int r=pdao.reviewCount(num);
+      int rr=pdao.reviewCount(num);
       pg.setDefaultSetting(8, 5);
       System.out.println(r);
       mav.addObject("section", "product/productdetail");
@@ -130,6 +130,8 @@ public class ProductController {
       System.out.println("존재여부 + "+exist);
       mav.addObject("exist", exist);
       }
+      mav.addObject("star", r); 
+      System.out.println("이 상품의 평점 =="+r);
       return mav; 
    }
    
