@@ -253,12 +253,22 @@
 					<b style="font-size: 17px;">기타 정보</b>
 				</div>
 				<div class="row" style="border: 1px solid #d9d9d9; border-top: 2px solid black; width: 100%; font-size: 12px;"> 
-					<div class="col-xs-2" style="width: 20%; border-right: 1px solid #d9d9d9; border-bottom: 1px solid #d9d9d9; min-height: 30%">구매 시 유의사항</div> 
-					<div class="col-xs-10" style="width: 80%; border-bottom: 1px solid #d9d9d9; min-height: 30%">구매유의사항들어갈곳</div>
-					<div class="col-xs-2" style="width: 20%; border-right: 1px solid #d9d9d9; min-height: 4%">주문동의</div> 
-					<div class="col-xs-10" style="width: 80%; min-height: 4%">  
-					주문하실 상품의 상품명, 상품가격, 내용 및 종류를 확인하였으며, 구매에 동의하시겠습니까?
-					<input type="checkbox" id="agree"> 동의합니다.(전자상거래법 제8조 제2항)
+					<div class="col-xs-2" style="width: 20%; border-right: 1px solid #d9d9d9; border-bottom: 1px solid #d9d9d9; min-height: 30%">
+					<span class="glyphicon glyphicon-ok" style="color: red;"><b style="font-size: 16.5px; color: #333333; letter-spacing: -1px;">구매시유의사항</b></span>  		
+					</div> 
+					<div class="col-xs-10" style="width: 80%; border-bottom: 1px solid #d9d9d9; min-height: 30%; padding-top: 10px;" align="left">
+					<span class="glyphicon glyphicon-ok-sign" style="font-size: 15px;"></span>
+					주문취소는 주문 <b style="color: #ff1a75;">당일 내에 고객센터(02-1234-1234)나 게시판</b>으로 글 남겨주시면 취소가 가능합니다.<br/>
+					<b style="color: #ff1a75;">제품이 이미 발송이 된 경우에는 취소가 불가능</b>합니다.
+					<br/><span class="glyphicon glyphicon-ok-sign" style="font-size: 15px;"></span>
+					교환 반품...
+					</div>
+					<div class="col-xs-2" style="width: 20%; border-right: 1px solid #d9d9d9; min-height: 4%"align="left">
+					<span class="glyphicon glyphicon-ok" style="color: red;"><b style="font-size: 17px; color: #333333; letter-spacing: -1px;">주문동의</b></span>  
+					</div> 
+					<div class="col-xs-10" style="width: 80%; min-height: 4%" align="left">  
+					<b style="padding-right: 60px;">주문하실 상품의 상품명, 상품가격, 내용 및 종류를 확인하였으며, 구매에 동의하시겠습니까?</b> 
+					<input type="checkbox" id="agree"> 동의합니다.
 					</div>
 				</div>
 			</div>

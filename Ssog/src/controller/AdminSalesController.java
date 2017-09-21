@@ -41,7 +41,7 @@ public class AdminSalesController {
 		try{
 			p = Integer.parseInt(pp);
 		}catch(Exception e){
-			System.out.println("변환 불가능");
+			System.out.println("변환 불가능"); 
 			p = 1;
 		}
 		params.put("p", p);
@@ -52,20 +52,28 @@ public class AdminSalesController {
 		String fTime = null;
 		
 		Calendar c = GregorianCalendar.getInstance();
+
+		Date bg = null;
+		Date en = null;
 		
 		String term = (String)params.get("term");
-		
-		if(params.get("term") == null){
+		String bytest = (String)params.get("by");
+		if(term == null || bytest.length() < 1){
+			term = "yy/MM/dd";
+			System.out.println("기본 진입");
 			SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd");
-			String f = sdf.format(c.getTime());
+			bg = c.getTime();
+			String f = sdf.format(bg);
 			c.add(Calendar.DATE, -6);
-			String b = sdf.format(c.getTime());
+			en = c.getTime();
+			String b = sdf.format(en);
 			bTime = b;
 			fTime = f;
 			params.put("term", "yy/MM/dd");
 			params.put("begin", b);
 			params.put("final", f);
 		}else{
+			System.out.println("변동 진입");
 			SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd");
 			System.out.println("term : "+term);
 			String by = (String)params.get("by");
@@ -79,11 +87,80 @@ public class AdminSalesController {
 			String ed = (String)params.get("ed");
 			ed = ed.equals("none") ? "1" :  ed;
 			
-
-			System.out.println(String.format("by : %s / bm : %s / bd : %s / ey : %s / em : %s / ed : %s", by,bm,bd,ey,em,ed));
-			String tmp = String.format("%s/%s/%s", by,bm,bd);
-			System.out.println("tmp : "+tmp);
-			Date tes = sdf.parse(tmp);
+			if(term.endsWith("yy")){
+				bm = "1";
+				bd = "1";
+				em = "12";
+				ed = "31";
+				
+				bg = sdf.parse(String.format("%s/%s/%s", by,bm,bd));
+				en = sdf.parse(String.format("%s/%s/%s", ey,em,ed));
+				bTime = String.format("%s/%s/%s", by,bm,bd);
+				fTime = String.format("%s/%s/%s", ey,em,ed);
+				bTime = sdf.format(sdf.parse(bTime));
+				fTime = sdf.format(sdf.parse(fTime));
+				System.out.println("bTime : "+bTime);
+				System.out.println("fTime : "+fTime);
+				params.put("by", by);
+				params.put("bm", "none");
+				params.put("bd", "none");
+				params.put("ey", ey);
+				params.put("em", "none");
+				params.put("ed", "none");
+				c.setTime(bg);
+				
+			}else if(term.endsWith("yy/MM")){
+				bd = "1";
+				ed = "1";
+				String s = String.format("%s/%s/%s", ey,em,ed);
+				Date yymm = sdf.parse(s);
+				Calendar cal = Calendar.getInstance();
+				c.setTime(yymm);
+				int day = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+				ed = Integer.toString(day);
+				
+				bg = sdf.parse(String.format("%s/%s/%s", by,bm,bd));
+				en = sdf.parse(String.format("%s/%s/%s", ey,em,ed));
+				bTime = String.format("%s/%s/%s", by,bm,bd);
+				fTime = String.format("%s/%s/%s", ey,em,ed);
+				bTime = sdf.format(sdf.parse(bTime));
+				fTime = sdf.format(sdf.parse(fTime));
+				System.out.println("bTime : "+bTime);
+				System.out.println("fTime : "+fTime);
+				
+				params.put("by", by);
+				params.put("bm", bm);
+				params.put("bd", "none");
+				params.put("ey", ey);
+				params.put("em", em);
+				params.put("ed", "none");
+				c.setTime(bg);
+				
+			}else if(term.endsWith("yy/MM/dd")){
+				bg = sdf.parse(String.format("%s/%s/%s", by,bm,bd));
+				en = sdf.parse(String.format("%s/%s/%s", ey,em,ed));
+				bTime = String.format("%s/%s/%s", by,bm,bd);
+				fTime = String.format("%s/%s/%s", ey,em,ed);
+				bTime = sdf.format(sdf.parse(bTime));
+				fTime = sdf.format(sdf.parse(fTime));
+				
+				params.put("by", by);
+				params.put("bm", bm);
+				params.put("bd", bd);
+				params.put("ey", ey);
+				params.put("em", em);
+				params.put("ed", ed);
+				c.setTime(bg);
+			}
+			
+			params.put("begin", bTime);
+			params.put("final", fTime);
+			
+			System.out.println(String.format("%s / %s / %s, %s / %s / %s", by, bm, bd, ey, em, ed));
+			System.out.println("begin : "+bTime);
+			System.out.println("final : "+fTime);
+			
+			/*Date tes = sdf.parse(tmp);
 			Date begind = new Date();
 			if(tes.getTime() > begind.getTime()){
 				by = Integer.toString(c.get(Calendar.YEAR));
@@ -96,9 +173,10 @@ public class AdminSalesController {
 				params.put("bm", bm);
 				params.put("bd", bd);
 			}
+
 			bTime = sdf.format(tes);
 			tmp = String.format("%s/%s/%s", ey,em,ed);
-			System.out.println("tmp : "+tmp);
+			// System.out.println("tmp : "+tmp);
 			tes = sdf.parse(tmp);
 			Date endd = new Date();
 			if(tes.getTime() > endd.getTime()){
@@ -117,7 +195,7 @@ public class AdminSalesController {
 			System.out.println("끝 : "+fTime);
 			c.setTime(sdf.parse(bTime));
 			params.put("begin", bTime);
-			params.put("final", fTime);
+			params.put("final", fTime);*/
 		}
 		
 		pg.setDefaultSetting(10, 10);
@@ -147,19 +225,41 @@ public class AdminSalesController {
 		System.out.println("lis size() : "+lis.size());
 		List days = new ArrayList<>();
 		String tmp = bTime;
+		System.out.println("시작 : "+bTime);
+		System.out.println("끝 :  "+fTime);
+		String tmp2 = tmp;
+		
+		if(term.equals("yy/MM")){
+			fTime = fTime.substring(0, 5);
+		}else if(term.equals("yy")){
+			fTime = fTime.substring(0, 2);
+		}
 		
 		while(true){
-			System.out.println("tmp : "+tmp);
-			System.out.println("fTime : "+fTime);
 			Map mtmp = new HashedMap();
-			tmp = sdf.format(c.getTime());
+			if(term.equals("yy/MM/dd")){
+				tmp = sdf.format(c.getTime());
+				tmp2 = tmp;
+				System.out.println("tmp : "+tmp);
+				System.out.println("tmp2 : "+tmp2);
+			}else if(term.equals("yy/MM")){
+				tmp = sdf.format(c.getTime());
+				tmp2 = tmp.substring(0, 5);
+				System.out.println("tmp : "+tmp);
+				System.out.println("tmp2 : "+tmp2);
+			}else if(term.equals("yy")){
+				tmp = sdf.format(c.getTime());
+				tmp2 = tmp.substring(0, 2);
+				System.out.println("tmp : "+tmp);
+				System.out.println("tmp2 : "+tmp2);
+			}
 			boolean bb = false;
 			for(Object o : lis){
 				Map m = (Map)o;
 				String t = (String)m.get("PAY_DATE");
 				System.out.println("t : "+t);
-				System.out.println("tmp : "+tmp);
-				if(t.equals(tmp)){
+				// System.out.println("tmp : "+tmp);
+				if(t.equals(tmp2)){
 					BigDecimal bd = (BigDecimal)m.get("PRICE");
 					mtmp.put("day", tmp);
 					mtmp.put("price", bd.intValue());
@@ -175,14 +275,22 @@ public class AdminSalesController {
 				mtmp.put("order", 0);
 			}
 			days.add(mtmp);
-			System.out.println("날짜 : "+tmp);
-			if(tmp.equals(fTime)){
+			// System.out.println("날짜 : "+tmp);
+			
+			System.out.println("tmp2 : "+tmp2+" // fTime : "+fTime);
+			if(tmp2.equals(fTime)){
 				break;
 			}
-			c.add(Calendar.DATE, 1);
+			if(term.equals("yy/MM/dd")){
+				c.add(Calendar.DATE, 1);
+			}else if(term.equals("yy/MM")){
+				c.add(Calendar.MONTH, 1);
+			}else if(term.equals("yy")){
+				c.add(Calendar.YEAR, 1);
+			}
 		}
-		
 		System.out.println("days : "+days);
+		
 		// 수정 필요 끝 부분
 		map.put("days", days);
 		map.put("years", li);

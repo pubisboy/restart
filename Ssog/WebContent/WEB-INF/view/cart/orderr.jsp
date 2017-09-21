@@ -275,8 +275,8 @@
 					<div class="col-xs-10" style="width: 80%; border-bottom: 1px solid #d9d9d9; min-height: 30%">구매유의사항들어갈곳</div>
 					<div class="col-xs-2" style="width: 20%; border-right: 1px solid #d9d9d9; min-height: 4%">주문동의</div> 
 					<div class="col-xs-10" style="width: 80%; min-height: 4%">  
-					주문하실 상품의 상품명, 상품가격, 내용 및 종류를 확인하였으며, 구매에 동의하시겠습니까?
-					<input type="checkbox" id="agree"> 동의합니다.(전자상거래법 제8조 제2항)
+					<b style="padding-right: 60px;">주문하실 상품의 상품명, 상품가격, 내용 및 종류를 확인하였으며, 구매에 동의하시겠습니까?</b> 
+					<input type="checkbox" id="agree"> 동의합니다.
 					</div>
 				</div>
 			</div>
