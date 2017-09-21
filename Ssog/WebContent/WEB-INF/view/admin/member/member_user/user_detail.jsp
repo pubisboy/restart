@@ -100,7 +100,6 @@ td{
         			<tr>
         				<th style="text-align: center; width: 50%;">등급</th>
         				<td style="text-align: center;">
-	        				<div style="text-align: center">이미지 src 위치</div>
 	        				<div style="text-align: center">${grade['0'].GRADE }</div>
         				</td>
         			</tr>
@@ -121,9 +120,6 @@ td{
         				<td>
         					<fmt:formatNumber value="${empty info['0'].POINT ? 0 : info['0'].POINT}" pattern="#,###"/>
         				</td>
-        			</tr>
-        			<tr>
-        				<td colspan="2" style="text-align: center"><a href="">로그</a></td>
         			</tr>
         		</tbody>
         	</table>
