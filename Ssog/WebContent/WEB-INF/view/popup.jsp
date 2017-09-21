@@ -4,7 +4,7 @@
 
 <style>
 .image {
-	background-image: url(/admin/popupImg/760a39e2-e08d-4133-bfaf-f5dbfbffdc0a);
+	background-image: url(/admin/popupImg/'${params.IMG_UUID}');
 	background-position: left top;
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
@@ -16,7 +16,7 @@
 		<div class="text">
 			<c:if test="${!empty params['0'].CONTENT }">
 				${params['0'].CONTENT }
-			</c:if>
+			</c:if> 
 		</div>
 		<div style="min-height: 60%;"></div>
 		<div class="button" style="bottom: 10px;" align="center">

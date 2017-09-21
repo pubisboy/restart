@@ -16,7 +16,7 @@ body {
    padding-top: 50px;
    height: 500px;
    color: #fff;
-   background-color: #1E88E5;
+   background-color: #80b3ff; 
 }
 
 #section2 {
@@ -30,18 +30,18 @@ body {
    padding-top: 50px;
    height: 500px;
    color: #fff;
-   background-color: #ff9800;
+   background-color: #80b3ff;
 }
 
 #section41 {
    padding-top: 50px;
    height: 500px;
    color: #fff;
-   background-color: #00bcd4;
+   background-color: #99c2ff;
 }
-
+ 
 #section42 {
-   padding-top: 50px;
+   padding-top: 50px; 
    height: 500px;
    color: #fff;
    background-color: #009688;
@@ -339,7 +339,13 @@ body {
 				"num" :${param.productNumber }
 			}
 		 }).done(function(result){
-			 window.alert(result.result);
+			if(result.result==true){
+			 window.alert("문의가 등록되었습니다. 마이 페이지에서 문의내역을 확인하실수 있습니다.");
+				location.reload();
+			}else{
+				window.alert("로그인을 하셔야만 문의가 가능합니다.");	
+				location.reload();
+			}
 		 })
 	   
 	   

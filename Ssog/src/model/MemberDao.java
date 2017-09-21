@@ -166,4 +166,18 @@ public class MemberDao {
 		}
 		return list;
 	}
+	public Map findName(String m){
+		Map map=new HashMap<>();
+		SqlSession session=factory.openSession();
+		try {
+			map=session.selectOne("findName", m);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			session.close();		
+		}
+		return map; 
+	}
+	
+	
 }

@@ -66,4 +66,7 @@
 		DELETE USER_MEMBER WHERE
 		ID=#{id}
 	</delete>
+	<select id="findName" parameterType="java.lang.String" resultType="java.util.HashMap">
+	select * from user_member where id=#{userid }
+	</select>
 </mapper>

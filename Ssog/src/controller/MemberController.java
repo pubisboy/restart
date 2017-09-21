@@ -46,7 +46,7 @@ public class MemberController {
 	AdminProductDao apd;
 
 	@RequestMapping({ "/", "/index.j" })
-	public ModelAndView toIndex(HttpServletRequest req) {
+	public ModelAndView toIndex(HttpServletRequest req,HttpSession session) {
 		ModelAndView mav = new ModelAndView("t_base");
 		Cookie[] cs = req.getCookies();
 		List denys = null;
@@ -172,10 +172,10 @@ public class MemberController {
 			msg.setSender(from);
 			InternetAddress to = new InternetAddress((String) param.get("email"));
 			msg.setRecipient(RecipientType.TO, to);
-			msg.setSubject("�솚�쁺�빀�땲�떎");
+			msg.setSubject("SSOG 인증번호 메일입니다.");
 			String text = "<h1>환영합니다</h1>";
-			text += "媛��엯�쓣 �솚�쁺�빀�땲�떎.";
-			text += "�씤利앸쾲�샇�뒗 : " + sfu + " �엯�땲�떎.";
+			text += "인증번호는.";
+			text +=  sfu + " 입니다.";
 			msg.setText(text, "UTF-8", "html");
 			sender.send(msg);
 			mav.addObject("rst", true);
@@ -213,6 +213,11 @@ public class MemberController {
 		}
 		if (bl == true) {
 			session.setAttribute("auth", (String) param.get("id"));
+			String userid=(String) param.get("id");
+			Map map=new HashMap<>(); 
+			map=mdao.findName(userid);
+			String name=(String) map.get("NAME");
+			session.setAttribute("username", name);
 		}
 		ModelAndView mav = new ModelAndView("tw_member/login_rst");
 		mav.addObject("bl", bl);

@@ -238,9 +238,7 @@
 	});
 	$(".revise").on("click", function() {
 		var cName = $(this).parent().prev().prev().prev().html(); 
-		window.alert(cName);
 		var cValue = "addcart" + $(this).prev().prev().val();
-		window.alert(cValue);
 		var d = new Date();
 		d.setTime(d.getTime() + (3 * 24 * 60 * 60 * 1000));
 		var expires = "expires=" + d.toUTCString();
@@ -265,9 +263,7 @@
 		$(".one").each(function() {
 			if($(this).prop("checked")==true){
 				var cName = $(this).val();
-				window.alert(cName);
 				var cValue = "new";
-				window.alert(cValue);
 				var d = new Date();
 				d.setTime(d.getTime() + (0));
 				var expires = "expires=" + d.toUTCString();
@@ -287,7 +283,7 @@
 		}else{
 			$(".pd_num").each(function() { 
 				pd2 += $(this).html()+"!"; 
-				
+				 
 			});
 			$(".qu").each(function() { 
 				pd1 += $(this).val()+"!";
