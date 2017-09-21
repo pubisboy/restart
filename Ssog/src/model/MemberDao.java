@@ -19,6 +19,7 @@ public class MemberDao {
 	
 	@Autowired
 	SqlSessionFactory factory;
+
 	
 	public boolean join(Map map) {
 		SqlSession session = factory.openSession();
@@ -34,6 +35,7 @@ public class MemberDao {
 			session.close();
 		}
 	}
+	
 	public boolean alarm(Map map) {
 		SqlSession session = factory.openSession();
 		try {
@@ -48,6 +50,19 @@ public class MemberDao {
 			session.close();
 		}
 	}
+	public boolean user_info(String id) {
+		SqlSession session = factory.openSession();
+		try {
+			session.insert("member.user_info", id);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}finally {
+			session.close();
+		}
+	}
+	
 	public boolean login(Map map) {
 		SqlSession session = factory.openSession();
 		System.out.println("dao map : "+map);
@@ -138,5 +153,17 @@ public class MemberDao {
 		}finally {
 			session.close();
 		}
+	}
+	public List<Map> terms(){
+		List<Map> list = new ArrayList<>();
+		SqlSession session = factory.openSession();
+		try {
+			list = session.selectList("member.terms");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			session.close();
+		}
+		return list;
 	}
 }

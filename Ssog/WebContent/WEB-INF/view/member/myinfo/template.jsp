@@ -107,9 +107,9 @@
 										<li style="font-size: 13px;">할인쿠폰<b style="color: #ff1a75; padding-left: 10px;">${coulist.size() }장</b></li>
 									</dd>
 									<dd>
-										<li style="font-size: 13px; padding-left: 50px;">적립금<fmt:formatNumber value="${grade.POINT }" pattern="#,###"/>원</li>     
-									</dd>
-								</dl>
+										<li style="font-size: 13px; padding-left: 33px;">적립금<b style="color: #ff1a75; padding-left: 23px;"><fmt:formatNumber value="${grade.POINT }" pattern="#,###"/>원</b></li>     
+									</dd>  
+								</dl> 
 							</div>
 							<div class="col-xs-3 col-sm-6"
 								style="width: 50%; margin-top: 7px; margin-bottom: 10px;"

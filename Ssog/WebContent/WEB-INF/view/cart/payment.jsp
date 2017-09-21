@@ -82,7 +82,7 @@
 						<c:forEach var="data" items="${map.ar1}" varStatus="vs">
 							<tr style="border-bottom: 1px solid #b3b3b3; font-size: 12.5px;">
 								<td>상품이미지</td>
-								<td>${map.ar2[vs.index]}</td>
+								<td class="pd_num">${map.ar2[vs.index]}</td>
 								<td>${data}</td>
 								<td></td>
 								<td></td>
@@ -92,7 +92,7 @@
 				</table>
 			</div>
 			<div>
-			<a href="/"><button>계속쇼핑</button></a>
+			<a href="/product/list.j"><button>계속쇼핑</button></a>
 			<a href="/"><button>확인</button></a>
 			</div>
 		</div>
@@ -112,5 +112,16 @@
 			return false;
 		}
 	}
+	$(".pd_num").each(function(){
+		var cName = $(this).html();
+		var cValue = "new";
+		var d = new Date(); 
+		d.setTime(d.getTime() + (0));
+		var expires = "expires=" + d.toUTCString();
+		cookies = cName + '=' + escape(cValue) + '; path=/ ';
+		cookies += ';' + expires + ';';
+		document.cookie = cookies;
+	})
+	
 </script>
 

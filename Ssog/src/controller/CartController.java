@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DaoSupport;
+import org.springframework.http.HttpRequest;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -218,7 +219,7 @@ public class CartController {
 
 	@RequestMapping("/payment.j")
 	public ModelAndView payment(@RequestParam Map param, HttpSession session, Map map,
-			@RequestParam(name = "pd1") String[] ar1, @RequestParam(name = "pd2") String[] ar2) {
+			@RequestParam(name = "pd1") String[] ar1, @RequestParam(name = "pd2") String[] ar2,HttpServletRequest resp) {
 		Map init = init(session);
 		Map info = mmdao.id_check_repetition((String) init.get("id"));
 		ModelAndView mav = new ModelAndView("tw_cart/payment");
@@ -233,12 +234,14 @@ public class CartController {
 		String ph2 = (String) param.get("phone2");
 		String ph3 = (String) param.get("phone3");
 		String phone = ph1 + "!" + ph2 + "!" + ph3;
-		param.put("phone", phone);
+		param.put("phone", phone); 
 		if(param.get("onecoupon")!="") {
 		String coupon = (String) param.get("onecoupon");
 		int index = coupon.indexOf("%");
 		String cupon = coupon.substring(0, index);
-		param.put("cupon", cupon);
+		param.put("cupon", cupon); 
+		boolean blll = cdao.coupondel(param);
+		System.out.println(blll); 
 		}
 		param.put("id", (String) init.get("id"));
 		System.out.println(param);
@@ -268,9 +271,26 @@ public class CartController {
 			data.put("pd2", pd2[i]);
 			cdao.orderupdate(data);
 		}
-		boolean blll = cdao.coupondel(param);
-		System.out.println(blll);
+		
+		Cookie[] cookies = resp.getCookies();
+		for (int i = 0; i < cookies.length; i++) {
+			if (cookies[i].getValue().startsWith("addcart")) {
+				String cookiename = cookies[i].getName();
+				String number = cookies[i].getValue().substring(7);
+			System.out.println("cookiename : "+cookiename);
+			System.out.println("number : "+number); 
+			}
+		}
+		String pt_chk = (String)param.get("chk_point");
+		if(pt_chk.equals("save")) {
+			boolean bool1 = cdao.user_recordupdate1(param);
+			System.out.println(bool1);
+		}else {
+			boolean bool2 = cdao.user_recordupdate2(param);
+			System.out.println(bool2); 
+		}  
 		return mav;
+		
 	}
 
 	@RequestMapping("/ascertain.j")
