@@ -10,11 +10,7 @@
 		,#{cupon,jdbcType=INTEGER}
 		,1
 		,#{etc,jdbcType=VARCHAR} 
-<<<<<<< HEAD
 		,#{address},#{receiver})
-=======
-		,#{address},#{receiver}) 
->>>>>>> branch 'ukiki2' of https://github.com/pubisboy/restart.git
 	</insert>
 	<select id="dhlprice" resultType="java.util.HashMap">
 		select * from dhl

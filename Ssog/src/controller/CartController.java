@@ -253,10 +253,6 @@ public class CartController {
 			param.put("pd2", pd2[i]); 
 			cdao.order(param); 
 		}
-<<<<<<< HEAD
-		 
-=======
->>>>>>> branch 'ukiki2' of https://github.com/pubisboy/restart.git
 		String totalcash = (String) param.get("totalcash");
 		map.put("address", address2);
 		
@@ -267,11 +263,6 @@ public class CartController {
 			System.out.println("결제완료");
 			cdao.userpoint(param);
 		}
-<<<<<<< HEAD
-
-		
-=======
->>>>>>> branch 'ukiki2' of https://github.com/pubisboy/restart.git
 		for (int i = 0; i < pd1.length; i++) {
 			Map data = new HashMap<>();
 			data.put("pd1", pd1[i]);

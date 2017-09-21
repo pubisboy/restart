@@ -247,8 +247,6 @@ public class AdminMemberDao {
 		return rst;
 	}
 	
-<<<<<<< HEAD
-=======
 	public List user_leave_list(Map map){
 		SqlSession session = factory.openSession();
 		List rst = null;
@@ -319,5 +317,4 @@ public class AdminMemberDao {
 		}
 		return b;
 	}
->>>>>>> branch 'ukiki2' of https://github.com/pubisboy/restart.git
 }
