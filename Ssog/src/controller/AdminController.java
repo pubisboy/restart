@@ -47,18 +47,16 @@ public class AdminController {
 	}
 
 	@RequestMapping("/loginExec.ja")
-	public String loginExec(HttpSession session, @RequestParam Map<String, Object> params, Map map) {
+	public String loginExec(HttpSession session, @RequestParam Map<String, Object> params) {
 		boolean b = ad.login(params);
 		System.out.println("b : "+b);
 		if (b) {
 			session.setAttribute("admin", (String)params.get("id"));
 			System.out.println("session의 admin : "+session.getAttribute("admin"));
-			map.put("t", "/index.ja");
+			return "redirect:/admin/index.ja";
 		} else {
-			map.put("f", "/login/login.ja");
+			return "/admin/login/login";
 		}
-		map.put("rst", b);
-		return "/admin/result";
 	}
 
 	@RequestMapping({"/","/index.ja"})

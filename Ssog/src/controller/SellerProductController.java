@@ -62,8 +62,6 @@ public class SellerProductController {
 	public Map cateajax(@RequestParam(name="b_cate") String big_cate) {
 		Map m = new HashMap<>();
 		switch(big_cate) {
-		case "*":
-			break;
 		case "cate" : 
 			List list = sdao.smallcateList();
 			System.out.println("list : "+list);
