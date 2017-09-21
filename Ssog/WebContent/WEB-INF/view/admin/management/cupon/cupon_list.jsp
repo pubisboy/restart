@@ -47,6 +47,12 @@
 	</table>
 	<div align="right"><button type="button" class="btn" id="delCom">강제 삭제</button></div>
 	<div align="center">
+	
+		<c:if test="${paging.startPageNo ne paging.firstPageNo }">
+			<a
+				href="/admin/management/cupon/cupon_list.ja?p=${paging.firstPageNo}&value=${params.value}&sort=${params.sort}">&lt;&lt;</a>
+		</c:if>
+		
 		<c:if test="${paging.startPageNo ne paging.firstPageNo }">
 			<a
 				href="/admin/management/cupon/cupon_list.ja?p=${paging.startPageNo - 1}&value=${params.value}&sort=${params.sort}">&lt;</a>
@@ -62,6 +68,11 @@
 		<c:if test="${paging.endPageNo ne paging.finalPageNo }">
 			<a
 				href="/admin/management/cupon/cupon_list.ja?p=${paging.endPageNo + 1}&value=${params.value}&sort=${params.sort}">&gt;</a>
+		</c:if>
+		
+		<c:if test="${paging.endPageNo ne paging.finalPageNo }">
+			<a
+				href="/admin/management/cupon/cupon_list.ja?p=${paging.finalPageNo}&value=${params.value}&sort=${params.sort}">&gt;&gt;</a>
 		</c:if>
 	</div>
 

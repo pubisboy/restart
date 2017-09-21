@@ -75,6 +75,7 @@ public class ProductController {
 		mav.addObject("list", list);
 		mav.addObject("paging", mm);
 		mav.addObject("originlist", list1);
+		mav.addObject("origin1", arr); 
 		String ori = "";
 		if (arr != null) {
 			for (String s : arr) {
@@ -120,6 +121,12 @@ public class ProductController {
 		Map page1=pg.calcPaging(page, r);
 		mav.addObject("paging", page1);
 		mav.addObject("list",list);
+		String userid=(String) session.getAttribute("auth");
+		System.out.println("유저 아이디="+userid);
+		boolean exist=pdao.findOrder(userid);
+		System.out.println("존재여부 + "+exist);
+		mav.addObject("exist", exist);
+		
 		return mav; 
 	}
 	
