@@ -4,7 +4,7 @@
 
 <style>
 .image {
-	background-image: url(/admin/popupImg/760a39e2-e08d-4133-bfaf-f5dbfbffdc0a);
+	background-image: url(/admin/popupImg/${params.IMG_UUID});
 	background-position: left top;
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
