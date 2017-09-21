@@ -41,7 +41,7 @@ public class AdminSalesController {
 		try{
 			p = Integer.parseInt(pp);
 		}catch(Exception e){
-			System.out.println("변환 불가능");
+			System.out.println("변환 불가능"); 
 			p = 1;
 		}
 		params.put("p", p);
