@@ -87,9 +87,9 @@ td{
         				</td>
         			</tr>
         			<tr>
-        				<th style="text-align: center; width: 50%;">판매총액</th>
+        				<th style="text-align: center; width: 50%;">판매총액<br/><sub>(배송비제외)</sub></th>
         				<td>
-        					<fmt:formatNumber value="${empty info['0'].PRICE_TOTAL ? 0 : info['0'].PRICE_TOTAL}" pattern="#,###"/>원
+        					<fmt:formatNumber value="${empty info['0'].real_total ? 0 : info['0'].real_total}" pattern="#,###"/>원
         				</td>
         			</tr>
         			<tr>

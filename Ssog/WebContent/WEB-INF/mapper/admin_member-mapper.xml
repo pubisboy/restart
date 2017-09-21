@@ -78,6 +78,14 @@
 		select m.id, m.name, m.phone, m.brand, m.joindate, m.account, m.bank, m.memo, r.PRICE_TOTAL from (select * from SELLER_MEMBER where id=#{id}) m left join SELLER_RECORD r on m.id=r.id
 	</select>
 	
+	<select id="seller_record" parameterType="java.lang.String" resultType="java.util.HashMap">
+		select sum(price) price, sum(dhl) charge from 
+		(select rs.* from
+		(select p.seller_id, o.price, o.dhl from 
+		(select * from ORDERTBL where state = 5) o left join PRODUCTTBL p on o.pro_num = p.pro_num) rs
+		where seller_id = #{id}) rst group by seller_id
+	</select>
+	
 	<select id="seller_detail_grade" parameterType="java.lang.Integer" resultType="java.util.HashMap">
 		select * from (select g.*, ROWNUM rnum from (select * from seller_grade where #{BUY_TOTAL} >= standard order by standard desc) g) where rnum = 1
 	</select>

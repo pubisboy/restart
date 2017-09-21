@@ -20,8 +20,7 @@ public class SellerFilter implements Filter {
 		HttpServletResponse resp = (HttpServletResponse)response;
 		HttpSession session = req.getSession();
 		
-		String seller = (String)session.getAttribute("seller_id"); 
-		if(seller != null){
+		if(session.getAttribute("seller_id") != null){
 			chain.doFilter(req, resp);
 		}else{
 			String uri = req.getRequestURI();

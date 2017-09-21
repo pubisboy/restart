@@ -170,6 +170,10 @@
 	<insert id="QnAReg" parameterType="java.util.HashMap">
 	insert into q_and_a values(q_and_a_seq.nextval,3,'상품문의',#{comment },#{userid },sysdate,#{num })
 	</insert>
+	
+	<select id="findOrder" parameterType="java.lang.String" resultType="java.util.HashMap">
+	select * from ordertbl where user_id=#{userid}
+	</select>
  	
  
  </mapper>

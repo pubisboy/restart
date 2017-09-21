@@ -1009,4 +1009,37 @@ public class AdminManagementController {
 		map.put("f", "/management/cupon/cupon_write.ja");
 		return "/admin/result";
 	}
+	
+	@RequestMapping("/etc/etc.ja")
+	public String etc(Map map){
+		int dhl = ad.getDhl();
+		int rate = ad.getPoint();
+		map.put("dhl", dhl);
+		map.put("rate", rate);
+		map.put("section", "/management/etc/etc");
+		return "ad_management";
+	}
+	
+	@RequestMapping("/etc/updateEtc.ja")
+	@ResponseBody
+	public Map updateEtc(@RequestParam Map params){
+		System.out.println(params);
+		String type = (String)params.get("type");
+		int val = Integer.parseInt((String)params.get("val"));
+		boolean b = false;
+		Map map = new HashMap<>();
+		if(type.equals("charge")){
+			b = ad.updateDhl(val);
+			int r = ad.getDhl();
+			DecimalFormat df = new DecimalFormat("#,###");
+			String rst = df.format(r);
+			map.put("rst", rst);
+		}else{
+			b = ad.updatePoint(val);
+			int rst = ad.getPoint();
+			map.put("rst", rst);
+		}
+		map.put("b", b);
+		return map;
+	}
 }

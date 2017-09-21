@@ -26,12 +26,13 @@
 <table class="table table-bordered" style="text-align: center;">
 	<thead>
 		<tr>
-			<th width="10%;" style="text-align: center;">주문번호</th>
-	       	<th width="10%;" style="text-align: center;">상품번호</th>
-	       	<th width="30%;" style="text-align: center;">상품이름</th>
-	       	<th width="20%;" style="text-align: center;">등록일</th>
-	       	<th width="10%;" style="text-align: center;">구매자</th>
-	       	<th width="10%;" style="text-align: center;">판매자</th>
+			<th width="9%;" style="text-align: center;">주문번호</th>
+	       	<th width="9%;" style="text-align: center;">상품번호</th>
+	       	<th style="text-align: center;">상품이름</th>
+	       	<th width="16%;" style="text-align: center;">주문일</th>
+	       	<th width="16%;" style="text-align: center;">결제일</th>
+	       	<th width="9%;" style="text-align: center;">구매자</th>
+	       	<th width="9%;" style="text-align: center;">판매자</th>
 	       	<th width="10%;" style="text-align: center;">상태</th>
     	</tr>
 	</thead>
@@ -44,6 +45,16 @@
 				<td>
 					<fmt:formatDate value="${i.ORDER_DATE }" pattern="yyyy:MM:dd hh:mm" var="time" />${time }
 				</td>
+				<c:choose>
+					<c:when test="${empty i.PAY_DATE }">
+						''
+					</c:when>
+					<c:otherwise>
+						<td>
+							<fmt:formatDate value="${i.PAY_DATE }" pattern="yyyy:MM:dd hh:mm" var="time" />${time }
+						</td>
+					</c:otherwise>
+				</c:choose>
 				<td>${i.USER_ID }</td>
 				<td>${i.SELLER_ID }</td>
 				<td>${i.ST }</td>
@@ -52,6 +63,11 @@
 	</tbody>
 </table>
 <div align="center">
+
+	<c:if test="${paging.startPageNo ne paging.firstPageNo }">
+		<a href="/admin/sales/order/order_list.ja?p=${paging.firstPageNo}&type=${params.type }&value=${params.value}&state=${params.state}&sort=${params.sort}">&lt;&lt;</a>
+	</c:if>
+	
 	<c:if test="${paging.startPageNo ne paging.firstPageNo }">
 		<a href="/admin/sales/order/order_list.ja?p=${paging.startPageNo - 1}&type=${params.type }&value=${params.value}&state=${params.state}&sort=${params.sort}">&lt;</a>
 	</c:if>
@@ -62,6 +78,10 @@
 	
 	<c:if test="${paging.endPageNo ne paging.finalPageNo }">
 		<a href="/admin/sales/order/order_list.ja?p=${paging.endPageNo + 1}&type=${params.type }&value=${params.value}&state=${params.state}&sort=${params.sort}">&gt;</a>
+	</c:if>
+	
+	<c:if test="${paging.endPageNo ne paging.finalPageNo }">
+		<a href="/admin/sales/order/order_list.ja?p=${paging.finalPageNo}&type=${params.type }&value=${params.value}&state=${params.state}&sort=${params.sort}">&gt;&gt;</a>
 	</c:if>
 </div>
 

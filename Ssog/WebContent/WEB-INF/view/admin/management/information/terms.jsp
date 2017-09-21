@@ -29,6 +29,11 @@
 	</tbody>
 </table>
 <div align="center">
+
+	<c:if test="${paging.startPageNo ne paging.firstPageNo }">
+		<a href="/admin/management/information/terms.ja?p=${paging.firstPageNo}&value=${params.value}">&lt;&lt;</a>
+	</c:if>
+	
 	<c:if test="${paging.startPageNo ne paging.firstPageNo }">
 		<a href="/admin/management/information/terms.ja?p=${paging.startPageNo - 1}&value=${params.value}">&lt;</a>
 	</c:if>
@@ -39,6 +44,10 @@
 	
 	<c:if test="${paging.endPageNo ne paging.finalPageNo }">
 		<a href="/admin/management/information/terms.ja?p=${paging.endPageNo + 1}&value=${params.value}">&gt;</a>
+	</c:if>
+	
+	<c:if test="${paging.endPageNo ne paging.finalPageNo }">
+		<a href="/admin/management/information/terms.ja?p=${paging.finalPageNo}&value=${params.value}">&gt;&gt;</a>
 	</c:if>
 </div>
 
