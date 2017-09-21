@@ -1,28 +1,48 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<style>
+	.wrap {
+		width:100%; margin-left:10%;
+	}
+	
+	.txt {
+		 border-radius:3px;
+		 vertical-align: bottom;
+		 margin:0 3px;
+	}
+	
+	input[type=text], select{
+	    box-sizing: border-box;
+	    font-size: 14px;
+	    padding: 2px 2px;
+	    border-radius:3px;
+	    -webkit-transition: width 0.4s ease-in-out;
+	    transition: width 0.4s ease-in-out;
+	}
+</style>
 <div class="wrap">
 		<h3 style="margin: 0">회원가입</h3>
 		<br>
-		<form action="/seller/alert/join_rst.j" method="post">
+		<form action="/seller/alert/join_rst.j" method="post" style="width:100%">
 			<div class="form-group">
 				<input class="form-control" type="text" placeholder="아이디" name="id"
-					id="id" required style="width: 90%;"/>
+					id="id" required/>
 				<p id="id_chk"></p>
 				<input class="form-control" type="password" placeholder="●●●●●"
-					name="pass" id="pass" required style="width: 90%;"/><br/>
+					name="pass" id="pass" required/><br/>
 			</div>
 			<div class="form-group">
 				<input class="form-control" type="text" placeholder="이름" name="name"
-					id="name" required style="width: 90%;"/><br/>
+					id="name" required/><br/>
 					<hr/>
 					<input class="form-control" type="text" placeholder="휴대폰번호(-제외)" name="phone"
-					id="phone" required style="width: 90%;"/><br/>
+					id="phone" required/><br/>
 					<input class="form-control" type="text" placeholder="브랜드명" name="brand"
-					id="brand" required style="width: 90%;"/><br/>
+					id="brand" required/><br/>
 					
 					<table> 
 						<tr><td>
-							<select name="bank" style="width:7ex; height:33px; border-radius:3px;  style=" vertical-align: bottom;"">
+							<select name="bank" style="width:60px;" class="txt">
 								<option value="국민">국민</option>
 								<option value="NH농협">NH농협</option>
 								<option value="신한">신한</option>
@@ -31,8 +51,7 @@
 							</select>
 						</td>
 						<td>
-							<input class="form-control" type="text" placeholder="계좌번호(-제외)" name="account"
-							id="account" required style="width: 80%; vertical-align: bottom;"/>
+							<input type="text" placeholder="계좌번호(-제외)" name="account" id="account" style="width: 100%;" class="form-control txt" required />
 							<p id="account_chk"></p>
 						</td></tr>
 					</table>

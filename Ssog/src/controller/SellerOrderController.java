@@ -85,12 +85,23 @@ public class SellerOrderController {
 //		System.out.println("map:" + map);
 		
 		List list = sdao.salesList(map);
-		System.out.println(map);
+		int sum_price=0;
+		int order_total = sdao.orderTotal(map);
+		if(order_total > 0) {
+			sum_price = sdao.sumPrice(id);
+		}
+		Map grade_map = sdao.sellerGrade(sum_price);
+		System.out.println("grade_map:" + grade_map);
+		String grade = (String) grade_map.get("GRADE");
+		session.setAttribute("grade", grade);
+		
 		mav.addObject("section", "seller/order/sales/list");
 		mav.addObject("list", list);
 		mav.addObject("p", p);
 		mav.addObject("page", rst);
 		mav.addObject("total", total);
+		mav.addObject("grade", grade);
+		mav.addObject("sum_price", sum_price);
 		return mav;
 	}
 }

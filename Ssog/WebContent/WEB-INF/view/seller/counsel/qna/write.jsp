@@ -41,65 +41,57 @@
 	#counsel_table td 		{padding:10px; border-bottom:1px solid #595959; vertical-align: middle;}
 	#counsel_table .td_left {border-right:1px solid #595959; background:#f2f2f2;}
 	
-	.wrap {padding:10px}
-	.wrap small {color:gray;}
+	.wrap {
+		width:80%; margin-left:10%;
+	}
+	.wrap .table {
+		table-layout: fixed;
+	}
+	.wrap .table td {
+	    overflow: hidden;
+	    text-overflow:ellipsis; /*overflow: hidden; 속성과 같이 써줘야 말줄임 기능이 적용된다.*/
+	    white-space:nowrap; /*<td>보다 내용이 길경우 줄바꿈 되는것을 막아준다.*/
+	}
+	
 </style>
 
 <div class="wrap">
 	<p style="padding-bottom: 10px; text-align:left">
 		<span class="glyphicon glyphicon-info-sign " style="padding-right: 10px;"></span>
-		<b style="padding-right: 10px;">1:1 문의</b>
-		<small>고객님께서 문의하신 내용에 대한 답변은 상담관리 > 1:1 문의 게시판에서 확인 가능합니다.</small>
+		<b style="padding-right: 10px;">Q&A 답변</b>
 	</p>
 	
 	<div style="border-top: 2px solid #595959;">
-		<form action="/seller/counsel/write_ok.j" enctype="multipart/form-data" method="post">
+		<form action="/seller/counsel/qna/write_ok.j?num=${map.NUM}" enctype="multipart/form-data" method="post">
 			<table id="counsel_table" class="table">
 				<tr>
 					<td class="td_left">문의유형</td>
 					<td colspan="3">
-						<select class="form-control" name="cate" id="cate" style="width: 200px;height: 33px;"> 
-							<option>---선택---</option>
-							<c:forEach var="i" items="${cate}">
-								<option value="${i.NUM }">${i.CATEGORY}</option>
-							</c:forEach>
-						</select>
+						${map.CATEGORY}
 					</td>
-				</tr>
-				<tr>
-					<td width="20%" class="td_left">이름</td>
-					<td width="30%">${map.NAME}</td>
-					<td width="20%" class="td_left" style="border-left:1px solid #595959">연락가능 전화번호</td>
-					<td width="30%">${map.PHONE}</td>
 				</tr>
 				<tr>
 					<td class="td_left">제목</td>
 					<td colspan="3">
-						<input type="text" style="width: 100%;" name="title">
+						<input type="text" style="width: 100%;" name="title" value="RE:${map.TITLE}">
 					</td>
 				</tr>
 				<tr>
 					<td class="td_left">문의 내용</td>
 					<td colspan="3">
-						<textarea name="content" rows="4" style="width:100%; resize:none; overflow: scroll;"></textarea><br>
-						<small style="font-size: 11px; padding-right: 60px;">* 정확하고 빠른 답변을 위하여 질문하시는 내용을 구체적으로 적어주세요. 
-						내용은 500자 이내로 입력하세요.</small>
-					</td>
-				</tr>
-				<tr>
-					<td class="td_left">이미지첨부</td>
-					<td colspan="3">  
-						<input type="file" name="f">
-						<button type="button" onClick="location='#'">삭제</button><br>
-						<small style="font-size: 11px; padding-right: 60px;">
-							*첨부 가능 파일형식 : JPG(JPEG), GIF, PDF<br/>
-							* 파일명은 영문/숫자만 가능합니다.
-						</small>
+						<textarea name="content" rows="20" style="width:100%; resize:none; overflow: scroll;">
+
+
+
+-------------------------------------------------------------------------
+RE:
+${map.CONTENT}						
+						</textarea><br>
 					</td>
 				</tr>
 			</table>
-			<input type="submit" value="문의하기" class="btn btn-custom"> 
-			<button type="button" class="btn btn-custom2" onClick="location='/seller/counsel/list.j'">취소하기</button>
+			<button type="submit" class="btn btn-custom">확인</button> 
+			<button type="button" class="btn btn-custom2" onClick="location='/seller/counsel/qna/list.j'">취소하기</button>
 		</form>
 	</div>
 	

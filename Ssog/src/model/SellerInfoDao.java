@@ -1,6 +1,7 @@
 package model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -120,6 +121,19 @@ public class SellerInfoDao {
 		}
 	}
 	
-	
+	public List<Map<String,Object>> gradeList(){
+		SqlSession session = factory.openSession();
+		try {
+			List<Map<String,Object>> list =  session.selectList("seller.grade_list");
+			session.commit();
+			return list;
+		} catch(Exception e){
+			e.printStackTrace();
+			session.rollback();
+			return null;
+		} finally{
+			session.close();
+		}
+	}
 	
 }
