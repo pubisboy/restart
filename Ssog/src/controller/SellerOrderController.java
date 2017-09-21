@@ -90,7 +90,7 @@ public class SellerOrderController {
 		if(order_total > 0) {
 			sum_price = sdao.sumPrice(id);
 		}
-		Map grade_map = sdao.sellerGrade(sum_price);
+		Map grade_map = sdao.sellerGrade(sum_price); 
 		System.out.println("grade_map:" + grade_map);
 		String grade = (String) grade_map.get("GRADE");
 		session.setAttribute("grade", grade);
