@@ -50,7 +50,7 @@ public class SalesExcel extends AbstractXlsView{
 			BigDecimal price = (BigDecimal)m.get("PRICE");
 			input.createCell(1).setCellValue(price.toString());
 			BigDecimal charge = (BigDecimal)m.get("CHARGE");
-			input.createCell(2).setCellValue(price.toString());
+			input.createCell(2).setCellValue(charge.toString());
 			int tmp = price.intValue() - charge.intValue();
 			input.createCell(3).setCellValue(tmp);
 			BigDecimal count = (BigDecimal)m.get("COUNT");

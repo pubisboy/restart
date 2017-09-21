@@ -41,7 +41,7 @@ td{
         			<tr>
         				<th class="type">생년월일</th>
         				<td>
-        					${user_detail_info['0'].BIRTH['0'] }년
+        					${info['0'].BIRTH['0'] }년
         					${info['0'].BIRTH['1'] }월
         					${info['0'].BIRTH['2'] }일
         				</td>

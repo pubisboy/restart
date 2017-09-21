@@ -51,6 +51,6 @@
 <script src="<c:url value="/etc.js" />"></script>
 <script>
 	$("#image").on("click", function(){
-		window.open("/resource/img_counsel/${list['0'].IMAGE_UUID}", "", "width=500, height=500");
+		window.open("/resource/img_counsel_seller/${list['0'].IMAGE_UUID}", "", "width=500, height=500");
 	});
 </script>

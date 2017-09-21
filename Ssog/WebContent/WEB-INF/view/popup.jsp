@@ -10,7 +10,7 @@
 }
 </style>
 <input type="hidden" id="num" value="${params['0'].POPUP_NUM }"/>
-<div class="image" style="width: 100%; height: 95%; background-image: url('/admin/popupImg/${empty params[0].IMG_UUID ? 'default' : params[0].IMG_UUID}');">
+<div class="image" style="width: 100%; height: 95%; background-image: url('/admin/popupImg/${empty params[0].IMG_UUID ? 'default.jpg' : params[0].IMG_UUID}');">
 	<div class="text">
 		<c:if test="${!empty params['0'].CONTENT }">
 			${params['0'].CONTENT }

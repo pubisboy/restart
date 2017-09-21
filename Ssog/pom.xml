@@ -22,7 +22,7 @@
 				<configuration>
 					<warSourceDirectory>WebContent</warSourceDirectory>
 				</configuration>
-			</plugin>
+			</plugin> 
 		</plugins> 
 	</build>  
 
