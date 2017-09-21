@@ -50,7 +50,9 @@ public class ProductRegController {
 		ModelAndView mav=new ModelAndView("t_el_seller");
 		String path = application.getRealPath("/img/pro_img");
 		System.out.println(path);
-		if(map.get("event")!=null) {
+		System.out.println("아 시발"+map.get("event"));
+		if(map.get("event") != null) {
+			System.out.println("호로로로로로롤"); 
 			pdao.useEvent(map);
 		}
 		File dir=new File(path);
@@ -70,11 +72,11 @@ public class ProductRegController {
 		}
 		map.put("seller", session.getAttribute("seller_id"));
 		map.put("uuid", uuid);
-		boolean br=pdao.productReg(map);
+		boolean br=pdao.productReg(map); 
 		
 		System.out.println("넘어온 맵은???? +"+map );
-		pdao.useEvent(map);
-		mav.addObject("rst", br);
+		//pdao.useEvent(map);
+		mav.addObject("rst", br); 
 		mav.addObject("section", "seller/alert/register_rst");
 		return mav; 
 	}

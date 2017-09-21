@@ -33,7 +33,7 @@ img:hover {
 	<tr style="height: 5%;"><td style=" background-color: #eaeaea;">분류</td>
 	<td colspan="3">	<div class="navbar-form" style="padding: 0px; margin: 0px;">
 	<select class="form-control" style="width: 30%;" id="large_cate"><option>대분류</option>
-	<c:forEach items="${large_cate }" var="i" varStatus="vs">
+	<c:forEach items="${large_cate }" var="i" varStatus="vs"> 
 		<option value="${i.B_CATE }">${i.NAME }</option>			
 	</c:forEach>
 	</select><select class="form-control" style="width: 30%; margin-left: 78px;" id="small_cate" name="category"><option>소분류</option></select> 
