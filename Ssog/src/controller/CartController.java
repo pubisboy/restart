@@ -240,6 +240,8 @@ public class CartController {
 		int index = coupon.indexOf("%");
 		String cupon = coupon.substring(0, index);
 		param.put("cupon", cupon);
+		boolean blll = cdao.coupondel(param);
+		System.out.println(blll); 
 		}
 		param.put("id", (String) init.get("id"));
 		System.out.println(param);
@@ -269,8 +271,8 @@ public class CartController {
 			data.put("pd2", pd2[i]);
 			cdao.orderupdate(data);
 		}
-		boolean blll = cdao.coupondel(param);
-		System.out.println(blll);
+		
+		
 		Cookie[] cookies = resp.getCookies();
 		for (int i = 0; i < cookies.length; i++) {
 			if (cookies[i].getValue().startsWith("addcart")) {
