@@ -234,7 +234,7 @@ public class CartController {
 		String ph2 = (String) param.get("phone2");
 		String ph3 = (String) param.get("phone3");
 		String phone = ph1 + "!" + ph2 + "!" + ph3;
-		param.put("phone", phone);
+		param.put("phone", phone); 
 		if(param.get("onecoupon")!="") {
 		String coupon = (String) param.get("onecoupon");
 		int index = coupon.indexOf("%");
