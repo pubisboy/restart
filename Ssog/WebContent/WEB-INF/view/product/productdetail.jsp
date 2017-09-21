@@ -194,9 +194,9 @@ body {
             </div>
             <div id="section3" class="container-fluid">
                <div align="left">
-                  <b style="font-size: 19px;">구매후기<b>
+                  <b style="font-size: 19px;">구매후기<b> 
                </div>
-               <div>
+               <div style="height: 320px;">
                   <table class="table table-hover" style="font-size: 14px;">
                      <thead>
                         <tr>
