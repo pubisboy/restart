@@ -72,7 +72,7 @@
 			<tr>
 				<td>${i.PAY_DATE }</td>
 				<td><fmt:formatNumber value="${i.PRICE }" pattern="#,###" />원</td>
-				<td><fmt:formatNumber value="${i.CHARGE }" pattern="#,###" />원</td>
+				<td><fmt:formatNumber value="${empty i.CHARGE ? 0 : i.CHARGE}" pattern="#,###" />원</td>
 				<td><fmt:formatNumber value="${i.PRICE - i.CHARGE }" pattern="#,###" />원</td>
 				<td><fmt:formatNumber value="${i.COUNT }" pattern="#,###" />개</td>
 			</tr>

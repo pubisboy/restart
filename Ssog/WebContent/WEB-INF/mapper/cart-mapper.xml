@@ -8,7 +8,7 @@
 		ORDERTBL(order_num,pro_num,user_id,order_qty,state,order_date,pay_date,price,cupon_type,dhl,etc,address,receiver)
 		values(ORDER_SEQ.NEXTVAL,#{pd2},#{id},#{pd1},2,sysdate,sysdate,#{totalcash}
 		,#{cupon,jdbcType=INTEGER}
-		,1
+		,(select charge from dhl)
 		,#{etc,jdbcType=VARCHAR} 
 		,#{address},#{receiver}) 
 	</insert>

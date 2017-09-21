@@ -6,9 +6,9 @@
  	<select id="getSales_list" parameterType="java.util.HashMap" resultType="java.util.HashMap">
  		select rst.* from
 		(select b.*, rownum rnum from 
-		(select pay_date, count(*) count, sum(price) price, sum(charge) charge from
-		(select order_qty, to_char(pay_date, #{term}) pay_date, price, charge from
-		(select * from ordertbl o left join dhl d on o.dhl = d.num)
+		(select pay_date, count(*) count, sum(price) price, sum(dhl) charge from
+		(select order_qty, to_char(pay_date, #{term}) pay_date, price, dhl from
+		(select * from ordertbl)
 		where state = 5 and to_date(to_char(pay_date)) between to_date(#{begin}) and to_date(#{final}) )
 		group by pay_date order by pay_date
 		<choose>
@@ -25,18 +25,18 @@
  	
  	<select id="getSales_list_count" parameterType="java.util.HashMap" resultType="java.lang.Integer">
  		select count(*) from 
-		(select pay_date, count(*) count, sum(price) price, sum(charge) charge from
-		(select order_qty, to_char(pay_date, #{term}) pay_date, price, charge from
-		(select * from ordertbl o left join dhl d on o.dhl = d.num)
+		(select pay_date, count(*) count, sum(price) price, sum(dhl) charge from
+		(select order_qty, to_char(pay_date, #{term}) pay_date, price, dhl from
+		(select * from ordertbl)
 		where state = 5 and to_date(to_char(pay_date)) between to_date(#{begin}) and to_date(#{final}) )
 		group by pay_date)b
  	</select>
  
  	<select id="getSales_excel" parameterType="java.util.HashMap" resultType="java.util.HashMap">
 		select b.* from 
-		(select pay_date, count(*) count, sum(price) price, sum(charge) charge from
-		(select order_qty, to_char(pay_date, #{term}) pay_date, price, charge from
-		(select * from ordertbl o left join dhl d on o.dhl = d.num)
+		(select pay_date, count(*) count, sum(price) price, sum(dhl) charge from
+		(select order_qty, to_char(pay_date, #{term}) pay_date, price, dhl from
+		(select * from ordertbl)
 		where state = 5 and to_date(to_char(pay_date)) between to_date(#{begin}) and to_date(#{final}) )
 		group by pay_date order by pay_date
 		<choose>
