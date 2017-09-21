@@ -4,19 +4,14 @@
 
 <style>
 .image {
-<<<<<<< HEAD
-	background-image: url(/admin/popupImg/'${params.IMG_UUID}');
-=======
-	background-image: url(/admin/popupImg/${params.IMG_UUID});
->>>>>>> branch 'master' of https://github.com/pubisboy/restart.git
 	background-position: left top;
-	background-repeat: no-repeat;
+	background-repeat: no-repeat; 
 	background-size: 100% 100%;
 }
 </style>
 <input type="hidden" id="num" value="${params['0'].POPUP_NUM }"/>
 <c:if test="${!empty params['0'].IMG_UUID }">
-	<div class="image" style="width: 100%; height: 95%;">
+	<div class="image" style="width: 100%; height: 95%; background-image: url('/admin/popupImg/${params.IMG_UUID}');">
 		<div class="text">
 			<c:if test="${!empty params['0'].CONTENT }">
 				${params['0'].CONTENT }
