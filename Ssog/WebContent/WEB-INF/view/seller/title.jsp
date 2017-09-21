@@ -24,9 +24,6 @@
 	border-radius: 0px;
 }
 </style>
-<div style="min-height: 8%; display: block;">배너뜨는창
-<a href="javascript:closeToplineBanner()" class="btn_clse">레이어닫기</a>
-</div>
 <div>
 	<div class="navbar navbar-inverse navbar-fixed"
 		style="margin-bottom: 0px;">
@@ -106,10 +103,10 @@
 			</div>
 			<div class="modal-footer">
 				<p>
-					<a href="/seller/join.j">회원가입</a>
+					<a href="/seller/info/join.j">회원가입</a>
 				</p>
 				<p>
-					<a href="/seller/find.j">아이디 또는 암호를 잊으셨습니까? </a>
+					<a href="/seller/info/find.j">아이디 또는 암호를 잊으셨습니까? </a>
 				</p>
 			</div>
 		</div>

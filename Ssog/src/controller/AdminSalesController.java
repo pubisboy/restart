@@ -32,7 +32,7 @@ public class AdminSalesController {
 	@Autowired
 	Title tt;
 	
-	@Autowired
+	@Autowired 
 	AdminSalesDao asd;
 
 	@RequestMapping("/sales/sales_list.ja")
@@ -270,7 +270,7 @@ public class AdminSalesController {
 				}
 			}
 			if(bb == false){
-				mtmp.put("day", tmp2); 
+				mtmp.put("day", tmp2);
 				mtmp.put("price", 0);
 				mtmp.put("order", 0);
 			}
