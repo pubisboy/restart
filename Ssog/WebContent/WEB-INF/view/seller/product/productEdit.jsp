@@ -16,7 +16,7 @@ img:hover {
       ${map.CUPON_TYPE }
    </p>
    <form action="/seller/product/productEditExec.j" method="post"
-      enctype="multipart/form-data">
+      enctype="multipart/form-data" id="editform">
       <input type="hidden" name="num" value="${param.num }">
       <c:if test="${!empty map.IMG_UUID }">
          <input type="hidden" name="uuid" value="${map.IMG_UUID }">
@@ -47,10 +47,9 @@ img:hover {
                      style="padding: 0px; margin: 0px;">
                      <input class="form-control" type="text" style="width: 82%"
                         name="pro_qty" onkeydown="onlyNumber(this)" required="false" 
-                        value="${map.PRO_QTY }"> Kg
+                        value="${map.PRO_QTY }"> 개
                   </div></td><td colspan="2" style="border-top: 0px;">
-   <span id="zoro">
-    
+   <span id="zoro">    
    </span></td>
             </tr>
             <tr style="height: 5%;">
@@ -64,14 +63,14 @@ img:hover {
                         </c:forEach>
                      </select><select class="form-control"
                         style="width: 30%; margin-left: 78px;" id="small_cate"
-                        name="category"><option>소분류</option></select>
+                        name="category"><option>소분류</option></select> 
                   </div>
                </td>
             </tr>
             <tr style="height: 5%;">
                <td style="background-color: #eaeaea;">생산지</td>
                <td colspan="3"><select class="form-control"
-                  style="width: 30%;" required name="origin"><option>생산지</option>
+                  style="width: 30%;" required name="origin" id="origin"><option>생산지</option>
                      <c:forEach items="${originlist }" var="i">
                         <option value="${i.NUM }"
                            ${i.NUM eq  map.ORIGIN ? 'selected' : ''}> ${i.NAME }</option>
@@ -116,7 +115,7 @@ img:hover {
          </table>
          <div align="right" style="margin-top: 10px;"> 
             <button type="button" id="state">${map.SELL_ON eq 1?'판매 중지':'판매 재개' }</button>
-            <button type="submit">상품 수정</button> 
+            <button type="button" id="editbtn">상품 수정</button> 
          </div>
    </form>
 </div>
@@ -235,9 +234,26 @@ $("#state").on("click",function(){
          window.alert("판매가 재개되었습니다.");
       }
       location.reload();
-    })    
+    })     
 }) 
-
+$("#editbtn").on("click",function(){
+	var lcate=$("#large_cate").val();
+	var scate=$("#small_cate").val();
+	var origin=$("#origin").val();
+	if(lcate != '대분류'){
+		if(scate != '소분류'){
+			if(origin != '생산지'){
+	$("#editform").submit();					
+			}else{
+				window.alert("생산지를 선택해주세요");
+			}
+		}else{
+			window.alert("소분류를 선택해주세요");
+		}
+	}else{
+		window.alert("대분류를  선택해주세요.");
+	}
+})
 </script>
 <script>
 function onlyNumber(obj) {

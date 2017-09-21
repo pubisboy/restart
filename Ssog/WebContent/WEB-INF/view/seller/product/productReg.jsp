@@ -17,7 +17,7 @@ img:hover {
 쇼핑몰에 상품을 진열하는데 필요한 기본정보를 입력합니다. 
 </p> 
 <form action="/seller/product/productRegExec.j" method="post" enctype="multipart/form-data"> 
-<div class="form-group"> 
+<div class="form-group" id="editform"> 
 <table style="height: 100%; width: 100%;" border="1">  
 	<tr style="height: 5%"><td style="width: 20%; background-color: #eaeaea;">상품명</td><td colspan="3"><input class="form-control" type="text" style="width: 95%" name="pro_name" required="false"/></td>
 	</tr>
@@ -26,7 +26,7 @@ img:hover {
 	<td><input type="radio" class="group" value="false" name="radiogroup" checked="checked" id="nouseEve" style="margin-left: 10px;"> &nbsp;사용안함 &nbsp;&nbsp;&nbsp;  <input type="radio" class="group" value="true" name="radiogroup" id="useEve">&nbsp;사용&nbsp;</td>	
 	</tr>
 	<tr style="height: 5%;"><td style=" background-color: #eaeaea;" >판매수량</td>  
-	<td colspan="1"><div class="navbar-form" style="padding: 0px; margin: 0px;"><input class="form-control" type="text" style="width: 82%" name="pro_qty" onkeydown="onlyNumber(this)" required="false" >  Kg</div></td><td colspan="2" style="border-top: 0px;">
+	<td colspan="1"><div class="navbar-form" style="padding: 0px; margin: 0px;"><input class="form-control" type="text" style="width: 82%" name="pro_qty" onkeydown="onlyNumber(this)" required="false" >  개</div></td><td colspan="2" style="border-top: 0px;">
 	<span id="zoro">
 	 
 	</span></td></tr> 
@@ -40,7 +40,7 @@ img:hover {
 	</div>
 	</td></tr> 
 	<tr style="height: 5%;"><td style=" background-color: #eaeaea;" >생산지</td><td colspan="3">
-	<select class="form-control" style="width: 30%;" required name="origin"><option>생산지</option>
+	<select class="form-control" style="width: 30%;" required name="origin" id="origin"><option>생산지</option>
 	<c:forEach items="${originlist }" var="i">
 	<option value="${i.NUM }">${i.NAME }</option>
 	</c:forEach>
@@ -56,10 +56,10 @@ img:hover {
 	</td></tr>   
 
 </table>
-<div align="right" style="margin-top: 10px;"> 
-	<button type="submit" style=>상품 등록하기</button> 
-	</div>
 </form> 
+<div align="right" style="margin-top: 10px;">  
+	<button type="button" id="editbtn">상품 등록하기</button>  
+	</div>
 </div>
 </div> 
 <script src="/ckeditor/ckeditor.js"></script>  
@@ -115,6 +115,24 @@ $("#large_cate").change("click",function(){
  $("#nouseEve").on("click",function(){
 	 $("#zoro").html("");
  })
+ $("#editbtn").on("click",function(){
+	var lcate=$("#large_cate").val();
+	var scate=$("#small_cate").val();
+	var origin=$("#origin").val();
+	if(lcate != '대분류'){
+		if(scate != '소분류'){
+			if(origin != '생산지'){
+				$("#editform").submit();					
+			}else{
+				window.alert("생산지를 선택해주세요");
+			}
+		}else{
+			window.alert("소분류를 선택해주세요");
+		}
+	}else{
+		window.alert("대분류를  선택해주세요.");
+	}
+})
  
 
 </script>
