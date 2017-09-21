@@ -239,7 +239,7 @@ public class CartController {
 		String coupon = (String) param.get("onecoupon");
 		int index = coupon.indexOf("%");
 		String cupon = coupon.substring(0, index);
-		param.put("cupon", cupon);
+		param.put("cupon", cupon); 
 		boolean blll = cdao.coupondel(param);
 		System.out.println(blll); 
 		}
