@@ -274,7 +274,7 @@ public class AdminSalesController {
 				mtmp.put("price", 0);
 				mtmp.put("order", 0);
 			}
-			days.add(mtmp);
+			days.add(mtmp); 
 			// System.out.println("날짜 : "+tmp);
 			
 			System.out.println("tmp2 : "+tmp2+" // fTime : "+fTime);

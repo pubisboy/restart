@@ -4,7 +4,11 @@
 
 <style>
 .image {
+<<<<<<< HEAD
 	background-image: url(/admin/popupImg/'${params.IMG_UUID}');
+=======
+	background-image: url(/admin/popupImg/${params.IMG_UUID});
+>>>>>>> branch 'master' of https://github.com/pubisboy/restart.git
 	background-position: left top;
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
