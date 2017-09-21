@@ -52,7 +52,6 @@ public class ProductRegController {
 		System.out.println(path);
 		if(map.get("event")!=null) {
 			pdao.useEvent(map);
-			System.out.println("호로로로로로로로로로로ㅗ로로롤");
 		}
 		File dir=new File(path);
 		if(!dir.exists()) {
@@ -71,7 +70,10 @@ public class ProductRegController {
 		}
 		map.put("seller", session.getAttribute("seller_id"));
 		map.put("uuid", uuid);
-		boolean br=pdao.productReg(map); 
+		boolean br=pdao.productReg(map);
+		
+		System.out.println("넘어온 맵은???? +"+map );
+		pdao.useEvent(map);
 		mav.addObject("rst", br);
 		mav.addObject("section", "seller/alert/register_rst");
 		return mav; 
@@ -88,7 +90,7 @@ public class ProductRegController {
 		
 		return map;		 
 	}
-	@RequestMapping("/productEdit")
+	@RequestMapping("/productEdit.j")
 	public ModelAndView Edit (@RequestParam(name="num") String num){
 		ModelAndView mav=new ModelAndView("t_el_seller");
 		mav.addObject("section", "seller/product/productEdit");
@@ -98,7 +100,7 @@ public class ProductRegController {
 		mav.addObject("large_cate", list);
 		map=pdao.pro_detail(num);
 		mav.addObject("map", map);
-		System.out.println(map);
+		System.out.println("나온 맵은 ??"+map);
 		List<Map> list1=pdao.originlist();
 		mav.addObject("originlist",list1);
 		 
@@ -113,7 +115,7 @@ public class ProductRegController {
 		File dir=new File(path);
 		String uuid;
 		uuid = (String) map.get("uuid");
-		
+		System.out.println("패쓰!!!!!!!!!!"+path);
 		if((String) map.get("uuid")==null) {
 			if(!f.isEmpty()) {
 				uuid=UUID.randomUUID().toString();
@@ -142,10 +144,14 @@ public class ProductRegController {
 		System.out.println("완성된 map 은?? 호로로로로로로롤"+map);
 		boolean br=pdao.productUpdate(map);
 		System.out.println(br);
-		mav.addObject("section", "seller/alert/register_rst");
+		mav.addObject("section", "seller/alert/edit");
 		String num=(String) map.get("num");
 		if(map.get("radiogroup").equals("false")) {
-			pdao.EndEvent(map);
+			Map map1=new HashMap<>();
+			map1=pdao.EventETC(map);
+			if(map1!=null) {
+				pdao.EndEvent(map);
+			}
 		}else {
 			Map map1=new HashMap<>();
 			map1=pdao.EventETC(map);
@@ -155,6 +161,7 @@ public class ProductRegController {
 				pdao.EventUpdate(map);
 			}
 		}
+		mav.addObject("rst", br);
 		return mav;  
 	}
 	

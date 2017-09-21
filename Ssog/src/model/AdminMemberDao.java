@@ -317,4 +317,17 @@ public class AdminMemberDao {
 		}
 		return b;
 	}
+	
+	public List seller_record(String id){
+		SqlSession session = factory.openSession();
+		List rst = null;
+		try{
+			rst = session.selectList("admin_member.seller_record", id);
+		}catch(Exception e){
+			System.out.println("error.seller_record"+e.toString());
+		}finally{
+			session.close();
+		}
+		return rst;
+	}
 }

@@ -638,4 +638,20 @@
 	<select id="getUnableCupon" resultType="java.lang.Integer">
 		select count(*) count from cupon_base where END_DATE &lt; sysdate
 	</select>
+	
+	<select id="getDhl" resultType="java.lang.Integer">
+		select charge from dhl where num = 1
+	</select>
+	
+	<update id="updateDhl" parameterType="java.lang.Integer">
+		update dhl set charge = #{charge} where num = 1
+	</update>
+	
+	<select id="getPoint" resultType="java.lang.Integer">
+		select rate from POINT
+	</select>
+	
+	<update id="updatePoint" parameterType="java.lang.Integer">
+		update point set rate = #{rate} where num = 1
+	</update>
 </mapper>

@@ -16,6 +16,7 @@ li {
 			<li><a href="/admin/management/counsel/counsel_seller_list.ja">1:1문의(판매자)</a></li>
 			<li><a href="/admin/management/information/company.ja">회사 정보</a></li>
 			<li><a href="/admin/management/information/terms.ja">이용약관</a></li>
+			<li><a href="/admin/management/etc/etc.ja">기타</a></li>
 		</ul>
 	</div>
 </nav>

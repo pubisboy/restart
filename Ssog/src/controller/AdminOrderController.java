@@ -129,8 +129,8 @@ public class AdminOrderController {
 	public Map order_modify(@RequestParam Map params){
 		String html = "<select id='stsel'>";
 		System.out.println("넘어온 거 : "+params);
-		String[] stateNum = "1,2,3,4,5,6,7".split(",");
-		String[] stateKo = "주문,결제완료,배송중,배송완료,구매확정,교환중,반품중".split(",");
+		String[] stateNum = "1,2,3,4,5,6,7,8".split(",");
+		String[] stateKo = "주문,결제완료,배송중,배송완료,구매확정,교환중,반품중,주문취소".split(",");
 		int now = Integer.parseInt((String)params.get("now"));
 		for(int i = 0; i < stateNum.length; i++){
 			String s;

@@ -76,11 +76,18 @@ li {
                      <th style="width: 33%"></th>
                   </tr>
                   <c:forEach var="i" items="${originlist }" varStatus="vs">
+                  	<c:set var="tf" value=" " scope="page"/>
                      <c:if test="${vs.index eq 0 or vs.index eq 3 or vs.index eq 6}">
                         <tr>
                      </c:if>
-                     <td style="width: 33%;"><input type="checkbox" value="${i.NUM }" name="origin_group" 
-                     ${ i.NUM eq param.origin_gorup  ? 'checked' : '' } > ${i.NAME }</input></td>
+                     
+                     <c:forEach items="${origin1 }" var="j"> 
+		                     <c:if test="${i.NUM eq j }">
+		                     	<c:set var="tf" value="checked" scope="page"/>
+		                     </c:if>
+                     </c:forEach>
+                     <td style="width: 33%;"><input type="checkbox" value="${i.NUM }" name="origin_group" ${tf } > ${i.NAME }</input></td>
+                     
                      <c:if test="${vs.index eq 2 or vs.index eq 5 or vs.index eq 8}">
                         </tr>
                      </c:if>
@@ -137,7 +144,7 @@ li {
          <a href="/product/detail.j?productNumber=${i.PRO_NUM }&page=1">   
          <c:choose>
          <c:when test="${empty i.IMG_UUID }">
-         <img src="/image/다운로드.jpg"
+         <img src="/image/이미지기본.jpg"
             alt="Fjords" width="300" height="200">
             </c:when>
             <c:otherwise>
@@ -146,9 +153,9 @@ li {
             </c:otherwise> 
             </c:choose>
          </a>
-         <div class="desc">
-            <div ><b style="font-size: 15px;">${i.PRO_NAME }</b></div>
-            <div>원산지 :${i.NAME }</div><div><b style="font-size: 20px;">  
+         <div class="desc" style="padding: 10px;">
+            <div style="border-bottom: 1px solid black"><b style="font-size: 15px;">${i.PRO_NAME }</b> </div>
+            <div style="margin-top: 2px;">원산지 :${i.NAME }</div><div><b style="font-size: 20px;">  
               <fmt:formatNumber value="${i.PRICE }" type="number"/>원
               </b></div>  
 			<c:if test="${!empty i.CUPON_TYPE }">
