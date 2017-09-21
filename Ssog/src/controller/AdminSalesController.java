@@ -32,7 +32,7 @@ public class AdminSalesController {
 	@Autowired
 	Title tt;
 	
-	@Autowired
+	@Autowired 
 	AdminSalesDao asd;
 
 	@RequestMapping("/sales/sales_list.ja")
