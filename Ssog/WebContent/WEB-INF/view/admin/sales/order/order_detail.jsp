@@ -47,6 +47,7 @@ td{
 						<th class="type">주문가격</th>
 						<td>
 							<fmt:formatNumber value="${empty list[0].PRICE ? 0 : list[0].PRICE}" pattern="#,###"/>원
+							(<sub>배송비 <fmt:formatNumber value="${empty list[0].DHL ? 0 : list[0].DHL}" pattern="#,###"/>원</sub>)
 						</td>
 					</tr>
 					<tr>

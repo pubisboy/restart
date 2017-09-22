@@ -247,11 +247,11 @@ google.charts.setOnLoadCallback(drawChart);
 
 function drawChart() {
   var data = google.visualization.arrayToDataTable([
-	['day', 'sales'],
+	['day', 'sales', 'real'],
 		<c:choose>
 			<c:when test="${days.size() lt 8}">
 				<c:forEach var="i" items="${days}" varStatus="vs">
-					["${i.day}", ${i.price}]
+					["${i.day}", ${i.price}, ${i.priceR}]
 					<c:if test="${!vs.last}">,</c:if>
 				</c:forEach>
 			</c:when>

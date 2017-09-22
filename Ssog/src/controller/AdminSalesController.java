@@ -275,8 +275,10 @@ public class AdminSalesController {
 				// System.out.println("tmp : "+tmp);
 				if(t.equals(tmp2)){
 					BigDecimal bd = (BigDecimal)m.get("PRICE");
+					BigDecimal bdch = (BigDecimal)m.get("CHARGE");
 					mtmp.put("day", tmp2);
 					mtmp.put("price", bd.intValue());
+					mtmp.put("priceR", bd.intValue() - bdch.intValue());
 					bd = (BigDecimal)m.get("COUNT");
 					mtmp.put("order", bd.intValue());
 					bb = true;
@@ -287,6 +289,7 @@ public class AdminSalesController {
 				mtmp.put("day", tmp2);
 				mtmp.put("price", 0);
 				mtmp.put("order", 0);
+				mtmp.put("priceR", 0);
 			}
 			days.add(mtmp); 
 			// System.out.println("날짜 : "+tmp);
