@@ -79,7 +79,7 @@
 	</select>
 	
 	<select id="seller_record" parameterType="java.lang.String" resultType="java.util.HashMap">
-		select sum(price) price, sum(dhl) charge from 
+		select nvl(sum(price), 0) price, nvl(sum(dhl), 0) charge from 
 		(select rs.* from
 		(select p.seller_id, o.price, o.dhl from 
 		(select * from ORDERTBL where state = 5) o left join PRODUCTTBL p on o.pro_num = p.pro_num) rs

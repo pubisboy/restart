@@ -12,6 +12,7 @@
 		,#{etc,jdbcType=VARCHAR}
 		,#{address},#{receiver})
 	</insert>
+	
 	<select id="dhlprice" resultType="java.util.HashMap">
 		select * from dhl
 	</select>

@@ -23,6 +23,7 @@ public class CartDao {
 		SqlSession session = factory.openSession();
 		try {
 			session.insert("cart.order",map);
+			session.update("updateSell_qty", map);
 			session.commit();
 			return true;
 		} catch (Exception e) {

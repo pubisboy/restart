@@ -200,9 +200,20 @@ public class AdminMemberController {
 			System.out.println("tml : "+tmp.hashCode());
 			System.out.println("(Map)liInfo.get(0) : "+((Map)liInfo.get(0)).hashCode());
 			System.out.println("seller_liInfo : "+liInfo);
-			BigDecimal b = (BigDecimal)(tmp.get("PRICE_TOTAL") == null ? BigDecimal.valueOf(0) : tmp.get("PRICE_TOTAL"));
-			int buy_total = b.intValue();
-			tmp.put("BUY_TOTAL", buy_total);
+			/*BigDecimal b = (BigDecimal)(tmp.get("PRICE_TOTAL") == null ? BigDecimal.valueOf(0) : tmp.get("PRICE_TOTAL"));*/
+			
+			/*int buy_total = b.intValue();*/
+			List ttt = amd.seller_record(id);
+			int buy_total = 0;
+			if(ttt.size() > 0){
+				Map mm = (Map)ttt.get(0);
+				System.out.println("mm : "+mm);
+				BigDecimal b = (BigDecimal)mm.get("PRICE");
+				BigDecimal bc = (BigDecimal)mm.get("CHARGE");
+				buy_total = b.intValue() - bc.intValue();
+				System.out.println("buy_total : "+buy_total);
+				tmp.put("buy_total", buy_total);
+			}
 			
 			List liGrade = amd.seller_detail_grade(buy_total);
 			List liProduct9 = amd.seller_detail_product_top9(id);
