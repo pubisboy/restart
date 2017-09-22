@@ -158,8 +158,8 @@ public class AdminOrderController {
 		if(b && state.equals("5")){
 			b = aod.update_order_user_record(params);
 			System.out.println("구매자 레코드 : "+b);
-			b = aod.update_order_seller_record(params);
-			System.out.println("판매자 레코드 : "+b);
+			/*b = aod.update_order_seller_record(params);
+			System.out.println("판매자 레코드 : "+b);*/
 			b = aod.update_order_sell_qty(params);
 			System.out.println("개수 레코드 : "+b);
 		}else if(b && state.equals("8")){

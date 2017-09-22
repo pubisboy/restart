@@ -1,8 +1,10 @@
 package model;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -197,5 +199,47 @@ public class AdminOrderDao {
 			session.close();
 		}
 		return rst;
+	}
+	
+	public List updateDelivery_ready(){
+		SqlSession session = factory.openSession();
+		List rst = null;
+		try{
+			rst = session.selectList("admin_order.updateDelivery_ready");
+		}catch(Exception e){
+			System.out.println("error.updateDelivery_ready"+e.toString());
+		}finally{
+			session.close();
+		}
+		return rst;
+	}
+	
+	public boolean updateDelivery2(List<Map> list){
+		SqlSession session = factory.openSession();
+		boolean b = false;
+		try{
+			int rst = 0;
+			for(Map m : list){
+				BigDecimal n = (BigDecimal)m.get("ORDER_NUM");
+				Map p = new HashedMap<>();
+				p.put("num", n.intValue());
+				System.out.println("num : "+n.intValue());
+				rst = session.update("admin_order.update_order_sell_qty", p);
+				if(rst > 0){
+					System.out.println("rst : "+rst);
+					b = true;
+					session.commit();
+				}else{
+					session.rollback();
+				}
+			}
+		}catch(Exception e){
+			System.out.println("error.updateDelivery"+e.toString());
+			b = false;
+			session.rollback();
+		}finally{
+			session.close();
+		}
+		return b;
 	}
 }
