@@ -102,7 +102,8 @@
 	</select>
 	
 	<select id="get_saleSum" parameterType="java.util.HashMap" resultType="java.lang.Integer">
-		select sum(b.price) price from (select pro_num pnum, price from ordertbl where pro_num = #{num} and state = 5)b group by pnum
+		select price - charge price from
+	(select nvl(sum(b.price), 0) price , nvl(sum(b.dhl), 0) charge from (select pro_num pnum, price, dhl from ordertbl where pro_num = #{num} and state = 5)b group by pnum)
 	</select>
 	
 	<select id="get_star" parameterType="java.util.HashMap" resultType="java.lang.Double">
